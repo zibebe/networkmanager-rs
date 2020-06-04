@@ -13,10 +13,8 @@ jobs:
     name: Check
     runs-on: ubuntu-latest
     steps:
-      - name: install dbus libs
-        run: |
-        sudo apt-get install -y --no-install-recommends \
-          libdbus-1-dev
+      - name: install system dependencies
+        run: sudo apt-get install -y --no-install-recommends libdbus-1-dev
       - name: checkout
         uses: actions/checkout@v2
       - name: install toolchain
@@ -33,10 +31,8 @@ jobs:
     name: Test Suite
     runs-on: ubuntu-latest
     steps:
-      - name: install dbus libs
-        run: |
-        sudo apt-get install -y --no-install-recommends \
-          libdbus-1-dev
+      - name: install system dependencies
+        run: sudo apt-get install -y --no-install-recommends libdbus-1-dev
       - name: checkout
         uses: actions/checkout@v2
       - name: install toolchain
@@ -53,10 +49,8 @@ jobs:
     name: Rustfmt
     runs-on: ubuntu-latest
     steps:
-      - name: install dbus libs
-        run: |
-        sudo apt-get install -y --no-install-recommends \
-          libdbus-1-dev
+      - name: install system dependencies
+        run: sudo apt-get install -y --no-install-recommends libdbus-1-dev
       - name: checkout
         uses: actions/checkout@v2
       - name: install toolchain
@@ -75,10 +69,8 @@ jobs:
     name: Clippy
     runs-on: ubuntu-latest
     steps:
-      - name: install dbus libs
-        run: |
-        sudo apt-get install -y --no-install-recommends \
-          libdbus-1-dev
+      - name: install system dependencies
+        run: sudo apt-get install -y --no-install-recommends libdbus-1-dev
       - name: checkout
         uses: actions/checkout@v2
       - name: install toolchain
