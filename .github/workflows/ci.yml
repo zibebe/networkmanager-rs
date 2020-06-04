@@ -17,12 +17,15 @@ jobs:
         run: |
         sudo apt-get install -y --no-install-recommends \
           libdbus-1-dev
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: install toolchain
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
-      - uses: actions-rs/cargo@v1
+      - name: cargo check
+        uses: actions-rs/cargo@v1
         with:
           command: check
 
@@ -34,12 +37,15 @@ jobs:
         run: |
         sudo apt-get install -y --no-install-recommends \
           libdbus-1-dev
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: install toolchain
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
-      - uses: actions-rs/cargo@v1
+      - name: cargo test
+        uses: actions-rs/cargo@v1
         with:
           command: test
 
@@ -51,13 +57,16 @@ jobs:
         run: |
         sudo apt-get install -y --no-install-recommends \
           libdbus-1-dev
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: install toolchain
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
           components: rustfmt
-      - uses: actions-rs/cargo@v1
+      - name: cargo fmt
+        uses: actions-rs/cargo@v1
         with:
           command: fmt
           args: --all -- --check
@@ -70,13 +79,16 @@ jobs:
         run: |
         sudo apt-get install -y --no-install-recommends \
           libdbus-1-dev
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: install toolchain
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
           components: clippy
-      - uses: actions-rs/cargo@v1
+      - name: cargo clippy
+        uses: actions-rs/cargo@v1
         with:
           command: clippy
           args: -- -D warnings
