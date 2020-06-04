@@ -34,8 +34,6 @@ fi
 dest="$root/src/api/gen"
 mkdir -p $dest
 
-cat /dev/null > $dest/mod.rs
-
 alltraits=()
 allmods=()
 # TODO: get introspection files directly from https://gitlab.freedesktop.org/NetworkManager/NetworkManager
@@ -52,6 +50,8 @@ for spec in $root/tmp/introspection/*.xml; do
   echo "Generating code from $(basename "${spec}") to ${modname}…"
   dbus-codegen-rust -m None < "$spec" > "$dest_file"
 done
+
+echo "#![allow(warnings)]" > $dest/mod.rs
 
 for mod in ${allmods[@]}; do
   echo "mod "$mod";" >> $dest/mod.rs

@@ -1,3 +1,4 @@
+#![allow(warnings)]
 mod nm;
 mod nm_accesspoint;
 mod nm_agentmanager;
