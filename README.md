@@ -1,4 +1,6 @@
 # networkmanager-rs
+![Continuous Integration](https://github.com/he4d/networkmanager-rs/workflows/Continuous%20Integration/badge.svg)
+
 A [NetworkManager](https://wiki.gnome.org/Projects/NetworkManager) API library using the [D-Bus message bus system](https://www.freedesktop.org/wiki/Software/dbus/)
 
 Work in progress...
