@@ -1,0 +1,15 @@
+[package]
+name = "networkmanager"
+version = "0.1.0"
+authors = ["Tobias Tschinkowitz <tobias.tschinkowitz@icloud.com>"]
+description = "A NetworkManager API library using the D-Bus message bus system"
+repository = "https://github.com/he4d/networkmanager-rs"
+documentation = "https://docs.rs/networkmanager"
+readme = "README.md"
+categories = ["api-bindings", "network-programming", "os::unix-apis"]
+keywords = ["networkmanager", "dbus", "wifi", "networking"]
+edition = "2018"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+dbus = "0.8.3"
