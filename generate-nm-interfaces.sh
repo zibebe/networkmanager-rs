@@ -36,7 +36,6 @@ mkdir -p $dest
 
 alltraits=()
 allmods=()
-# TODO: get introspection files directly from https://gitlab.freedesktop.org/NetworkManager/NetworkManager
 for spec in $root/tmp/introspection/*.xml; do
   basename=$(basename "$spec" .xml)
   trait=( $(IFS=. ; printf '%s ' $basename) )
