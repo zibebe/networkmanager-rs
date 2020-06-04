@@ -31,7 +31,7 @@ if ! hash dbus-codegen-rust 2> /dev/null; then
   fi
 fi
 
-dest="$root/src/gen"
+dest="$root/src/api/gen"
 mkdir -p $dest
 
 cat /dev/null > $dest/mod.rs
