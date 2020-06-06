@@ -5,7 +5,24 @@
 
 A [NetworkManager](https://wiki.gnome.org/Projects/NetworkManager) API library using the [D-Bus message bus system](https://www.freedesktop.org/wiki/Software/dbus/)
 
-Work in progress...
+## Status
+
+This project is still under development. Currently implemented parts can be found in the docs.
+
+## Prerequisites
+
+* ### Debian and its derivatives (e.g. Ubuntu)
+  * network-manager
+  * libdbus-1-dev
+  * pkg-config
+* ### Fedora
+  * NetworkManager
+  * dbus-devel
+  * pkg-config
+
+## Usage
+
+See examples directory
 
 ## License
 
