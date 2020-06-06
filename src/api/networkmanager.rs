@@ -1,10 +1,9 @@
-use std::time::Duration;
-
-use dbus::blocking::{Connection as DBusConnection, Proxy};
-
+use super::dbus_connector::DBusConnector;
 use super::device::Device;
 use super::gen::OrgFreedesktopNetworkManager;
-use super::{Error, DBUS_TIMEOUT_MS};
+use super::Error;
+
+const NETWORK_MANAGER_PATH: &str = "/org/freedesktop/NetworkManager";
 
 pub enum ReloadScope {
     Everything = 0x00,
@@ -14,63 +13,76 @@ pub enum ReloadScope {
 }
 
 pub struct NetworkManager {
-    dbus_connection: DBusConnection,
+    dbus_connector: DBusConnector,
 }
 
 impl NetworkManager {
     pub fn new() -> Result<Self, Error> {
         Ok(NetworkManager {
-            dbus_connection: DBusConnection::new_system()?,
+            dbus_connector: DBusConnector::new()?,
         })
     }
 
-    fn create_proxy(&self) -> Proxy<'_, &DBusConnection> {
-        self.dbus_connection.with_proxy(
-            "org.freedesktop.NetworkManager",
-            "/org/freedesktop/NetworkManager",
-            Duration::from_millis(DBUS_TIMEOUT_MS),
-        )
-    }
-
-    fn paths_to_devices(&self, paths: Vec<dbus::Path>) -> Result<Vec<Device>, Error> {
+    fn paths_to_devices(&self, dbus_paths: Vec<dbus::Path>) -> Result<Vec<Device>, Error> {
         let mut res = Vec::new();
-        for path in paths {
-            res.push(Device::new(&self.dbus_connection, &path)?);
+        for path in dbus_paths {
+            res.push(Device::new(&self.dbus_connector, &path)?);
         }
         Ok(res)
     }
 
     /// Returns only realized network devices
     pub fn get_devices(&self) -> Result<Vec<Device>, Error> {
-        let dev_paths = self.create_proxy().get_devices()?;
+        let dev_paths = self
+            .dbus_connector
+            .create_proxy(NETWORK_MANAGER_PATH)
+            .get_devices()?;
         Ok(self.paths_to_devices(dev_paths)?)
     }
 
     /// Returns all the network devices
     pub fn get_all_devices(&self) -> Result<Vec<Device>, Error> {
-        let dev_paths = self.create_proxy().get_all_devices()?;
+        let dev_paths = self
+            .dbus_connector
+            .create_proxy(NETWORK_MANAGER_PATH)
+            .get_all_devices()?;
         Ok(self.paths_to_devices(dev_paths)?)
     }
 
     /// Reloads NetworkManager by the given scope
     pub fn reload(&self, scope: ReloadScope) -> Result<(), Error> {
-        Ok(self.create_proxy().reload(scope as u32)?)
+        Ok(self
+            .dbus_connector
+            .create_proxy(NETWORK_MANAGER_PATH)
+            .reload(scope as u32)?)
     }
 
     pub fn networking_enabled(&self) -> Result<bool, Error> {
-        Ok(self.create_proxy().networking_enabled()?)
+        Ok(self
+            .dbus_connector
+            .create_proxy(NETWORK_MANAGER_PATH)
+            .networking_enabled()?)
     }
 
     pub fn wireless_enabled(&self) -> Result<bool, Error> {
-        Ok(self.create_proxy().wireless_enabled()?)
+        Ok(self
+            .dbus_connector
+            .create_proxy(NETWORK_MANAGER_PATH)
+            .wireless_enabled()?)
     }
 
     pub fn wireless_hardware_enabled(&self) -> Result<bool, Error> {
-        Ok(self.create_proxy().wireless_hardware_enabled()?)
+        Ok(self
+            .dbus_connector
+            .create_proxy(NETWORK_MANAGER_PATH)
+            .wireless_hardware_enabled()?)
     }
 
     /// Shows if NetworkManager is currently starting up
     pub fn startup(&self) -> Result<bool, Error> {
-        Ok(self.create_proxy().startup()?)
+        Ok(self
+            .dbus_connector
+            .create_proxy(NETWORK_MANAGER_PATH)
+            .startup()?)
     }
 }
