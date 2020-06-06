@@ -8,6 +8,8 @@ const DBUS_TIMEOUT_MS: u64 = 5000;
 #[derive(Debug)]
 pub enum Error {
     DBus(dbus::Error),
+    UnsupportedMethod,
+    UnsupportedDevice,
 }
 
 impl From<dbus::Error> for Error {

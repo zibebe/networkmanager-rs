@@ -2,20 +2,54 @@ use std::time::Duration;
 
 use dbus::blocking::{Connection, Proxy};
 
-use super::gen::OrgFreedesktopNetworkManagerDevice;
+use super::gen::{OrgFreedesktopNetworkManagerDevice};
 use super::{Error, DBUS_TIMEOUT_MS};
+
+use num_derive::FromPrimitive;
+use num_traits::FromPrimitive;
+
+#[derive(Debug, PartialEq, FromPrimitive)]
+pub enum DeviceType {
+    Unknown,
+    Ethernet,
+    WiFi,
+    Unused1,
+    Unused2,
+    Bt,
+    OlpcMesh,
+    Wimax,
+    Modem,
+    Infiniband,
+    Bond,
+    Vlan,
+    Adsl,
+    Bridge,
+    Generic,
+    Team,
+    Tun,
+    IpTunnel,
+    Macvlan,
+    Vxlan,
+    Veth,
+    Macsec,
+    Dummy,
+}
 
 pub struct Device<'a> {
     connection: &'a Connection,
     path: String,
+    devtype: DeviceType,
 }
 
 impl<'a> Device<'a> {
-    pub(super) fn new(connection: &'a Connection, path: &str) -> Self {
-        Device {
+    pub(super) fn new(connection: &'a Connection, path: &str) -> Result<Self, Error> {
+        let mut dev = Device {
             connection,
             path: path.to_owned(),
-        }
+            devtype: DeviceType::Dummy,
+        };
+        dev.devtype = Device::device_type(&dev)?;
+        Ok(dev)
     }
 
     fn create_proxy(&self) -> Proxy<'_, &Connection> {
@@ -26,19 +60,27 @@ impl<'a> Device<'a> {
         )
     }
 
-    pub fn delete(&self) -> Result<(), Error> {
-        Ok(self.create_proxy().delete()?)
-    }
-
-    pub fn disconnect(&self) -> Result<(), Error> {
-        Ok(self.create_proxy().disconnect()?)
+    pub fn device_type(&self) -> Result<DeviceType, Error> {
+        let proxy = self.create_proxy();
+        let dev_type = proxy.device_type()?;
+        match FromPrimitive::from_u32(dev_type) {
+            Some(x) => Ok(x),
+            None => Err(Error::UnsupportedDevice),
+        }     
     }
 
     pub fn autoconnect(&self) -> Result<bool, Error> {
         Ok(self.create_proxy().autoconnect()?)
     }
 
-    pub fn set_autoconnect(&self, value: bool) -> Result<(), Error> {
-        Ok(self.create_proxy().set_autoconnect(value)?)
+    pub fn hw_address(&self) -> Result<String, Error> {
+        Ok(self.create_proxy().hw_address()?)
+    }
+
+    pub fn access_points(&self) -> Result<Vec<String>, Error> {
+        match self.devtype {
+            DeviceType::WiFi => Ok(Vec::new()),
+            _ => Err(Error::UnsupportedMethod),
+        }
     }
 }

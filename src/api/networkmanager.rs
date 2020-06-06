@@ -35,23 +35,23 @@ impl NetworkManager {
     /// Returns only realized network devices
     pub fn get_devices(&self) -> Result<Vec<Device>, Error> {
         let dev_paths = self.create_proxy().get_devices()?;
-        let mut result = Vec::with_capacity(dev_paths.len());
-        for path in dev_paths {
-            let device = Device::new(&self.connection, &path);
-            result.push(device);
-        }
-        Ok(result)
+        let devs = dev_paths
+            .iter()
+            .map(|e| Device::new(&self.connection, e))
+            .filter_map(Result::ok)
+            .collect();
+        Ok(devs)
     }
 
     /// Returns all the network devices
     pub fn get_all_devices(&self) -> Result<Vec<Device>, Error> {
         let dev_paths = self.create_proxy().get_all_devices()?;
-        let mut result = Vec::with_capacity(dev_paths.len());
-        for path in dev_paths {
-            let device = Device::new(&self.connection, &path);
-            result.push(device);
-        }
-        Ok(result)
+        let devs = dev_paths
+            .iter()
+            .map(|e| Device::new(&self.connection, e))
+            .filter_map(Result::ok)
+            .collect();
+        Ok(devs)
     }
 
     /// Reloads NetworkManager by the given scope

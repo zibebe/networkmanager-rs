@@ -13,3 +13,5 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 dbus = "0.8.3"
+num-traits = "0.2"
+num-derive = "0.3"
