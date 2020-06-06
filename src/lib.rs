@@ -13,4 +13,5 @@
 
 pub mod api;
 
-pub use crate::api::{device::Device, networkmanager::NetworkManager, Error};
+pub use crate::api::device::DeviceType;
+pub use crate::api::{networkmanager::NetworkManager, Error};

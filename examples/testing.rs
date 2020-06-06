@@ -1,4 +1,4 @@
-use networkmanager::{Error, NetworkManager};
+use networkmanager::{DeviceType, Error, NetworkManager};
 
 fn main() -> Result<(), Error> {
     let nm = NetworkManager::new()?;
@@ -8,6 +8,12 @@ fn main() -> Result<(), Error> {
         println!("Is autoconnected: {:?}", dev.autoconnect()?);
         println!("Device Type: {:?}", dev.device_type()?);
         println!("Hw Address: {:?}", dev.hw_address()?);
+        match dev.device_type()? {
+            DeviceType::WiFi => {
+                println!("Access Point {:?}", dev.access_points()?);
+            }
+            _ => {}
+        }
     }
     Ok(())
 }
