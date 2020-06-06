@@ -1,0 +1,136 @@
+[examples/testing.rs:21] dev.get_applied_connection(0)? = (
+    {
+        "ipv6": {
+            "addr-gen-mode": Variant(
+                0,
+            ),
+            "address-data": Variant(
+                InternalArray {
+                    data: [],
+                    inner_sig: Signature(
+                        "a{sv}",
+                    ),
+                },
+            ),
+            "routes": Variant(
+                InternalArray {
+                    data: [],
+                    inner_sig: Signature(
+                        "(ayuayu)",
+                    ),
+                },
+            ),
+            "dns-search": Variant(
+                [],
+            ),
+            "route-data": Variant(
+                InternalArray {
+                    data: [],
+                    inner_sig: Signature(
+                        "a{sv}",
+                    ),
+                },
+            ),
+            "addresses": Variant(
+                InternalArray {
+                    data: [],
+                    inner_sig: Signature(
+                        "(ayuay)",
+                    ),
+                },
+            ),
+            "dns": Variant(
+                InternalArray {
+                    data: [],
+                    inner_sig: Signature(
+                        "ay",
+                    ),
+                },
+            ),
+            "method": Variant(
+                "ignore",
+            ),
+        },
+        "connection": {
+            "type": Variant(
+                "802-3-ethernet",
+            ),
+            "uuid": Variant(
+                "d0ec664b-1176-38d1-abd4-71d76a4c1087",
+            ),
+            "id": Variant(
+                "netplan-enp0s2",
+            ),
+            "interface-name": Variant(
+                "enp0s2",
+            ),
+            "permissions": Variant(
+                [],
+            ),
+        },
+        "proxy": {},
+        "ipv4": {
+            "route-data": Variant(
+                InternalArray {
+                    data: [],
+                    inner_sig: Signature(
+                        "a{sv}",
+                    ),
+                },
+            ),
+            "routes": Variant(
+                InternalArray {
+                    data: [],
+                    inner_sig: Signature(
+                        "au",
+                    ),
+                },
+            ),
+            "address-data": Variant(
+                InternalArray {
+                    data: [],
+                    inner_sig: Signature(
+                        "a{sv}",
+                    ),
+                },
+            ),
+            "method": Variant(
+                "auto",
+            ),
+            "addresses": Variant(
+                InternalArray {
+                    data: [],
+                    inner_sig: Signature(
+                        "au",
+                    ),
+                },
+            ),
+            "dns": Variant(
+                [],
+            ),
+            "dns-search": Variant(
+                [],
+            ),
+        },
+        "802-3-ethernet": {
+            "mac-address-blacklist": Variant(
+                [],
+            ),
+            "s390-options": Variant(
+                InternalDict {
+                    data: [],
+                    outer_sig: Signature(
+                        "a{ss}",
+                    ),
+                },
+            ),
+            "wake-on-lan": Variant(
+                0,
+            ),
+            "auto-negotiate": Variant(
+                false,
+            ),
+        },
+    },
+    1,
+)
