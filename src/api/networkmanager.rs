@@ -1,17 +1,11 @@
 use super::dbus_api::DBusApi;
 use super::device::Device;
+use super::errors::Error;
 use super::gen::OrgFreedesktopNetworkManager;
-use super::Error;
+use super::types::ReloadFlag;
 
 const NETWORK_MANAGER_BUS: &str = "org.freedesktop.NetworkManager";
 const NETWORK_MANAGER_PATH: &str = "/org/freedesktop/NetworkManager";
-
-pub enum ReloadScope {
-    Everything = 0x00,
-    NmConfig = 0x01,
-    ResolvConfig = 0x02,
-    DnsPlugin = 0x04,
-}
 
 pub struct NetworkManager {
     dbus_api: DBusApi,
@@ -51,11 +45,11 @@ impl NetworkManager {
     }
 
     /// Reloads NetworkManager by the given scope
-    pub fn reload(&self, scope: ReloadScope) -> Result<(), Error> {
+    pub fn reload(&self, flags: ReloadFlag) -> Result<(), Error> {
         Ok(self
             .dbus_api
             .create_proxy(NETWORK_MANAGER_PATH)
-            .reload(scope as u32)?)
+            .reload(flags as u32)?)
     }
 
     pub fn networking_enabled(&self) -> Result<bool, Error> {
@@ -81,9 +75,6 @@ impl NetworkManager {
 
     /// Shows if NetworkManager is currently starting up
     pub fn startup(&self) -> Result<bool, Error> {
-        Ok(self
-            .dbus_api
-            .create_proxy(NETWORK_MANAGER_PATH)
-            .startup()?)
+        Ok(self.dbus_api.create_proxy(NETWORK_MANAGER_PATH).startup()?)
     }
 }

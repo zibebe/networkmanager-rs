@@ -1,50 +1,14 @@
 use super::dbus_api::DBusApi;
+use super::errors::Error;
 use super::gen::{
     OrgFreedesktopNetworkManagerDevice, OrgFreedesktopNetworkManagerDeviceDummy,
     OrgFreedesktopNetworkManagerDeviceGeneric, OrgFreedesktopNetworkManagerDeviceWired,
     OrgFreedesktopNetworkManagerDeviceWireless,
 };
-use super::Error;
+use super::types::DeviceType;
 
-use num_derive::FromPrimitive;
 use num_traits::FromPrimitive;
 use std::collections::HashMap;
-
-#[derive(Debug, PartialEq, FromPrimitive)]
-pub enum DeviceType {
-    Unknown,
-    Ethernet,
-    WiFi,
-    Unused1,
-    Unused2,
-    Bt,
-    OlcpMesh,
-    WiMax,
-    Modem,
-    Infiniband,
-    Bond,
-    Vlan,
-    Adsl,
-    Bridge,
-    Generic,
-    Team,
-    TunTap,
-    IpTunnel,
-    MacVlan,
-    VxLan,
-    Veth,
-    Macsec,
-    Dummy,
-    PPP,
-    OvsInterface,
-    OvsPort,
-    OvsBridge,
-    Wpan,
-    SixLoWpan,
-    WireGuard,
-    WiFiP2p,
-    Vrf,
-}
 
 pub struct Device<'a> {
     dbus_api: &'a DBusApi,
@@ -63,7 +27,7 @@ impl<'a> Device<'a> {
         Ok(dev)
     }
 
-    // TODO: Mapping of the connection, flags to enum
+    // TODO: Mapping of the connection
     pub fn reapply(
         &self,
         connection: HashMap<&str, HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>>,
@@ -100,10 +64,7 @@ impl<'a> Device<'a> {
     }
 
     pub fn disconnect(&self) -> Result<(), Error> {
-        Ok(self
-            .dbus_api
-            .create_proxy(&self.dbus_path)
-            .disconnect()?)
+        Ok(self.dbus_api.create_proxy(&self.dbus_path).disconnect()?)
     }
 
     pub fn delete(&self) -> Result<(), Error> {
@@ -115,17 +76,11 @@ impl<'a> Device<'a> {
     }
 
     pub fn interface(&self) -> Result<String, Error> {
-        Ok(self
-            .dbus_api
-            .create_proxy(&self.dbus_path)
-            .interface()?)
+        Ok(self.dbus_api.create_proxy(&self.dbus_path).interface()?)
     }
 
     pub fn ip_interface(&self) -> Result<String, Error> {
-        Ok(self
-            .dbus_api
-            .create_proxy(&self.dbus_path)
-            .ip_interface()?)
+        Ok(self.dbus_api.create_proxy(&self.dbus_path).ip_interface()?)
     }
 
     pub fn driver(&self) -> Result<String, Error> {
@@ -148,18 +103,12 @@ impl<'a> Device<'a> {
 
     // TODO: Map to enum
     pub fn capabilities(&self) -> Result<u32, Error> {
-        Ok(self
-            .dbus_api
-            .create_proxy(&self.dbus_path)
-            .capabilities()?)
+        Ok(self.dbus_api.create_proxy(&self.dbus_path).capabilities()?)
     }
 
     // TODO: Map to IP4Address
     pub fn ip4_address(&self) -> Result<u32, Error> {
-        Ok(self
-            .dbus_api
-            .create_proxy(&self.dbus_path)
-            .ip4_address()?)
+        Ok(self.dbus_api.create_proxy(&self.dbus_path).ip4_address()?)
     }
 
     // TODO: Map to State enum
@@ -169,10 +118,7 @@ impl<'a> Device<'a> {
 
     // TODO: Map Tuple to StateReason enum
     pub fn state_reason(&self) -> Result<(u32, u32), Error> {
-        Ok(self
-            .dbus_api
-            .create_proxy(&self.dbus_path)
-            .state_reason()?)
+        Ok(self.dbus_api.create_proxy(&self.dbus_path).state_reason()?)
     }
 
     pub fn device_type(&self) -> Result<DeviceType, Error> {
@@ -185,10 +131,7 @@ impl<'a> Device<'a> {
     }
 
     pub fn autoconnect(&self) -> Result<bool, Error> {
-        Ok(self
-            .dbus_api
-            .create_proxy(&self.dbus_path)
-            .autoconnect()?)
+        Ok(self.dbus_api.create_proxy(&self.dbus_path).autoconnect()?)
     }
 
     pub fn hw_address(&self) -> Result<String, Error> {
@@ -211,9 +154,7 @@ impl<'a> Device<'a> {
 
     pub fn speed(&self) -> Result<u32, Error> {
         match self._type {
-            DeviceType::Ethernet => {
-                Ok(self.dbus_api.create_proxy(&self.dbus_path).speed()?)
-            }
+            DeviceType::Ethernet => Ok(self.dbus_api.create_proxy(&self.dbus_path).speed()?),
             _ => Err(Error::UnsupportedMethod),
         }
     }
