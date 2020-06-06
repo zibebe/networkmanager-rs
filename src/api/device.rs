@@ -19,9 +19,9 @@ pub struct Device<'a> {
 impl<'a> Debug for Device<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("Device")
-        .field("dbus_path", &self.dbus_path)
-        .field("_type", &self._type)
-        .finish()
+            .field("dbus_path", &self.dbus_path)
+            .field("_type", &self._type)
+            .finish()
     }
 }
 
