@@ -1,4 +1,4 @@
-mod dbus_connector;
+mod dbus_api;
 mod gen;
 
 pub mod device;

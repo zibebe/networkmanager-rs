@@ -12,6 +12,9 @@ fn main() -> Result<(), Error> {
             DeviceType::WiFi => {
                 println!("Access Point {:?}", dev.access_points()?);
             }
+            DeviceType::Ethernet => {
+                println!("Speed {:?}", dev.speed()?);
+            }
             _ => {}
         }
     }
