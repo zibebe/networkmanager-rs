@@ -11,9 +11,9 @@
 //! 2. Look at the `NetworkManager` struct.
 //!
 
-pub mod api;
+mod api;
 
 pub use api::device::Device;
-pub use api::errors::Error;
 pub use api::networkmanager::NetworkManager;
+pub use api::errors::*;
 pub use api::types::*;
