@@ -1,9 +1,3 @@
-// TODO:
-// ====
-// Methods:
-// - reapply
-// - get_applied_connection
-
 use super::dbus_api::DBusApi;
 use super::errors::Error;
 use super::gen::{
@@ -14,11 +8,21 @@ use super::gen::{
 use super::types::DeviceType;
 
 use num_traits::FromPrimitive;
+use std::fmt::Debug;
 
 pub struct Device<'a> {
     dbus_api: &'a DBusApi,
     dbus_path: String,
     _type: DeviceType,
+}
+
+impl<'a> Debug for Device<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Device")
+        .field("dbus_path", &self.dbus_path)
+        .field("_type", &self._type)
+        .finish()
+    }
 }
 
 impl<'a> Device<'a> {
@@ -31,6 +35,37 @@ impl<'a> Device<'a> {
         dev._type = Device::device_type(&dev)?;
         Ok(dev)
     }
+
+    // TODO:
+    // These two methods will need some work!
+
+    // pub fn reapply(
+    //     &self,
+    //     connection: ::std::collections::HashMap<
+    //         &str,
+    //         ::std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
+    //     >,
+    //     version_id: u64,
+    //     flags: u32,
+    // ) -> Result<(), Error> {
+    //     Ok(self.dbus_api.create_proxy(&self.dbus_path).reapply(connection, version_id, flags)?)
+    // }
+
+    // pub fn get_applied_connection(
+    //     &self,
+    //     flags: u32,
+    // ) -> Result<
+    //     (
+    //         ::std::collections::HashMap<
+    //             String,
+    //             ::std::collections::HashMap<String, dbus::arg::Variant<Box<dyn dbus::arg::RefArg + 'static>>>,
+    //         >,
+    //         u64,
+    //     ),
+    //     dbus::Error,
+    // > {
+    //     Ok(self.dbus_api.create_proxy(&self.dbus_path).get_applied_connection(flags)?)
+    // }
 
     pub fn disconnect(&self) -> Result<(), Error> {
         Ok(self.dbus_api.create_proxy(&self.dbus_path).disconnect()?)

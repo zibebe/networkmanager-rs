@@ -18,12 +18,24 @@ impl NetworkManager {
         })
     }
 
-    fn paths_to_devices(&self, dbus_paths: Vec<dbus::Path>) -> Result<Vec<Device>, Error> {
+    fn paths_to_devices(&self, paths: Vec<dbus::Path>) -> Result<Vec<Device>, Error> {
         let mut res = Vec::new();
-        for path in dbus_paths {
+        for path in paths {
             res.push(Device::new(&self.dbus_api, &path)?);
         }
         Ok(res)
+    }
+
+    fn path_to_device(&self, path: dbus::Path) -> Result<Device, Error> {
+        Ok(Device::new(&self.dbus_api, &path)?)
+    }
+
+    /// Reloads NetworkManager by the given scope
+    pub fn reload(&self, flags: ReloadFlag) -> Result<(), Error> {
+        Ok(self
+            .dbus_api
+            .create_proxy(NETWORK_MANAGER_PATH)
+            .reload(flags as u32)?)
     }
 
     /// Returns only realized network devices
@@ -44,12 +56,12 @@ impl NetworkManager {
         Ok(self.paths_to_devices(dev_paths)?)
     }
 
-    /// Reloads NetworkManager by the given scope
-    pub fn reload(&self, flags: ReloadFlag) -> Result<(), Error> {
-        Ok(self
+    pub fn get_device_by_ip_iface(&self, iface: &str) -> Result<Device, Error> {
+        let dev_path = self
             .dbus_api
             .create_proxy(NETWORK_MANAGER_PATH)
-            .reload(flags as u32)?)
+            .get_device_by_ip_iface(iface)?;
+        Ok(self.path_to_device(dev_path)?)
     }
 
     pub fn networking_enabled(&self) -> Result<bool, Error> {
