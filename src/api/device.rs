@@ -9,7 +9,7 @@ use num_derive::FromPrimitive;
 use num_traits::FromPrimitive;
 
 #[derive(Debug, PartialEq, FromPrimitive)]
-pub enum DeviceType {
+pub enum Type {
     Unknown,
     Ethernet,
     WiFi,
@@ -38,7 +38,7 @@ pub enum DeviceType {
 pub struct Device<'a> {
     connection: &'a Connection,
     path: String,
-    devtype: DeviceType,
+    _type: Type,
 }
 
 impl<'a> Device<'a> {
@@ -46,9 +46,9 @@ impl<'a> Device<'a> {
         let mut dev = Device {
             connection,
             path: path.to_owned(),
-            devtype: DeviceType::Dummy,
+            _type: Type::Dummy,
         };
-        dev.devtype = Device::device_type(&dev)?;
+        dev._type = Device::device_type(&dev)?;
         Ok(dev)
     }
 
@@ -60,7 +60,7 @@ impl<'a> Device<'a> {
         )
     }
 
-    pub fn device_type(&self) -> Result<DeviceType, Error> {
+    pub fn device_type(&self) -> Result<Type, Error> {
         let proxy = self.create_proxy();
         let dev_type = proxy.device_type()?;
         match FromPrimitive::from_u32(dev_type) {
@@ -78,8 +78,8 @@ impl<'a> Device<'a> {
     }
 
     pub fn access_points(&self) -> Result<Vec<String>, Error> {
-        match self.devtype {
-            DeviceType::WiFi => Ok(Vec::new()),
+        match self._type {
+            Type::WiFi => Ok(Vec::new()),
             _ => Err(Error::UnsupportedMethod),
         }
     }
