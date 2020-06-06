@@ -32,10 +32,9 @@ impl NetworkManager {
         )
     }
 
-    /// Returns only realized network devices
-    pub fn get_devices(&self) -> Result<Vec<Device>, Error> {
-        let dev_paths = self.create_proxy().get_devices()?;
-        let devs = dev_paths
+    fn paths_to_devices(&self, paths: Vec<dbus::Path>) -> Result<Vec<Device>, Error> {
+        // TODO: If an error occurs we need to return that!
+        let devs = paths
             .iter()
             .map(|e| Device::new(&self.connection, e))
             .filter_map(Result::ok)
@@ -43,15 +42,16 @@ impl NetworkManager {
         Ok(devs)
     }
 
+    /// Returns only realized network devices
+    pub fn get_devices(&self) -> Result<Vec<Device>, Error> {
+        let dev_paths = self.create_proxy().get_devices()?;
+        Ok(self.paths_to_devices(dev_paths)?)
+    }
+
     /// Returns all the network devices
     pub fn get_all_devices(&self) -> Result<Vec<Device>, Error> {
         let dev_paths = self.create_proxy().get_all_devices()?;
-        let devs = dev_paths
-            .iter()
-            .map(|e| Device::new(&self.connection, e))
-            .filter_map(Result::ok)
-            .collect();
-        Ok(devs)
+        Ok(self.paths_to_devices(dev_paths)?)
     }
 
     /// Reloads NetworkManager by the given scope
