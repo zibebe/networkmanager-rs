@@ -14,6 +14,6 @@
 mod api;
 
 pub use api::device::Device;
-pub use api::networkmanager::NetworkManager;
 pub use api::errors::*;
+pub use api::networkmanager::NetworkManager;
 pub use api::types::*;
