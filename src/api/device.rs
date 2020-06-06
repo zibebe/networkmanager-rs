@@ -1,12 +1,16 @@
 use super::dbus_connector::DBusConnector;
-use super::gen::OrgFreedesktopNetworkManagerDevice;
+use super::gen::{
+    OrgFreedesktopNetworkManagerDevice, OrgFreedesktopNetworkManagerDeviceDummy,
+    OrgFreedesktopNetworkManagerDeviceGeneric, OrgFreedesktopNetworkManagerDeviceWired,
+    OrgFreedesktopNetworkManagerDeviceWireless,
+};
 use super::Error;
 
 use num_derive::FromPrimitive;
 use num_traits::FromPrimitive;
 
 #[derive(Debug, PartialEq, FromPrimitive)]
-pub enum Type {
+pub enum DeviceKind {
     Unknown,
     Ethernet,
     WiFi,
@@ -35,7 +39,7 @@ pub enum Type {
 pub struct Device<'a> {
     dbus_connector: &'a DBusConnector,
     dbus_path: String,
-    _type: Type,
+    kind: DeviceKind,
 }
 
 impl<'a> Device<'a> {
@@ -43,13 +47,13 @@ impl<'a> Device<'a> {
         let mut dev = Device {
             dbus_connector,
             dbus_path: dbus_path.to_owned(),
-            _type: Type::Dummy,
+            kind: DeviceKind::Dummy,
         };
-        dev._type = Device::device_type(&dev)?;
+        dev.kind = Device::device_type(&dev)?;
         Ok(dev)
     }
 
-    pub fn device_type(&self) -> Result<Type, Error> {
+    pub fn device_type(&self) -> Result<DeviceKind, Error> {
         let proxy = self.dbus_connector.create_proxy(&self.dbus_path);
         let dev_type = proxy.device_type()?;
         match FromPrimitive::from_u32(dev_type) {
@@ -66,15 +70,26 @@ impl<'a> Device<'a> {
     }
 
     pub fn hw_address(&self) -> Result<String, Error> {
-        Ok(self
-            .dbus_connector
-            .create_proxy(&self.dbus_path)
-            .hw_address()?)
+        let proxy = self.dbus_connector.create_proxy(&self.dbus_path);
+        match self.kind {
+            DeviceKind::Unknown => Ok(OrgFreedesktopNetworkManagerDevice::hw_address(&proxy)?),
+            DeviceKind::Generic => Ok(OrgFreedesktopNetworkManagerDeviceGeneric::hw_address(
+                &proxy,
+            )?),
+            DeviceKind::Ethernet => {
+                Ok(OrgFreedesktopNetworkManagerDeviceWired::hw_address(&proxy)?)
+            }
+            DeviceKind::WiFi => Ok(OrgFreedesktopNetworkManagerDeviceWireless::hw_address(
+                &proxy,
+            )?),
+            DeviceKind::Dummy => Ok(OrgFreedesktopNetworkManagerDeviceDummy::hw_address(&proxy)?),
+            _ => Err(Error::UnsupportedDevice),
+        }
     }
 
     pub fn access_points(&self) -> Result<Vec<String>, Error> {
-        match self._type {
-            Type::WiFi => Ok(Vec::new()),
+        match self.kind {
+            DeviceKind::WiFi => Ok(Vec::new()),
             _ => Err(Error::UnsupportedMethod),
         }
     }
