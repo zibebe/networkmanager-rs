@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use dbus::blocking::{Connection, Proxy};
+use dbus::blocking::{Connection as DBusConnection, Proxy};
 
 use super::device::Device;
 use super::gen::OrgFreedesktopNetworkManager;
@@ -14,18 +14,18 @@ pub enum ReloadScope {
 }
 
 pub struct NetworkManager {
-    connection: Connection,
+    dbus_connection: DBusConnection,
 }
 
 impl NetworkManager {
     pub fn new() -> Result<Self, Error> {
         Ok(NetworkManager {
-            connection: Connection::new_system()?,
+            dbus_connection: DBusConnection::new_system()?,
         })
     }
 
-    fn create_proxy(&self) -> Proxy<'_, &Connection> {
-        self.connection.with_proxy(
+    fn create_proxy(&self) -> Proxy<'_, &DBusConnection> {
+        self.dbus_connection.with_proxy(
             "org.freedesktop.NetworkManager",
             "/org/freedesktop/NetworkManager",
             Duration::from_millis(DBUS_TIMEOUT_MS),
@@ -33,13 +33,11 @@ impl NetworkManager {
     }
 
     fn paths_to_devices(&self, paths: Vec<dbus::Path>) -> Result<Vec<Device>, Error> {
-        // TODO: If an error occurs we need to return that!
-        let devs = paths
-            .iter()
-            .map(|e| Device::new(&self.connection, e))
-            .filter_map(Result::ok)
-            .collect();
-        Ok(devs)
+        let mut res = Vec::new();
+        for path in paths {
+            res.push(Device::new(&self.dbus_connection, &path)?);
+        }
+        Ok(res)
     }
 
     /// Returns only realized network devices

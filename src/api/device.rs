@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use dbus::blocking::{Connection, Proxy};
+use dbus::blocking::{Connection as DBusConnection, Proxy as DBusProxy};
 
 use super::gen::{OrgFreedesktopNetworkManagerDevice};
 use super::{Error, DBUS_TIMEOUT_MS};
@@ -36,15 +36,15 @@ pub enum Type {
 }
 
 pub struct Device<'a> {
-    connection: &'a Connection,
+    dbus_connection: &'a DBusConnection,
     path: String,
     _type: Type,
 }
 
 impl<'a> Device<'a> {
-    pub(super) fn new(connection: &'a Connection, path: &str) -> Result<Self, Error> {
+    pub(super) fn new(dbus_connection: &'a DBusConnection, path: &str) -> Result<Self, Error> {
         let mut dev = Device {
-            connection,
+            dbus_connection,
             path: path.to_owned(),
             _type: Type::Dummy,
         };
@@ -52,8 +52,8 @@ impl<'a> Device<'a> {
         Ok(dev)
     }
 
-    fn create_proxy(&self) -> Proxy<'_, &Connection> {
-        self.connection.with_proxy(
+    fn create_proxy(&self) -> DBusProxy<'_, &DBusConnection> {
+        self.dbus_connection.with_proxy(
             "org.freedesktop.NetworkManager",
             &self.path,
             Duration::from_millis(DBUS_TIMEOUT_MS),
