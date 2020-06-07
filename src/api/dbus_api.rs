@@ -4,7 +4,6 @@ use std::time::Duration;
 
 const DBUS_TIMEOUT_MS: u64 = 5000;
 
-#[macro_export]
 macro_rules! proxy {
     ($input:ident) => {
         $input.dbus_api.create_proxy(&$input.dbus_path)
