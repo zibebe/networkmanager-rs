@@ -1,5 +1,6 @@
 use num_derive::FromPrimitive;
 
+#[derive(Debug, FromPrimitive)]
 pub enum Capability {
     Team = 1,
     Ovs = 2,
@@ -24,7 +25,7 @@ pub enum ReloadFlag {
     All = 0x7,
 }
 
-#[derive(Debug, PartialEq, FromPrimitive)]
+#[derive(Debug, FromPrimitive)]
 pub enum DeviceType {
     Unknown,
     Ethernet,

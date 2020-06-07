@@ -1,4 +1,6 @@
-use networkmanager::{DeviceType, Error, NetworkManager};
+use networkmanager::device::{Any, Wired, Wireless};
+use networkmanager::types::DeviceType;
+use networkmanager::{NetworkManager, Error};
 
 fn main() -> Result<(), Error> {
     let nm = NetworkManager::new()?;

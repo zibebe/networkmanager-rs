@@ -1,7 +1,7 @@
 //!
 //! # networkmanager
 //!
-//! `networkmanager` is a library for communication with the Linux NetworkManager over D-Bus.
+//! A [NetworkManager](https://wiki.gnome.org/Projects/NetworkManager) API library using the [D-Bus message bus system](https://www.freedesktop.org/wiki/Software/dbus/)
 //!
 //! ## Getting started
 //!
@@ -13,7 +13,7 @@
 
 mod api;
 
-pub use api::device::Device;
-pub use api::errors::*;
+pub use api::device;
+pub use api::errors::Error;
 pub use api::networkmanager::NetworkManager;
-pub use api::types::*;
+pub use api::types;

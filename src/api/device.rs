@@ -1,11 +1,13 @@
+use super::accesspoint::AccessPoint;
+use super::config::Config;
+use super::connection::Connection;
 use super::dbus_api::DBusApi;
 use super::errors::Error;
 use super::gen::{
-    OrgFreedesktopNetworkManagerDevice, OrgFreedesktopNetworkManagerDeviceDummy,
-    OrgFreedesktopNetworkManagerDeviceGeneric, OrgFreedesktopNetworkManagerDeviceWired,
+    OrgFreedesktopNetworkManagerDevice, OrgFreedesktopNetworkManagerDeviceWired,
     OrgFreedesktopNetworkManagerDeviceWireless,
 };
-use super::types::DeviceType;
+use super::types::*;
 
 use num_traits::FromPrimitive;
 use std::fmt::Debug;
@@ -32,100 +34,161 @@ impl<'a> Device<'a> {
             dbus_path: dbus_path.to_owned(),
             _type: DeviceType::Dummy,
         };
-        dev._type = Device::device_type(&dev)?;
+        dev._type = Any::device_type(&dev)?;
         Ok(dev)
     }
+}
 
-    // TODO:
-    // These two methods will need some work!
-
-    // pub fn reapply(
+pub trait Any {
+    // fn reapply(
     //     &self,
     //     connection: ::std::collections::HashMap<
     //         &str,
-    //         ::std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
+    //         ::std::collections::HashMap<&str, arg::Variant<Box<dyn arg::RefArg>>>,
     //     >,
     //     version_id: u64,
     //     flags: u32,
-    // ) -> Result<(), Error> {
-    //     Ok(self.dbus_api.create_proxy(&self.dbus_path).reapply(connection, version_id, flags)?)
-    // }
-
-    // pub fn get_applied_connection(
+    // ) -> Result<(), Error>;
+    // fn get_applied_connection(
     //     &self,
     //     flags: u32,
     // ) -> Result<
     //     (
     //         ::std::collections::HashMap<
     //             String,
-    //             ::std::collections::HashMap<String, dbus::arg::Variant<Box<dyn dbus::arg::RefArg + 'static>>>,
+    //             ::std::collections::HashMap<String, arg::Variant<Box<dyn arg::RefArg + 'static>>>,
     //         >,
     //         u64,
     //     ),
-    //     dbus::Error,
-    // > {
-    //     Ok(self.dbus_api.create_proxy(&self.dbus_path).get_applied_connection(flags)?)
-    // }
+    //     Error,
+    // >;
+    fn disconnect(&self) -> Result<(), Error>;
+    fn delete(&self) -> Result<(), Error>;
+    fn udi(&self) -> Result<String, Error>;
+    fn interface(&self) -> Result<String, Error>;
+    fn ip_interface(&self) -> Result<String, Error>;
+    fn driver(&self) -> Result<String, Error>;
+    fn driver_version(&self) -> Result<String, Error>;
+    fn firmware_version(&self) -> Result<String, Error>;
+    fn capabilities(&self) -> Result<Capability, Error>;
+    fn ip4_address(&self) -> Result<u32, Error>;
+    fn state(&self) -> Result<u32, Error>;
+    fn state_reason(&self) -> Result<(u32, u32), Error>;
+    fn active_connection(&self) -> Result<Connection, Error>;
+    fn ip4_config(&self) -> Result<Config, Error>;
+    fn dhcp4_config(&self) -> Result<Config, Error>;
+    fn ip6_config(&self) -> Result<Config, Error>;
+    fn dhcp6_config(&self) -> Result<Config, Error>;
+    fn managed(&self) -> Result<bool, Error>;
+    fn set_managed(&self, value: bool) -> Result<(), Error>;
+    fn autoconnect(&self) -> Result<bool, Error>;
+    fn set_autoconnect(&self, value: bool) -> Result<(), Error>;
+    fn firmware_missing(&self) -> Result<bool, Error>;
+    fn nm_plugin_missing(&self) -> Result<bool, Error>;
+    fn device_type(&self) -> Result<DeviceType, Error>;
+    fn available_connections(&self) -> Result<Vec<Connection>, Error>;
+    fn physical_port_id(&self) -> Result<String, Error>;
+    fn mtu(&self) -> Result<u32, Error>;
+    fn metered(&self) -> Result<u32, Error>;
+    // fn lldp_neighbors(
+    //     &self,
+    // ) -> Result<
+    //     Vec<::std::collections::HashMap<String, arg::Variant<Box<dyn arg::RefArg + 'static>>>>,
+    //     Error,
+    // >;
+    fn real(&self) -> Result<bool, Error>;
+    fn ip4_connectivity(&self) -> Result<u32, Error>;
+    fn ip6_connectivity(&self) -> Result<u32, Error>;
+    fn interface_flags(&self) -> Result<u32, Error>;
+    fn hw_address(&self) -> Result<String, Error>;
+}
 
-    pub fn disconnect(&self) -> Result<(), Error> {
+impl<'a> Any for Device<'a> {
+    fn disconnect(&self) -> Result<(), Error> {
         Ok(self.dbus_api.create_proxy(&self.dbus_path).disconnect()?)
     }
-
-    pub fn delete(&self) -> Result<(), Error> {
+    fn delete(&self) -> Result<(), Error> {
         Ok(self.dbus_api.create_proxy(&self.dbus_path).delete()?)
     }
-
-    pub fn udi(&self) -> Result<String, Error> {
+    fn udi(&self) -> Result<String, Error> {
         Ok(self.dbus_api.create_proxy(&self.dbus_path).udi()?)
     }
-
-    pub fn interface(&self) -> Result<String, Error> {
+    fn interface(&self) -> Result<String, Error> {
         Ok(self.dbus_api.create_proxy(&self.dbus_path).interface()?)
     }
-
-    pub fn ip_interface(&self) -> Result<String, Error> {
+    fn ip_interface(&self) -> Result<String, Error> {
         Ok(self.dbus_api.create_proxy(&self.dbus_path).ip_interface()?)
     }
-
-    pub fn driver(&self) -> Result<String, Error> {
+    fn driver(&self) -> Result<String, Error> {
         Ok(self.dbus_api.create_proxy(&self.dbus_path).driver()?)
     }
-
-    pub fn driver_version(&self) -> Result<String, Error> {
+    fn driver_version(&self) -> Result<String, Error> {
         Ok(self
             .dbus_api
             .create_proxy(&self.dbus_path)
             .driver_version()?)
     }
-
-    pub fn firmware_version(&self) -> Result<String, Error> {
+    fn firmware_version(&self) -> Result<String, Error> {
         Ok(self
             .dbus_api
             .create_proxy(&self.dbus_path)
             .firmware_version()?)
     }
-
-    // TODO: Map to enum
-    pub fn capabilities(&self) -> Result<u32, Error> {
-        Ok(self.dbus_api.create_proxy(&self.dbus_path).capabilities()?)
+    fn capabilities(&self) -> Result<Capability, Error> {
+        let proxy = self.dbus_api.create_proxy(&self.dbus_path);
+        let cap = proxy.capabilities()?;
+        match FromPrimitive::from_u32(cap) {
+            Some(x) => Ok(x),
+            None => Err(Error::UnsupportedDevice),
+        }
     }
-
-    // TODO: Map to IP4Address
-    pub fn ip4_address(&self) -> Result<u32, Error> {
+    fn ip4_address(&self) -> Result<u32, Error> {
         Ok(self.dbus_api.create_proxy(&self.dbus_path).ip4_address()?)
     }
-
-    // TODO: Map to State enum
-    pub fn state(&self) -> Result<u32, Error> {
+    fn state(&self) -> Result<u32, Error> {
         Ok(self.dbus_api.create_proxy(&self.dbus_path).state()?)
     }
-
-    // TODO: Map Tuple to StateReason enum
-    pub fn state_reason(&self) -> Result<(u32, u32), Error> {
+    fn state_reason(&self) -> Result<(u32, u32), Error> {
         Ok(self.dbus_api.create_proxy(&self.dbus_path).state_reason()?)
     }
+    fn active_connection(&self) -> Result<Connection, Error> {
+        todo!()
+    }
+    fn ip4_config(&self) -> Result<Config, Error> {
+        todo!()
+    }
+    fn dhcp4_config(&self) -> Result<Config, Error> {
+        todo!()
+    }
+    fn ip6_config(&self) -> Result<Config, Error> {
+        todo!()
+    }
+    fn dhcp6_config(&self) -> Result<Config, Error> {
+        todo!()
+    }
+    fn managed(&self) -> Result<bool, Error> {
+        todo!()
+    }
 
-    pub fn device_type(&self) -> Result<DeviceType, Error> {
+    #[allow(unused_variables)]
+    fn set_managed(&self, value: bool) -> Result<(), Error> {
+        todo!()
+    }
+    fn autoconnect(&self) -> Result<bool, Error> {
+        Ok(self.dbus_api.create_proxy(&self.dbus_path).autoconnect()?)
+    }
+
+    #[allow(unused_variables)]
+    fn set_autoconnect(&self, value: bool) -> Result<(), Error> {
+        todo!()
+    }
+    fn firmware_missing(&self) -> Result<bool, Error> {
+        todo!()
+    }
+    fn nm_plugin_missing(&self) -> Result<bool, Error> {
+        todo!()
+    }
+    fn device_type(&self) -> Result<DeviceType, Error> {
         let proxy = self.dbus_api.create_proxy(&self.dbus_path);
         let dev_type = proxy.device_type()?;
         match FromPrimitive::from_u32(dev_type) {
@@ -133,40 +196,101 @@ impl<'a> Device<'a> {
             None => Err(Error::UnsupportedDevice),
         }
     }
-
-    pub fn autoconnect(&self) -> Result<bool, Error> {
-        Ok(self.dbus_api.create_proxy(&self.dbus_path).autoconnect()?)
+    fn available_connections(&self) -> Result<Vec<Connection>, Error> {
+        todo!()
     }
-
-    pub fn hw_address(&self) -> Result<String, Error> {
-        let proxy = self.dbus_api.create_proxy(&self.dbus_path);
-        match self._type {
-            DeviceType::Unknown => Ok(OrgFreedesktopNetworkManagerDevice::hw_address(&proxy)?),
-            DeviceType::Generic => Ok(OrgFreedesktopNetworkManagerDeviceGeneric::hw_address(
-                &proxy,
-            )?),
-            DeviceType::Ethernet => {
-                Ok(OrgFreedesktopNetworkManagerDeviceWired::hw_address(&proxy)?)
-            }
-            DeviceType::WiFi => Ok(OrgFreedesktopNetworkManagerDeviceWireless::hw_address(
-                &proxy,
-            )?),
-            DeviceType::Dummy => Ok(OrgFreedesktopNetworkManagerDeviceDummy::hw_address(&proxy)?),
-            _ => Err(Error::UnsupportedDevice),
-        }
+    fn physical_port_id(&self) -> Result<String, Error> {
+        todo!()
     }
-
-    pub fn speed(&self) -> Result<u32, Error> {
-        match self._type {
-            DeviceType::Ethernet => Ok(self.dbus_api.create_proxy(&self.dbus_path).speed()?),
-            _ => Err(Error::UnsupportedMethod),
-        }
+    fn mtu(&self) -> Result<u32, Error> {
+        todo!()
     }
+    fn metered(&self) -> Result<u32, Error> {
+        todo!()
+    }
+    fn real(&self) -> Result<bool, Error> {
+        todo!()
+    }
+    fn ip4_connectivity(&self) -> Result<u32, Error> {
+        todo!()
+    }
+    fn ip6_connectivity(&self) -> Result<u32, Error> {
+        todo!()
+    }
+    fn interface_flags(&self) -> Result<u32, Error> {
+        todo!()
+    }
+    fn hw_address(&self) -> Result<String, Error> {
+        Ok(OrgFreedesktopNetworkManagerDevice::hw_address(
+            &self.dbus_api.create_proxy(&self.dbus_path),
+        )?)
+    }
+}
 
-    pub fn access_points(&self) -> Result<Vec<String>, Error> {
-        match self._type {
-            DeviceType::WiFi => Ok(Vec::new()),
-            _ => Err(Error::UnsupportedMethod),
-        }
+pub trait Wireless {
+    fn get_access_points(&self) -> Result<Vec<AccessPoint>, Error>;
+    fn get_all_access_points(&self) -> Result<Vec<AccessPoint>, Error>;
+    // fn request_scan(
+    //     &self,
+    //     options: ::std::collections::HashMap<&str, arg::Variant<Box<dyn arg::RefArg>>>,
+    // ) -> Result<(), Error>;
+    fn perm_hw_address(&self) -> Result<String, Error>;
+    fn mode(&self) -> Result<u32, Error>;
+    fn bitrate(&self) -> Result<u32, Error>;
+    fn access_points(&self) -> Result<Vec<AccessPoint>, Error>;
+    fn active_access_point(&self) -> Result<AccessPoint, Error>;
+    fn wireless_capabilities(&self) -> Result<u32, Error>;
+    fn last_scan(&self) -> Result<i64, Error>;
+}
+
+impl<'a> Wireless for Device<'a> {
+    fn get_access_points(&self) -> Result<Vec<AccessPoint>, Error> {
+        todo!()
+    }
+    fn get_all_access_points(&self) -> Result<Vec<AccessPoint>, Error> {
+        todo!()
+    }
+    fn perm_hw_address(&self) -> Result<String, Error> {
+        todo!()
+    }
+    fn mode(&self) -> Result<u32, Error> {
+        todo!()
+    }
+    fn bitrate(&self) -> Result<u32, Error> {
+        Ok(self.dbus_api.create_proxy(&self.dbus_path).bitrate()?)
+    }
+    fn access_points(&self) -> Result<Vec<AccessPoint>, Error> {
+        todo!()
+    }
+    fn active_access_point(&self) -> Result<AccessPoint, Error> {
+        todo!()
+    }
+    fn wireless_capabilities(&self) -> Result<u32, Error> {
+        todo!()
+    }
+    fn last_scan(&self) -> Result<i64, Error> {
+        todo!()
+    }
+}
+
+pub trait Wired {
+    fn perm_hw_address(&self) -> Result<String, Error>;
+    fn speed(&self) -> Result<u32, Error>;
+    fn s390_subchannels(&self) -> Result<Vec<String>, Error>;
+    fn carrier(&self) -> Result<bool, Error>;
+}
+
+impl<'a> Wired for Device<'a> {
+    fn perm_hw_address(&self) -> Result<String, Error> {
+        todo!()
+    }
+    fn speed(&self) -> Result<u32, Error> {
+        Ok(self.dbus_api.create_proxy(&self.dbus_path).speed()?)
+    }
+    fn s390_subchannels(&self) -> Result<Vec<String>, Error> {
+        todo!()
+    }
+    fn carrier(&self) -> Result<bool, Error> {
+        todo!()
     }
 }
