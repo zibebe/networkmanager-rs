@@ -11,15 +11,15 @@ pub trait Wired {
 
 impl<'a> Wired for Device<'a> {
     fn perm_hw_address(&self) -> Result<String, Error> {
-        todo!()
+        Ok(proxy!(self).perm_hw_address()?)
     }
     fn speed(&self) -> Result<u32, Error> {
         Ok(proxy!(self).speed()?)
     }
     fn s390_subchannels(&self) -> Result<Vec<String>, Error> {
-        todo!()
+        Ok(proxy!(self).s390_subchannels()?)
     }
     fn carrier(&self) -> Result<bool, Error> {
-        todo!()
+        Ok(proxy!(self).carrier()?)
     }
 }

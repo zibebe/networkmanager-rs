@@ -33,10 +33,10 @@ impl<'a> Wireless for Device<'a> {
         todo!()
     }
     fn perm_hw_address(&self) -> Result<String, Error> {
-        todo!()
+        Ok(proxy!(self).perm_hw_address()?)
     }
     fn mode(&self) -> Result<u32, Error> {
-        todo!()
+        Ok(proxy!(self).mode()?)
     }
     fn bitrate(&self) -> Result<u32, Error> {
         Ok(proxy!(self).bitrate()?)
@@ -48,9 +48,9 @@ impl<'a> Wireless for Device<'a> {
         todo!()
     }
     fn wireless_capabilities(&self) -> Result<u32, Error> {
-        todo!()
+        Ok(proxy!(self).wireless_capabilities()?)
     }
     fn last_scan(&self) -> Result<i64, Error> {
-        todo!()
+        Ok(proxy!(self).last_scan()?)
     }
 }
