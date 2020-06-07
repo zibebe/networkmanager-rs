@@ -25,7 +25,7 @@ This project is still under development. Currently implemented parts can be foun
 ## Usage
 
 ```rust
-use networkmanager::device::{Any, Wired, Wireless};
+use networkmanager::devices::{Any, Wired, Wireless};
 use networkmanager::types::DeviceType;
 use networkmanager::{Error, NetworkManager};
 
@@ -33,8 +33,6 @@ fn main() -> Result<(), Error> {
     let nm = NetworkManager::new()?;
 
     let enp0s2 = nm.get_device_by_ip_iface("enp0s2")?;
-
-    println!("Device enp0s2: {:?}", enp0s2);
 
     for dev in nm.get_devices()? {
         println!("Is autoconnected: {:?}", dev.autoconnect()?);

@@ -1,42 +1,10 @@
-use super::accesspoint::AccessPoint;
-use super::config::Config;
-use super::connection::Connection;
-use super::dbus_api::DBusApi;
-use super::errors::Error;
-use super::gen::{
-    OrgFreedesktopNetworkManagerDevice, OrgFreedesktopNetworkManagerDeviceWired,
-    OrgFreedesktopNetworkManagerDeviceWireless,
-};
-use super::types::*;
-
+use super::Device;
+use crate::api::config::Config;
+use crate::api::connection::Connection;
+use crate::api::gen::OrgFreedesktopNetworkManagerDevice;
+use crate::types::{Capability, DeviceType};
+use crate::Error;
 use num_traits::FromPrimitive;
-use std::fmt::Debug;
-pub struct Device<'a> {
-    dbus_api: &'a DBusApi,
-    dbus_path: String,
-    _type: DeviceType,
-}
-
-impl<'a> Debug for Device<'a> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("Device")
-            .field("dbus_path", &self.dbus_path)
-            .field("_type", &self._type)
-            .finish()
-    }
-}
-
-impl<'a> Device<'a> {
-    pub(super) fn new(dbus_api: &'a DBusApi, dbus_path: &str) -> Result<Self, Error> {
-        let mut dev = Device {
-            dbus_api,
-            dbus_path: dbus_path.to_owned(),
-            _type: DeviceType::Dummy,
-        };
-        dev._type = Any::device_type(&dev)?;
-        Ok(dev)
-    }
-}
 
 pub trait Any {
     fn reapply(
@@ -261,79 +229,5 @@ impl<'a> Any for Device<'a> {
         Ok(OrgFreedesktopNetworkManagerDevice::hw_address(&proxy!(
             self
         ))?)
-    }
-}
-
-pub trait Wireless {
-    fn get_access_points(&self) -> Result<Vec<AccessPoint>, Error>;
-    fn get_all_access_points(&self) -> Result<Vec<AccessPoint>, Error>;
-    fn request_scan(
-        &self,
-        options: ::std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
-    ) -> Result<(), Error>;
-    fn perm_hw_address(&self) -> Result<String, Error>;
-    fn mode(&self) -> Result<u32, Error>;
-    fn bitrate(&self) -> Result<u32, Error>;
-    fn access_points(&self) -> Result<Vec<AccessPoint>, Error>;
-    fn active_access_point(&self) -> Result<AccessPoint, Error>;
-    fn wireless_capabilities(&self) -> Result<u32, Error>;
-    fn last_scan(&self) -> Result<i64, Error>;
-}
-
-impl<'a> Wireless for Device<'a> {
-    fn request_scan(
-        &self,
-        options: std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
-    ) -> Result<(), Error> {
-        todo!()
-    }
-    fn get_access_points(&self) -> Result<Vec<AccessPoint>, Error> {
-        todo!()
-    }
-    fn get_all_access_points(&self) -> Result<Vec<AccessPoint>, Error> {
-        todo!()
-    }
-    fn perm_hw_address(&self) -> Result<String, Error> {
-        todo!()
-    }
-    fn mode(&self) -> Result<u32, Error> {
-        todo!()
-    }
-    fn bitrate(&self) -> Result<u32, Error> {
-        Ok(proxy!(self).bitrate()?)
-    }
-    fn access_points(&self) -> Result<Vec<AccessPoint>, Error> {
-        todo!()
-    }
-    fn active_access_point(&self) -> Result<AccessPoint, Error> {
-        todo!()
-    }
-    fn wireless_capabilities(&self) -> Result<u32, Error> {
-        todo!()
-    }
-    fn last_scan(&self) -> Result<i64, Error> {
-        todo!()
-    }
-}
-
-pub trait Wired {
-    fn perm_hw_address(&self) -> Result<String, Error>;
-    fn speed(&self) -> Result<u32, Error>;
-    fn s390_subchannels(&self) -> Result<Vec<String>, Error>;
-    fn carrier(&self) -> Result<bool, Error>;
-}
-
-impl<'a> Wired for Device<'a> {
-    fn perm_hw_address(&self) -> Result<String, Error> {
-        todo!()
-    }
-    fn speed(&self) -> Result<u32, Error> {
-        Ok(proxy!(self).speed()?)
-    }
-    fn s390_subchannels(&self) -> Result<Vec<String>, Error> {
-        todo!()
-    }
-    fn carrier(&self) -> Result<bool, Error> {
-        todo!()
     }
 }

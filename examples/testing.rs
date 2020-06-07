@@ -7,8 +7,6 @@ fn main() -> Result<(), Error> {
 
     let enp0s2 = nm.get_device_by_ip_iface("enp0s2")?;
 
-    println!("Device enp0s2: {:?}", enp0s2);
-
     for dev in nm.get_devices()? {
         println!("Is autoconnected: {:?}", dev.autoconnect()?);
         println!("Device Type: {:?}", dev.device_type()?);
