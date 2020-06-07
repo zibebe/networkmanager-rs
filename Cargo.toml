@@ -1,6 +1,6 @@
 [package]
 name = "networkmanager"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Tobias Tschinkowitz <tobias.tschinkowitz@icloud.com>"]
 description = "A NetworkManager API library using the D-Bus message bus system"
 repository = "https://github.com/he4d/networkmanager-rs"

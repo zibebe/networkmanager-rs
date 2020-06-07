@@ -1,4 +1,4 @@
-use networkmanager::devices::Any;
+use networkmanager::devices::{Any, Wired, Wireless};
 use networkmanager::types::DeviceType;
 use networkmanager::{Error, NetworkManager};
 
@@ -8,19 +8,20 @@ fn main() -> Result<(), Error> {
     let enp0s2 = nm.get_device_by_ip_iface("enp0s2")?;
 
     for dev in nm.get_devices()? {
-        println!("Is autoconnected: {:?}", dev.autoconnect()?);
-        println!("Device Type: {:?}", dev.device_type()?);
-        match dev.device_type()? {
+        println!("Is autoconnected: {:?}", Any::autoconnect(&dev)?);
+        println!("Device Type: {:?}", Any::device_type(&dev)?);
+        match Any::device_type(&dev)? {
             DeviceType::WiFi => {
-                use networkmanager::devices::Wireless;
-                println!("Access Point: {:?}", dev.access_points()?);
+                println!("Access Point: {:?}", Wireless::access_points(&dev)?);
             }
             DeviceType::Ethernet => {
-                use networkmanager::devices::Wired;
                 println!("Speed: {:?}", dev.speed()?);
-                println!("Permanent Hardware Address: {:?}", dev.perm_hw_address()?);
-                println!("S390 Subchannels: {:?}", dev.s390_subchannels()?);
-                println!("Carrier: {:?}", dev.carrier()?);
+                println!(
+                    "Permanent Hardware Address: {:?}",
+                    Wired::perm_hw_address(&dev)?
+                );
+                println!("S390 Subchannels: {:?}", Wired::s390_subchannels(&dev)?);
+                println!("Carrier: {:?}", Wired::carrier(&dev)?);
             }
             _ => {}
         }
