@@ -13,11 +13,11 @@ This project is still under development. Currently implemented parts can be foun
 
 ## Usage
 
-Add connman-rs to your `Cargo.toml` with:
+Add networkmanager to your `Cargo.toml` with:
 
 ```toml
 [dependencies]
-connman = "0.1"
+networkmanager = "0.2"
 ```
 
 ## Example
