@@ -1,7 +1,7 @@
 //!
 //! # networkmanager
 //!
-//! `networkmanager` is an library for communication with the Linux NetworkManager over D-Bus.
+//! `networkmanager` is a library for communication with the Linux NetworkManager over D-Bus.
 //!
 //! ## Getting started
 //!
