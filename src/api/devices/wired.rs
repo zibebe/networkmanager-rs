@@ -3,6 +3,7 @@ use crate::api::gen::OrgFreedesktopNetworkManagerDeviceWired;
 use crate::Error;
 
 pub trait Wired {
+    fn hw_address(&self) -> Result<String, Error>;
     fn perm_hw_address(&self) -> Result<String, Error>;
     fn speed(&self) -> Result<u32, Error>;
     fn s390_subchannels(&self) -> Result<Vec<String>, Error>;
@@ -10,6 +11,9 @@ pub trait Wired {
 }
 
 impl<'a> Wired for Device<'a> {
+    fn hw_address(&self) -> Result<String, Error> {
+        Ok(proxy!(self).hw_address()?)
+    }
     fn perm_hw_address(&self) -> Result<String, Error> {
         Ok(proxy!(self).perm_hw_address()?)
     }

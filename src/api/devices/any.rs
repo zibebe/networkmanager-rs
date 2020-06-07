@@ -81,18 +81,18 @@ pub trait Any {
 impl<'a> Any for Device<'a> {
     fn reapply(
         &self,
-        connection: std::collections::HashMap<
+        _connection: std::collections::HashMap<
             &str,
             std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
         >,
-        version_id: u64,
-        flags: u32,
+        _version_id: u64,
+        _flags: u32,
     ) -> Result<(), Error> {
         todo!()
     }
     fn get_applied_connection(
         &self,
-        flags: u32,
+        _flags: u32,
     ) -> Result<
         (
             std::collections::HashMap<
@@ -166,13 +166,13 @@ impl<'a> Any for Device<'a> {
     fn managed(&self) -> Result<bool, Error> {
         todo!()
     }
-    fn set_managed(&self, value: bool) -> Result<(), Error> {
+    fn set_managed(&self, _value: bool) -> Result<(), Error> {
         todo!()
     }
     fn autoconnect(&self) -> Result<bool, Error> {
         Ok(proxy!(self).autoconnect()?)
     }
-    fn set_autoconnect(&self, value: bool) -> Result<(), Error> {
+    fn set_autoconnect(&self, _value: bool) -> Result<(), Error> {
         todo!()
     }
     fn firmware_missing(&self) -> Result<bool, Error> {
