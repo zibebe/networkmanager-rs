@@ -25,7 +25,7 @@ This project is still under development. Currently implemented parts can be foun
 ## Usage
 
 ```rust
-use networkmanager::devices::{Any, Wired, Wireless};
+use networkmanager::devices::Any;
 use networkmanager::types::DeviceType;
 use networkmanager::{Error, NetworkManager};
 
@@ -39,10 +39,15 @@ fn main() -> Result<(), Error> {
         println!("Device Type: {:?}", dev.device_type()?);
         match dev.device_type()? {
             DeviceType::WiFi => {
-                println!("Access Point {:?}", dev.access_points()?);
+                use networkmanager::devices::Wireless;
+                println!("Access Point: {:?}", dev.access_points()?);
             }
             DeviceType::Ethernet => {
-                println!("Speed {:?}", dev.speed()?);
+                use networkmanager::devices::Wired;
+                println!("Speed: {:?}", dev.speed()?);
+                println!("Permanent Hardware Address: {:?}", dev.perm_hw_address()?);
+                println!("S390 Subchannels: {:?}", dev.s390_subchannels()?);
+                println!("Carrier: {:?}", dev.carrier()?);
             }
             _ => {}
         }
