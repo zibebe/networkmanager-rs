@@ -9,8 +9,7 @@ fn main() -> Result<(), Error> {
 
     println!("Device enp0s2: {:?}", enp0s2);
 
-    let devs = nm.get_devices()?;
-    for dev in devs.iter() {
+    for dev in nm.get_devices()? {
         println!("Is autoconnected: {:?}", dev.autoconnect()?);
         println!("Device Type: {:?}", dev.device_type()?);
         match dev.device_type()? {

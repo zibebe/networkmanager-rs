@@ -39,28 +39,31 @@ impl<'a> Device<'a> {
 }
 
 pub trait Any {
-    // fn reapply(
-    //     &self,
-    //     connection: ::std::collections::HashMap<
-    //         &str,
-    //         ::std::collections::HashMap<&str, arg::Variant<Box<dyn arg::RefArg>>>,
-    //     >,
-    //     version_id: u64,
-    //     flags: u32,
-    // ) -> Result<(), Error>;
-    // fn get_applied_connection(
-    //     &self,
-    //     flags: u32,
-    // ) -> Result<
-    //     (
-    //         ::std::collections::HashMap<
-    //             String,
-    //             ::std::collections::HashMap<String, arg::Variant<Box<dyn arg::RefArg + 'static>>>,
-    //         >,
-    //         u64,
-    //     ),
-    //     Error,
-    // >;
+    fn reapply(
+        &self,
+        connection: ::std::collections::HashMap<
+            &str,
+            ::std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
+        >,
+        version_id: u64,
+        flags: u32,
+    ) -> Result<(), Error>;
+    fn get_applied_connection(
+        &self,
+        flags: u32,
+    ) -> Result<
+        (
+            ::std::collections::HashMap<
+                String,
+                ::std::collections::HashMap<
+                    String,
+                    dbus::arg::Variant<Box<dyn dbus::arg::RefArg + 'static>>,
+                >,
+            >,
+            u64,
+        ),
+        Error,
+    >;
     fn disconnect(&self) -> Result<(), Error>;
     fn delete(&self) -> Result<(), Error>;
     fn udi(&self) -> Result<String, Error>;
@@ -89,12 +92,17 @@ pub trait Any {
     fn physical_port_id(&self) -> Result<String, Error>;
     fn mtu(&self) -> Result<u32, Error>;
     fn metered(&self) -> Result<u32, Error>;
-    // fn lldp_neighbors(
-    //     &self,
-    // ) -> Result<
-    //     Vec<::std::collections::HashMap<String, arg::Variant<Box<dyn arg::RefArg + 'static>>>>,
-    //     Error,
-    // >;
+    fn lldp_neighbors(
+        &self,
+    ) -> Result<
+        Vec<
+            ::std::collections::HashMap<
+                String,
+                dbus::arg::Variant<Box<dyn dbus::arg::RefArg + 'static>>,
+            >,
+        >,
+        Error,
+    >;
     fn real(&self) -> Result<bool, Error>;
     fn ip4_connectivity(&self) -> Result<u32, Error>;
     fn ip6_connectivity(&self) -> Result<u32, Error>;
@@ -103,6 +111,35 @@ pub trait Any {
 }
 
 impl<'a> Any for Device<'a> {
+    fn reapply(
+        &self,
+        connection: std::collections::HashMap<
+            &str,
+            std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
+        >,
+        version_id: u64,
+        flags: u32,
+    ) -> Result<(), Error> {
+        todo!()
+    }
+    fn get_applied_connection(
+        &self,
+        flags: u32,
+    ) -> Result<
+        (
+            std::collections::HashMap<
+                String,
+                std::collections::HashMap<
+                    String,
+                    dbus::arg::Variant<Box<dyn dbus::arg::RefArg + 'static>>,
+                >,
+            >,
+            u64,
+        ),
+        Error,
+    > {
+        todo!()
+    }
     fn disconnect(&self) -> Result<(), Error> {
         Ok(proxy!(self).disconnect()?)
     }
@@ -161,16 +198,12 @@ impl<'a> Any for Device<'a> {
     fn managed(&self) -> Result<bool, Error> {
         todo!()
     }
-
-    #[allow(unused_variables)]
     fn set_managed(&self, value: bool) -> Result<(), Error> {
         todo!()
     }
     fn autoconnect(&self) -> Result<bool, Error> {
         Ok(proxy!(self).autoconnect()?)
     }
-
-    #[allow(unused_variables)]
     fn set_autoconnect(&self, value: bool) -> Result<(), Error> {
         todo!()
     }
@@ -194,6 +227,19 @@ impl<'a> Any for Device<'a> {
         todo!()
     }
     fn mtu(&self) -> Result<u32, Error> {
+        todo!()
+    }
+    fn lldp_neighbors(
+        &self,
+    ) -> Result<
+        Vec<
+            std::collections::HashMap<
+                String,
+                dbus::arg::Variant<Box<dyn dbus::arg::RefArg + 'static>>,
+            >,
+        >,
+        Error,
+    > {
         todo!()
     }
     fn metered(&self) -> Result<u32, Error> {
@@ -221,10 +267,10 @@ impl<'a> Any for Device<'a> {
 pub trait Wireless {
     fn get_access_points(&self) -> Result<Vec<AccessPoint>, Error>;
     fn get_all_access_points(&self) -> Result<Vec<AccessPoint>, Error>;
-    // fn request_scan(
-    //     &self,
-    //     options: ::std::collections::HashMap<&str, arg::Variant<Box<dyn arg::RefArg>>>,
-    // ) -> Result<(), Error>;
+    fn request_scan(
+        &self,
+        options: ::std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
+    ) -> Result<(), Error>;
     fn perm_hw_address(&self) -> Result<String, Error>;
     fn mode(&self) -> Result<u32, Error>;
     fn bitrate(&self) -> Result<u32, Error>;
@@ -235,6 +281,12 @@ pub trait Wireless {
 }
 
 impl<'a> Wireless for Device<'a> {
+    fn request_scan(
+        &self,
+        options: std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
+    ) -> Result<(), Error> {
+        todo!()
+    }
     fn get_access_points(&self) -> Result<Vec<AccessPoint>, Error> {
         todo!()
     }
