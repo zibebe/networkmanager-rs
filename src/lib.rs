@@ -13,7 +13,7 @@
 
 mod api;
 
-pub use api::device;
+pub use api::devices;
 pub use api::errors::Error;
 pub use api::networkmanager::NetworkManager;
 pub use api::types;

@@ -1,4 +1,4 @@
-use networkmanager::device::{Any, Wired, Wireless};
+use networkmanager::devices::{Any, Wired, Wireless};
 use networkmanager::types::DeviceType;
 use networkmanager::{Error, NetworkManager};
 

@@ -1,5 +1,5 @@
 use super::dbus_api::DBusApi;
-use super::device::Device;
+use super::devices::Device;
 use super::errors::Error;
 use super::gen::OrgFreedesktopNetworkManager;
 use super::types::ReloadFlag;

@@ -5,7 +5,7 @@ mod gen;
 pub mod accesspoint;
 pub mod config;
 pub mod connection;
-pub mod device;
+pub mod devices;
 pub mod errors;
 pub mod networkmanager;
 pub mod types;
