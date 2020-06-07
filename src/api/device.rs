@@ -11,7 +11,6 @@ use super::types::*;
 
 use num_traits::FromPrimitive;
 use std::fmt::Debug;
-
 pub struct Device<'a> {
     dbus_api: &'a DBusApi,
     dbus_path: String,
@@ -105,51 +104,44 @@ pub trait Any {
 
 impl<'a> Any for Device<'a> {
     fn disconnect(&self) -> Result<(), Error> {
-        Ok(self.dbus_api.create_proxy(&self.dbus_path).disconnect()?)
+        Ok(proxy!(self).disconnect()?)
     }
     fn delete(&self) -> Result<(), Error> {
-        Ok(self.dbus_api.create_proxy(&self.dbus_path).delete()?)
+        Ok(proxy!(self).delete()?)
     }
     fn udi(&self) -> Result<String, Error> {
-        Ok(self.dbus_api.create_proxy(&self.dbus_path).udi()?)
+        Ok(proxy!(self).udi()?)
     }
     fn interface(&self) -> Result<String, Error> {
-        Ok(self.dbus_api.create_proxy(&self.dbus_path).interface()?)
+        Ok(proxy!(self).interface()?)
     }
     fn ip_interface(&self) -> Result<String, Error> {
-        Ok(self.dbus_api.create_proxy(&self.dbus_path).ip_interface()?)
+        Ok(proxy!(self).ip_interface()?)
     }
     fn driver(&self) -> Result<String, Error> {
-        Ok(self.dbus_api.create_proxy(&self.dbus_path).driver()?)
+        Ok(proxy!(self).driver()?)
     }
     fn driver_version(&self) -> Result<String, Error> {
-        Ok(self
-            .dbus_api
-            .create_proxy(&self.dbus_path)
-            .driver_version()?)
+        Ok(proxy!(self).driver_version()?)
     }
     fn firmware_version(&self) -> Result<String, Error> {
-        Ok(self
-            .dbus_api
-            .create_proxy(&self.dbus_path)
-            .firmware_version()?)
+        Ok(proxy!(self).firmware_version()?)
     }
     fn capabilities(&self) -> Result<Capability, Error> {
-        let proxy = self.dbus_api.create_proxy(&self.dbus_path);
-        let cap = proxy.capabilities()?;
+        let cap = proxy!(self).capabilities()?;
         match FromPrimitive::from_u32(cap) {
             Some(x) => Ok(x),
             None => Err(Error::UnsupportedDevice),
         }
     }
     fn ip4_address(&self) -> Result<u32, Error> {
-        Ok(self.dbus_api.create_proxy(&self.dbus_path).ip4_address()?)
+        Ok(proxy!(self).ip4_address()?)
     }
     fn state(&self) -> Result<u32, Error> {
-        Ok(self.dbus_api.create_proxy(&self.dbus_path).state()?)
+        Ok(proxy!(self).state()?)
     }
     fn state_reason(&self) -> Result<(u32, u32), Error> {
-        Ok(self.dbus_api.create_proxy(&self.dbus_path).state_reason()?)
+        Ok(proxy!(self).state_reason()?)
     }
     fn active_connection(&self) -> Result<Connection, Error> {
         todo!()
@@ -175,7 +167,7 @@ impl<'a> Any for Device<'a> {
         todo!()
     }
     fn autoconnect(&self) -> Result<bool, Error> {
-        Ok(self.dbus_api.create_proxy(&self.dbus_path).autoconnect()?)
+        Ok(proxy!(self).autoconnect()?)
     }
 
     #[allow(unused_variables)]
@@ -189,8 +181,7 @@ impl<'a> Any for Device<'a> {
         todo!()
     }
     fn device_type(&self) -> Result<DeviceType, Error> {
-        let proxy = self.dbus_api.create_proxy(&self.dbus_path);
-        let dev_type = proxy.device_type()?;
+        let dev_type = proxy!(self).device_type()?;
         match FromPrimitive::from_u32(dev_type) {
             Some(x) => Ok(x),
             None => Err(Error::UnsupportedDevice),
@@ -221,9 +212,9 @@ impl<'a> Any for Device<'a> {
         todo!()
     }
     fn hw_address(&self) -> Result<String, Error> {
-        Ok(OrgFreedesktopNetworkManagerDevice::hw_address(
-            &self.dbus_api.create_proxy(&self.dbus_path),
-        )?)
+        Ok(OrgFreedesktopNetworkManagerDevice::hw_address(&proxy!(
+            self
+        ))?)
     }
 }
 
@@ -257,7 +248,7 @@ impl<'a> Wireless for Device<'a> {
         todo!()
     }
     fn bitrate(&self) -> Result<u32, Error> {
-        Ok(self.dbus_api.create_proxy(&self.dbus_path).bitrate()?)
+        Ok(proxy!(self).bitrate()?)
     }
     fn access_points(&self) -> Result<Vec<AccessPoint>, Error> {
         todo!()
@@ -285,7 +276,7 @@ impl<'a> Wired for Device<'a> {
         todo!()
     }
     fn speed(&self) -> Result<u32, Error> {
-        Ok(self.dbus_api.create_proxy(&self.dbus_path).speed()?)
+        Ok(proxy!(self).speed()?)
     }
     fn s390_subchannels(&self) -> Result<Vec<String>, Error> {
         todo!()

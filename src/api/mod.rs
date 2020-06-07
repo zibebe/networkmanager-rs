@@ -1,3 +1,4 @@
+#[macro_use]
 mod dbus_api;
 mod gen;
 

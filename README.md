@@ -40,7 +40,6 @@ fn main() -> Result<(), Error> {
     for dev in devs.iter() {
         println!("Is autoconnected: {:?}", dev.autoconnect()?);
         println!("Device Type: {:?}", dev.device_type()?);
-        println!("Hw Address: {:?}", dev.hw_address()?);
         match dev.device_type()? {
             DeviceType::WiFi => {
                 println!("Access Point {:?}", dev.access_points()?);
