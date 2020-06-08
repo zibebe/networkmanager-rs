@@ -2,7 +2,7 @@
 name = "networkmanager"
 version = "0.3.0"
 authors = ["Tobias Tschinkowitz <tobias.tschinkowitz@icloud.com>"]
-description = "A NetworkManager API library using the D-Bus message bus system"
+description = "Bindings for the Linux NetworkManager"
 repository = "https://github.com/he4d/networkmanager-rs"
 documentation = "https://docs.rs/networkmanager"
 readme = "README.md"

@@ -1,9 +1,10 @@
-# networkmanager-rs
+# NetworkManager bindings for Rust
 [![Crates.io](https://img.shields.io/crates/v/networkmanager.svg)](https://crates.io/crates/networkmanager)
 [![docs.rs](https://docs.rs/networkmanager/badge.svg)](https://docs.rs/networkmanager)
+[![license](https://img.shields.io/crates/l/networkmanager.svg)](https://crates.io/crates/networkmanager)
 [![CI](https://github.com/he4d/networkmanager-rs/workflows/Continuous%20Integration/badge.svg)](https://github.com/he4d/networkmanager-rs/actions)
 
-A [NetworkManager](https://wiki.gnome.org/Projects/NetworkManager) API library using the [D-Bus message bus system](https://www.freedesktop.org/wiki/Software/dbus/)
+[NetworkManager](https://wiki.gnome.org/Projects/NetworkManager) bindings for Rust using the [D-Bus message bus system](https://www.freedesktop.org/wiki/Software/dbus/)
 
 ## Status
 
