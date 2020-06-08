@@ -2,7 +2,7 @@ use super::{EthernetDevice, WiFiDevice};
 use crate::api::config::Config;
 use crate::api::connection::Connection;
 use crate::api::gen::OrgFreedesktopNetworkManagerDevice;
-use crate::types::{Capability, DeviceType};
+use crate::types::{Capability, ConnectivityState, DeviceInterfaceFlag, DeviceType};
 use crate::Error;
 use num_traits::FromPrimitive;
 
@@ -66,7 +66,7 @@ macro_rules! impl_any {
                 let cap = proxy!(self).capabilities()?;
                 match FromPrimitive::from_u32(cap) {
                     Some(x) => Ok(x),
-                    None => Err(Error::UnsupportedDevice),
+                    None => Err(Error::UnsupportedType),
                 }
             }
             fn ip4_address(&self) -> Result<u32, Error> {
@@ -94,38 +94,38 @@ macro_rules! impl_any {
                 todo!()
             }
             fn managed(&self) -> Result<bool, Error> {
-                todo!()
+                Ok(proxy!(self).managed()?)
             }
-            fn set_managed(&self, _value: bool) -> Result<(), Error> {
-                todo!()
+            fn set_managed(&self, value: bool) -> Result<(), Error> {
+                Ok(proxy!(self).set_managed(value)?)
             }
             fn autoconnect(&self) -> Result<bool, Error> {
                 Ok(proxy!(self).autoconnect()?)
             }
-            fn set_autoconnect(&self, _value: bool) -> Result<(), Error> {
-                todo!()
+            fn set_autoconnect(&self, value: bool) -> Result<(), Error> {
+                Ok(proxy!(self).set_autoconnect(value)?)
             }
             fn firmware_missing(&self) -> Result<bool, Error> {
-                todo!()
+                Ok(proxy!(self).firmware_missing()?)
             }
             fn nm_plugin_missing(&self) -> Result<bool, Error> {
-                todo!()
+                Ok(proxy!(self).nm_plugin_missing()?)
             }
             fn device_type(&self) -> Result<DeviceType, Error> {
                 let dev_type = proxy!(self).device_type()?;
                 match FromPrimitive::from_u32(dev_type) {
                     Some(x) => Ok(x),
-                    None => Err(Error::UnsupportedDevice),
+                    None => Err(Error::UnsupportedType),
                 }
             }
             fn available_connections(&self) -> Result<Vec<Connection>, Error> {
                 todo!()
             }
             fn physical_port_id(&self) -> Result<String, Error> {
-                todo!()
+                Ok(proxy!(self).physical_port_id()?)
             }
             fn mtu(&self) -> Result<u32, Error> {
-                todo!()
+                Ok(proxy!(self).mtu()?)
             }
             fn lldp_neighbors(
                 &self,
@@ -141,24 +141,34 @@ macro_rules! impl_any {
                 todo!()
             }
             fn metered(&self) -> Result<u32, Error> {
-                todo!()
+                Ok(proxy!(self).metered()?)
             }
             fn real(&self) -> Result<bool, Error> {
-                todo!()
+                Ok(proxy!(self).real()?)
             }
-            fn ip4_connectivity(&self) -> Result<u32, Error> {
-                todo!()
+            fn ip4_connectivity(&self) -> Result<ConnectivityState, Error> {
+                let con = proxy!(self).ip4_connectivity()?;
+                match FromPrimitive::from_u32(con) {
+                    Some(x) => Ok(x),
+                    None => Err(Error::UnsupportedType),
+                }
             }
-            fn ip6_connectivity(&self) -> Result<u32, Error> {
-                todo!()
+            fn ip6_connectivity(&self) -> Result<ConnectivityState, Error> {
+                let con = proxy!(self).ip6_connectivity()?;
+                match FromPrimitive::from_u32(con) {
+                    Some(x) => Ok(x),
+                    None => Err(Error::UnsupportedType),
+                }
             }
-            fn interface_flags(&self) -> Result<u32, Error> {
-                todo!()
+            fn interface_flags(&self) -> Result<DeviceInterfaceFlag, Error> {
+                let interface_flag = proxy!(self).interface_flags()?;
+                match FromPrimitive::from_u32(interface_flag) {
+                    Some(x) => Ok(x),
+                    None => Err(Error::UnsupportedType),
+                }
             }
             fn hw_address(&self) -> Result<String, Error> {
-                Ok(OrgFreedesktopNetworkManagerDevice::hw_address(&proxy!(
-                    self
-                ))?)
+                Ok(proxy!(self).hw_address()?)
             }
         }
     };
@@ -230,9 +240,9 @@ pub trait Any {
         Error,
     >;
     fn real(&self) -> Result<bool, Error>;
-    fn ip4_connectivity(&self) -> Result<u32, Error>;
-    fn ip6_connectivity(&self) -> Result<u32, Error>;
-    fn interface_flags(&self) -> Result<u32, Error>;
+    fn ip4_connectivity(&self) -> Result<ConnectivityState, Error>;
+    fn ip6_connectivity(&self) -> Result<ConnectivityState, Error>;
+    fn interface_flags(&self) -> Result<DeviceInterfaceFlag, Error>;
     fn hw_address(&self) -> Result<String, Error>;
 }
 

@@ -3,6 +3,7 @@ pub enum Error {
     DBus(dbus::Error),
     UnsupportedMethod,
     UnsupportedDevice,
+    UnsupportedType,
 }
 
 impl From<dbus::Error> for Error {

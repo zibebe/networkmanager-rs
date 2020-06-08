@@ -17,12 +17,12 @@
 //! ```rust,no_run
 //! use networkmanager::devices::{Any, Device, Wired, Wireless};
 //! use networkmanager::{DBusConnection, Error, NetworkManager};
-//! 
+//!
 //! fn main() -> Result<(), Error> {
 //!     let dbus_connection = DBusConnection::new()?;
-//! 
+//!
 //!     let nm = NetworkManager::new(&dbus_connection);
-//! 
+//!
 //!     for dev in nm.get_devices()? {
 //!         match dev {
 //!             Device::Ethernet(x) => {
@@ -37,21 +37,21 @@
 //!             _ => {}
 //!         }
 //!     }
-//! 
+//!
 //!     let enp0s2 = nm.get_device_by_ip_iface("enp0s2")?;
 //!     match enp0s2 {
 //!         Device::Ethernet(x) => {
 //!             // NetworkManager >= 1.24
 //!             // println!("Hardware Address: {:?}", Any::hw_address(&x)?);
-//! 
+//!
 //!             // NetworkManager < 1.24
 //!             // println!("Hardware Address: {:?}", Wired::hw_address(&x)?);
-//! 
+//!
 //!             println!("Speed: {:?}", x.speed()?);
 //!         }
 //!         _ => {}
 //!     }
-//! 
+//!
 //!     Ok(())
 //! }
 //! ```

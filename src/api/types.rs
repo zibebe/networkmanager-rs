@@ -17,12 +17,13 @@ pub enum NMState {
     NmStateConnectedGlobal = 70,
 }
 
-pub enum NMConnectivityState {
-    NmConnectivityUnknown = 0,
-    NmConnectivityNone = 1,
-    NmConnectivityPortal = 2,
-    NmConnectivityLimited = 3,
-    NmConnectivityFull = 4,
+#[derive(Debug, FromPrimitive)]
+pub enum ConnectivityState {
+    Unknown = 0,
+    None = 1,
+    Portal = 2,
+    Limited = 3,
+    Full = 4,
 }
 
 #[derive(Debug, FromPrimitive)]
@@ -362,12 +363,13 @@ pub enum ReloadFlag {
     All = 7,
 }
 
-// // pub enum NMDeviceInterfaceFlags {
-// //     NM_DEVICE_INTERFACE_FLAG_NONE = 0,
-// //     NM_DEVICE_INTERFACE_FLAG_UP = 1,
-// //     NM_DEVICE_INTERFACE_FLAG_LOWER_UP = 2,
-// //     NM_DEVICE_INTERFACE_FLAG_CARRIER = 65536,
-// // }
+#[derive(Debug, FromPrimitive)]
+pub enum DeviceInterfaceFlag {
+    None = 0,
+    Up = 1,
+    LowerUp = 2,
+    Carrier = 65536,
+}
 
 // // pub enum NMClientPermission {
 // //     NM_CLIENT_PERMISSION_NONE = 0,

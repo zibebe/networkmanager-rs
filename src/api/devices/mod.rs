@@ -40,7 +40,7 @@ impl<'a> Device<'a> {
                 DeviceType::Generic => Ok(Device::Generic(GenericDevice { dbus_object })),
                 _ => Err(Error::UnsupportedDevice),
             },
-            None => Err(Error::UnsupportedDevice),
+            None => Err(Error::UnsupportedType),
         }
     }
 }
