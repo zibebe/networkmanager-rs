@@ -19,6 +19,7 @@ Add networkmanager to your `Cargo.toml` with:
 ```toml
 [dependencies]
 networkmanager = "0.3"
+dbus = "0.8"
 ```
 
 ## Example
@@ -26,10 +27,11 @@ networkmanager = "0.3"
 ```rust,no_run
 use networkmanager::devices::{Any, Device, Wired, Wireless};
 use networkmanager::{Error, NetworkManager};
-use networkmanager::dbus::DBusConnection;
+
+use dbus::blocking::Connection;
 
 fn main() -> Result<(), Error> {
-    let dbus_connection = DBusConnection::new()?;
+    let dbus_connection = Connection::new_system()?;
 
     let nm = NetworkManager::new(&dbus_connection);
 

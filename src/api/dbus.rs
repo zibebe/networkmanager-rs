@@ -1,4 +1,3 @@
-use super::errors::Error;
 use dbus::blocking::{Connection, Proxy};
 use std::time::Duration;
 
@@ -10,26 +9,14 @@ macro_rules! proxy {
     };
 }
 
-pub struct DBusConnection {
-    _connection: Connection,
-}
-
-impl DBusConnection {
-    pub fn new() -> Result<Self, Error> {
-        Ok(DBusConnection {
-            _connection: Connection::new_system()?,
-        })
-    }
-}
-
 pub(crate) struct DBusObject<'a> {
-    pub(crate) connection: &'a DBusConnection,
+    pub(crate) connection: &'a Connection,
     pub(crate) bus: String,
     pub(crate) path: String,
 }
 
 impl<'a> DBusObject<'a> {
-    pub(crate) fn new(connection: &'a DBusConnection, bus: &str, path: &str) -> Self {
+    pub(crate) fn new(connection: &'a Connection, bus: &str, path: &str) -> Self {
         DBusObject {
             connection,
             bus: bus.to_owned(),
@@ -37,7 +24,7 @@ impl<'a> DBusObject<'a> {
         }
     }
     pub(crate) fn create_proxy(&self) -> Proxy<'_, &Connection> {
-        self.connection._connection.with_proxy(
+        self.connection.with_proxy(
             &self.bus,
             &self.path,
             Duration::from_millis(DBUS_TIMEOUT_MS),

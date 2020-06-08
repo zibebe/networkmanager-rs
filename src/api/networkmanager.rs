@@ -1,8 +1,9 @@
-use super::dbus::{DBusConnection, DBusObject};
+use super::dbus::DBusObject;
 use super::devices::Device;
 use super::errors::Error;
 use super::gen::OrgFreedesktopNetworkManager;
 use super::types::ReloadFlag;
+use dbus::blocking::Connection;
 
 use num_traits::ToPrimitive;
 
@@ -14,7 +15,7 @@ pub struct NetworkManager<'a> {
 }
 
 impl<'a> NetworkManager<'a> {
-    pub fn new(dbus_connection: &'a DBusConnection) -> Self {
+    pub fn new(dbus_connection: &'a Connection) -> Self {
         NetworkManager {
             dbus_object: DBusObject::new(
                 dbus_connection,
