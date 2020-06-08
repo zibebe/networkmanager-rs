@@ -4,6 +4,8 @@ use super::errors::Error;
 use super::gen::OrgFreedesktopNetworkManager;
 use super::types::ReloadFlag;
 
+use num_traits::ToPrimitive;
+
 const NETWORK_MANAGER_BUS: &str = "org.freedesktop.NetworkManager";
 const NETWORK_MANAGER_PATH: &str = "/org/freedesktop/NetworkManager";
 
@@ -44,7 +46,10 @@ impl<'a> NetworkManager<'a> {
 
     /// Reloads NetworkManager by the given scope
     pub fn reload(&self, flags: ReloadFlag) -> Result<(), Error> {
-        Ok(proxy!(self).reload(flags as u32)?)
+        match ToPrimitive::to_u32(&flags) {
+            Some(x) => Ok(proxy!(self).reload(x)?),
+            None => Err(Error::UnsupportedType),
+        }
     }
 
     /// Returns only realized network devices

@@ -1,4 +1,4 @@
-use num_derive::FromPrimitive;
+use num_derive::{FromPrimitive, ToPrimitive};
 
 #[derive(Debug, FromPrimitive)]
 pub enum Capability {
@@ -6,15 +6,21 @@ pub enum Capability {
     Ovs = 2,
 }
 
-pub enum NMState {
-    NmStateUnknown = 0,
-    NmStateAsleep = 10,
-    NmStateDisconnected = 20,
-    NmStateDisconnecting = 30,
-    NmStateConnecting = 40,
-    NmStateConnectedLocal = 50,
-    NmStateConnectedSite = 60,
-    NmStateConnectedGlobal = 70,
+#[derive(Debug, ToPrimitive)]
+pub enum ReloadFlag {
+    None = 0,
+    Conf = 1,
+    DnsRc = 2,
+    DnsFull = 4,
+    All = 7,
+}
+
+#[derive(Debug, FromPrimitive)]
+pub enum DeviceInterfaceFlag {
+    None = 0,
+    Up = 1,
+    LowerUp = 2,
+    Carrier = 65536,
 }
 
 #[derive(Debug, FromPrimitive)]
@@ -61,6 +67,17 @@ pub enum DeviceType {
     WifiP2p = 30,
     Vrf = 31,
 }
+
+// pub enum NMState {
+//     NmStateUnknown = 0,
+//     NmStateAsleep = 10,
+//     NmStateDisconnected = 20,
+//     NmStateDisconnecting = 30,
+//     NmStateConnecting = 40,
+//     NmStateConnectedLocal = 50,
+//     NmStateConnectedSite = 60,
+//     NmStateConnectedGlobal = 70,
+// }
 
 // pub enum NMDeviceCapabilities {
 //     NmDeviceCapNone = 0,
@@ -354,22 +371,6 @@ pub enum DeviceType {
 // //     NM_TERNARY_FALSE = 0,
 // //     NM_TERNARY_TRUE = 1,
 // // }
-
-pub enum ReloadFlag {
-    None = 0,
-    Conf = 1,
-    DnsRc = 2,
-    DnsFull = 4,
-    All = 7,
-}
-
-#[derive(Debug, FromPrimitive)]
-pub enum DeviceInterfaceFlag {
-    None = 0,
-    Up = 1,
-    LowerUp = 2,
-    Carrier = 65536,
-}
 
 // // pub enum NMClientPermission {
 // //     NM_CLIENT_PERMISSION_NONE = 0,

@@ -1,5 +1,6 @@
+use networkmanager::dbus::DBusConnection;
 use networkmanager::devices::{Any, Device, Wired, Wireless};
-use networkmanager::{DBusConnection, Error, NetworkManager};
+use networkmanager::{Error, NetworkManager};
 
 fn main() -> Result<(), Error> {
     let dbus_connection = DBusConnection::new()?;

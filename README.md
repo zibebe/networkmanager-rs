@@ -17,14 +17,15 @@ Add networkmanager to your `Cargo.toml` with:
 
 ```toml
 [dependencies]
-networkmanager = "0.2"
+networkmanager = "0.3"
 ```
 
 ## Example
 
 ```rust,no_run
 use networkmanager::devices::{Any, Device, Wired, Wireless};
-use networkmanager::{DBusConnection, Error, NetworkManager};
+use networkmanager::{Error, NetworkManager};
+use networkmanager::dbus::DBusConnection;
 
 fn main() -> Result<(), Error> {
     let dbus_connection = DBusConnection::new()?;
