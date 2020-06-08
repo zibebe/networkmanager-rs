@@ -14,7 +14,7 @@ This project is still under development. Currently implemented parts can be foun
 
 ## Usage
 
-Add networkmanager to your `Cargo.toml` with:
+Add networkmanager and dbus to your `Cargo.toml` with:
 
 ```toml
 [dependencies]

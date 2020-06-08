@@ -5,11 +5,12 @@
 //!
 //! ## Usage
 //!
-//! Add networkmanager to your `Cargo.toml` with:
+//! Add networkmanager and dbus to your `Cargo.toml` with:
 //!
 //! ```toml
 //! [dependencies]
 //! networkmanager = "0.3"
+//! dbus = "0.8"
 //! ```
 //!
 //! ## Example
