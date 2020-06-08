@@ -31,20 +31,6 @@ fn main() -> Result<(), Error> {
 
     let nm = NetworkManager::new(&dbus_connection);
 
-    let enp0s2 = nm.get_device_by_ip_iface("enp0s2")?;
-    match enp0s2 {
-        Device::Ethernet(x) => {
-            // NetworkManager >= 1.24
-            // println!("Hardware Address: {:?}", Any::hw_address(&x)?);
-
-            // NetworkManager < 1.24
-            // println!("Hardware Address: {:?}", Wired::hw_address(&x)?);
-
-            println!("Speed: {:?}", x.speed()?);
-        }
-        _ => {}
-    }
-
     for dev in nm.get_devices()? {
         match dev {
             Device::Ethernet(x) => {
@@ -59,6 +45,21 @@ fn main() -> Result<(), Error> {
             _ => {}
         }
     }
+
+    let enp0s2 = nm.get_device_by_ip_iface("enp0s2")?;
+    match enp0s2 {
+        Device::Ethernet(x) => {
+            // NetworkManager >= 1.24
+            // println!("Hardware Address: {:?}", Any::hw_address(&x)?);
+
+            // NetworkManager < 1.24
+            // println!("Hardware Address: {:?}", Wired::hw_address(&x)?);
+
+            println!("Speed: {:?}", x.speed()?);
+        }
+        _ => {}
+    }
+
     Ok(())
 }
 ```
