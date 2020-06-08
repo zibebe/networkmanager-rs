@@ -1,7 +1,7 @@
-#[macro_use]
-mod dbus_api;
 mod gen;
 
+#[macro_use]
+pub mod dbus;
 pub mod accesspoint;
 pub mod config;
 pub mod connection;

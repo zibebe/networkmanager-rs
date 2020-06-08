@@ -1,5 +1,5 @@
 use crate::api::accesspoint::AccessPoint;
-use crate::api::devices::Device;
+use crate::api::devices::WiFiDevice;
 use crate::api::gen::OrgFreedesktopNetworkManagerDeviceWireless;
 use crate::Error;
 
@@ -20,7 +20,7 @@ pub trait Wireless {
     fn last_scan(&self) -> Result<i64, Error>;
 }
 
-impl<'a> Wireless for Device<'a> {
+impl<'a> Wireless for WiFiDevice<'a> {
     fn request_scan(
         &self,
         _options: std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,

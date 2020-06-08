@@ -48,6 +48,7 @@
 
 mod api;
 
+pub use api::dbus::DBusConnection;
 pub use api::devices;
 pub use api::errors::Error;
 pub use api::networkmanager::NetworkManager;

@@ -1,4 +1,4 @@
-use crate::api::devices::Device;
+use crate::api::devices::EthernetDevice;
 use crate::api::gen::OrgFreedesktopNetworkManagerDeviceWired;
 use crate::Error;
 
@@ -10,7 +10,7 @@ pub trait Wired {
     fn carrier(&self) -> Result<bool, Error>;
 }
 
-impl<'a> Wired for Device<'a> {
+impl<'a> Wired for EthernetDevice<'a> {
     fn hw_address(&self) -> Result<String, Error> {
         Ok(proxy!(self).hw_address()?)
     }

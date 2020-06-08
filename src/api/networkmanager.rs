@@ -1,4 +1,4 @@
-use super::dbus_api::DBusApi;
+use super::dbus::{DBusConnection, DBusObject};
 use super::devices::Device;
 use super::errors::Error;
 use super::gen::OrgFreedesktopNetworkManager;
@@ -7,29 +7,39 @@ use super::types::ReloadFlag;
 const NETWORK_MANAGER_BUS: &str = "org.freedesktop.NetworkManager";
 const NETWORK_MANAGER_PATH: &str = "/org/freedesktop/NetworkManager";
 
-pub struct NetworkManager {
-    dbus_api: DBusApi,
-    dbus_path: &'static str,
+pub struct NetworkManager<'a> {
+    dbus_object: DBusObject<'a>,
 }
 
-impl NetworkManager {
-    pub fn new() -> Result<Self, Error> {
-        Ok(NetworkManager {
-            dbus_api: DBusApi::new(NETWORK_MANAGER_BUS)?,
-            dbus_path: NETWORK_MANAGER_PATH,
-        })
+impl<'a> NetworkManager<'a> {
+    pub fn new(dbus_connection: &'a DBusConnection) -> Self {
+        NetworkManager {
+            dbus_object: DBusObject::new(
+                dbus_connection,
+                NETWORK_MANAGER_BUS,
+                NETWORK_MANAGER_PATH,
+            ),
+        }
     }
 
     fn paths_to_devices(&self, paths: Vec<dbus::Path<'_>>) -> Result<Vec<Device<'_>>, Error> {
         let mut res = Vec::new();
         for path in paths {
-            res.push(Device::new(&self.dbus_api, &path)?);
+            res.push(Device::new(DBusObject::new(
+                &self.dbus_object.connection,
+                &self.dbus_object.bus,
+                &path,
+            ))?);
         }
         Ok(res)
     }
 
     fn path_to_device(&self, path: dbus::Path<'_>) -> Result<Device<'_>, Error> {
-        Ok(Device::new(&self.dbus_api, &path)?)
+        Ok(Device::new(DBusObject::new(
+            &self.dbus_object.connection,
+            &self.dbus_object.bus,
+            &path,
+        ))?)
     }
 
     /// Reloads NetworkManager by the given scope
