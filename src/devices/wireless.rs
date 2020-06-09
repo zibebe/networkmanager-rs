@@ -1,7 +1,7 @@
-use crate::api::accesspoint::AccessPoint;
-use crate::api::devices::WiFiDevice;
-use crate::api::gen::OrgFreedesktopNetworkManagerDeviceWireless;
-use crate::Error;
+use crate::accesspoint::AccessPoint;
+use crate::devices::WiFiDevice;
+use crate::errors::Error;
+use crate::gen::OrgFreedesktopNetworkManagerDeviceWireless;
 
 pub trait Wireless {
     fn get_access_points(&self) -> Result<Vec<AccessPoint>, Error>;

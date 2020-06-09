@@ -1,5 +1,5 @@
-use crate::api::devices::EthernetDevice;
-use crate::api::gen::OrgFreedesktopNetworkManagerDeviceWired;
+use crate::devices::EthernetDevice;
+use crate::gen::OrgFreedesktopNetworkManagerDeviceWired;
 use crate::Error;
 
 pub trait Wired {

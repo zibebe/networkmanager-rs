@@ -1,9 +1,9 @@
 use super::{EthernetDevice, WiFiDevice};
-use crate::api::config::Config;
-use crate::api::connection::Connection;
-use crate::api::gen::OrgFreedesktopNetworkManagerDevice;
+use crate::config::Config;
+use crate::connection::Connection;
+use crate::errors::Error;
+use crate::gen::OrgFreedesktopNetworkManagerDevice;
 use crate::types::{Capability, ConnectivityState, DeviceInterfaceFlag, DeviceType};
-use crate::Error;
 use num_traits::FromPrimitive;
 
 pub trait Any {

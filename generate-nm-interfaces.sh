@@ -31,7 +31,7 @@ if ! hash dbus-codegen-rust 2> /dev/null; then
   fi
 fi
 
-dest="$root/src/api/gen"
+dest="$root/src/gen"
 mkdir -p $dest
 
 alltraits=()

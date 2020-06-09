@@ -59,10 +59,17 @@
 //! }
 //! ```
 
-mod api;
+mod gen;
+#[macro_use]
+mod dbus_api;
+mod accesspoint;
+mod config;
+mod connection;
+mod errors;
+mod networkmanager;
 
-pub use api::dbus;
-pub use api::devices;
-pub use api::errors::Error;
-pub use api::networkmanager::NetworkManager;
-pub use api::types;
+pub mod devices;
+pub mod types;
+
+pub use errors::Error;
+pub use networkmanager::NetworkManager;

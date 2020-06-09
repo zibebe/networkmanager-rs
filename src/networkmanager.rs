@@ -1,4 +1,4 @@
-use super::dbus::DBusObject;
+use super::dbus_api::DBusObject;
 use super::devices::Device;
 use super::errors::Error;
 use super::gen::OrgFreedesktopNetworkManager;

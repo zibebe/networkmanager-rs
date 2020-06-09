@@ -2,13 +2,13 @@ mod any;
 mod wired;
 mod wireless;
 
-use crate::api::errors::Error;
-use crate::types::DeviceType;
+use super::errors::Error;
+use super::types::DeviceType;
 
 pub use self::any::Any;
 pub use self::wired::Wired;
 pub use self::wireless::Wireless;
-use super::dbus::DBusObject;
+use super::dbus_api::DBusObject;
 use super::gen::OrgFreedesktopNetworkManagerDevice;
 use num_traits::FromPrimitive;
 
