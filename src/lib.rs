@@ -18,14 +18,14 @@
 //! ```rust,no_run
 //! use networkmanager::devices::{Any, Device, Wired, Wireless};
 //! use networkmanager::{Error, NetworkManager};
-//! 
+//!
 //! use dbus::blocking::Connection;
-//! 
+//!
 //! fn main() -> Result<(), Error> {
 //!     let dbus_connection = Connection::new_system()?;
-//! 
+//!
 //!     let nm = NetworkManager::new(&dbus_connection);
-//! 
+//!
 //!     for dev in nm.get_devices()? {
 //!         match dev {
 //!             Device::Ethernet(x) => {
@@ -44,21 +44,21 @@
 //!             _ => {}
 //!         }
 //!     }
-//! 
+//!
 //!     let eth0 = nm.get_device_by_ip_iface("eth0")?;
 //!     match eth0 {
 //!         Device::Ethernet(x) => {
 //!             // NetworkManager >= 1.24
 //!             // println!("Hardware Address: {:?}", Any::hw_address(&x)?);
-//! 
+//!
 //!             // NetworkManager < 1.24
 //!             // println!("Hardware Address: {:?}", Wired::hw_address(&x)?);
-//! 
+//!
 //!             println!("Speed: {:?}", x.speed()?);
 //!         }
 //!         _ => {}
 //!     }
-//! 
+//!
 //!     Ok(())
 //! }
 //! ```
@@ -68,10 +68,10 @@ mod gen;
 mod dbus_api;
 mod accesspoint;
 mod config;
-mod connection;
 mod errors;
 mod networkmanager;
 
+pub mod connection;
 pub mod devices;
 pub mod types;
 

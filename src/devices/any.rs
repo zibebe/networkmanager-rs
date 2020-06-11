@@ -1,6 +1,7 @@
 use super::{EthernetDevice, WiFiDevice};
 use crate::config::Config;
 use crate::connection::Connection;
+use crate::dbus_api::DBusAccessor;
 use crate::errors::Error;
 use crate::gen::OrgFreedesktopNetworkManagerDevice;
 use crate::types::{Capability, ConnectivityState, DeviceInterfaceFlag, DeviceType};
@@ -56,7 +57,7 @@ pub trait Any {
     fn firmware_missing(&self) -> Result<bool, Error>;
     fn nm_plugin_missing(&self) -> Result<bool, Error>;
     fn device_type(&self) -> Result<DeviceType, Error>;
-    fn available_connections(&self) -> Result<Vec<Connection>, Error>;
+    fn available_connections(&self) -> Result<Vec<Config>, Error>;
     fn physical_port_id(&self) -> Result<String, Error>;
     fn mtu(&self) -> Result<u32, Error>;
     fn metered(&self) -> Result<u32, Error>;
@@ -151,7 +152,12 @@ macro_rules! impl_any {
                 Ok(proxy!(self).state_reason()?)
             }
             fn active_connection(&self) -> Result<Connection, Error> {
-                todo!()
+                let path = proxy!(self).active_connection()?;
+                Ok(Connection::new(DBusAccessor::new(
+                    self.dbus_accessor.connection,
+                    &self.dbus_accessor.bus,
+                    &path,
+                )))
             }
             fn ip4_config(&self) -> Result<Config, Error> {
                 todo!()
@@ -190,7 +196,7 @@ macro_rules! impl_any {
                     None => Err(Error::UnsupportedType),
                 }
             }
-            fn available_connections(&self) -> Result<Vec<Connection>, Error> {
+            fn available_connections(&self) -> Result<Vec<Config>, Error> {
                 todo!()
             }
             fn physical_port_id(&self) -> Result<String, Error> {

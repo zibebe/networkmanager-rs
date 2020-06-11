@@ -1,3 +1,4 @@
+use networkmanager::connection::ActiveConnection;
 use networkmanager::devices::{Any, Device, Wired, Wireless};
 use networkmanager::{Error, NetworkManager};
 
@@ -15,6 +16,8 @@ fn main() -> Result<(), Error> {
                 println!("Speed: {:?}", x.speed()?);
                 println!("S390 Subchannels: {:?}", x.s390_subchannels()?);
                 println!("Carrier: {:?}", x.carrier()?);
+                let con = x.active_connection()?;
+                println!("Connection id: {}", con.id()?);
             }
             Device::WiFi(x) => {
                 println!("Bitrate: {:?}", x.bitrate()?);
@@ -27,19 +30,19 @@ fn main() -> Result<(), Error> {
         }
     }
 
-    let eth0 = nm.get_device_by_ip_iface("eth0")?;
-    match eth0 {
-        Device::Ethernet(x) => {
-            // NetworkManager >= 1.24
-            // println!("Hardware Address: {:?}", Any::hw_address(&x)?);
+    // let eth0 = nm.get_device_by_ip_iface("eth0")?;
+    // match eth0 {
+    //     Device::Ethernet(x) => {
+    //         // NetworkManager >= 1.24
+    //         // println!("Hardware Address: {:?}", Any::hw_address(&x)?);
 
-            // NetworkManager < 1.24
-            // println!("Hardware Address: {:?}", Wired::hw_address(&x)?);
+    //         // NetworkManager < 1.24
+    //         // println!("Hardware Address: {:?}", Wired::hw_address(&x)?);
 
-            println!("Speed: {:?}", x.speed()?);
-        }
-        _ => {}
-    }
+    //         println!("Speed: {:?}", x.speed()?);
+    //     }
+    //     _ => {}
+    // }
 
     Ok(())
 }

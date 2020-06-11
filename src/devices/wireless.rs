@@ -21,20 +21,6 @@ pub trait Wireless {
     fn last_scan(&self) -> Result<i64, Error>;
 }
 
-impl<'a> WiFiDevice<'a> {
-    fn paths_to_aps(&self, paths: Vec<dbus::Path>) -> Vec<AccessPoint> {
-        let mut res = Vec::new();
-        for path in paths {
-            res.push(AccessPoint::new(DBusAccessor::new(
-                &self.dbus_accessor.connection,
-                &self.dbus_accessor.bus,
-                &path,
-            )));
-        }
-        res
-    }
-}
-
 impl<'a> Wireless for WiFiDevice<'a> {
     fn request_scan(
         &self,
@@ -43,12 +29,30 @@ impl<'a> Wireless for WiFiDevice<'a> {
         Ok(proxy!(self).request_scan(_options)?)
     }
     fn get_access_points(&self) -> Result<Vec<AccessPoint>, Error> {
-        let paths = proxy!(self).get_access_points()?;
-        Ok(self.paths_to_aps(paths))
+        Ok(proxy!(self)
+            .get_access_points()?
+            .iter()
+            .map(|x| {
+                AccessPoint::new(DBusAccessor::new(
+                    &self.dbus_accessor.connection,
+                    &self.dbus_accessor.bus,
+                    &x,
+                ))
+            })
+            .collect())
     }
     fn get_all_access_points(&self) -> Result<Vec<AccessPoint>, Error> {
-        let paths = proxy!(self).get_all_access_points()?;
-        Ok(self.paths_to_aps(paths))
+        Ok(proxy!(self)
+            .get_all_access_points()?
+            .iter()
+            .map(|x| {
+                AccessPoint::new(DBusAccessor::new(
+                    &self.dbus_accessor.connection,
+                    &self.dbus_accessor.bus,
+                    &x,
+                ))
+            })
+            .collect())
     }
     fn hw_address(&self) -> Result<String, Error> {
         Ok(proxy!(self).hw_address()?)
@@ -63,8 +67,17 @@ impl<'a> Wireless for WiFiDevice<'a> {
         Ok(proxy!(self).bitrate()?)
     }
     fn access_points(&self) -> Result<Vec<AccessPoint>, Error> {
-        let paths = proxy!(self).access_points()?;
-        Ok(self.paths_to_aps(paths))
+        Ok(proxy!(self)
+            .access_points()?
+            .iter()
+            .map(|x| {
+                AccessPoint::new(DBusAccessor::new(
+                    &self.dbus_accessor.connection,
+                    &self.dbus_accessor.bus,
+                    &x,
+                ))
+            })
+            .collect())
     }
     fn active_access_point(&self) -> Result<AccessPoint, Error> {
         let path = proxy!(self).active_access_point()?;

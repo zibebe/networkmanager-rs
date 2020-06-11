@@ -68,6 +68,27 @@ pub enum DeviceType {
     Vrf = 31,
 }
 
+#[derive(Debug, FromPrimitive)]
+pub enum ActivationStateFlags {
+    None = 0,
+    IsMaster = 1,
+    IsSlave = 2,
+    Layer2Ready = 4,
+    Ip4Ready = 8,
+    Ip6Ready = 16,
+    MasterHasSlaves = 32,
+    LifetimeBoundToProfileVisibility = 64,
+}
+
+#[derive(Debug, FromPrimitive)]
+pub enum ActiveConnectionState {
+    Unknown = 0,
+    Activating = 1,
+    Activated = 2,
+    Deactivating = 3,
+    Deactivated = 4,
+}
+
 // pub enum NMState {
 //     NmStateUnknown = 0,
 //     NmStateAsleep = 10,
@@ -259,14 +280,6 @@ pub enum DeviceType {
 // //     NM_CONNECTION_MULTI_CONNECT_MULTIPLE = 3,
 // // }
 
-// // pub enum NMActiveConnectionState {
-// //     NM_ACTIVE_CONNECTION_STATE_UNKNOWN = 0,
-// //     NM_ACTIVE_CONNECTION_STATE_ACTIVATING = 1,
-// //     NM_ACTIVE_CONNECTION_STATE_ACTIVATED = 2,
-// //     NM_ACTIVE_CONNECTION_STATE_DEACTIVATING = 3,
-// //     NM_ACTIVE_CONNECTION_STATE_DEACTIVATED = 4,
-// // }
-
 // // pub enum NMActiveConnectionStateReason {
 // //     NM_ACTIVE_CONNECTION_STATE_REASON_UNKNOWN = 0,
 // //     NM_ACTIVE_CONNECTION_STATE_REASON_NONE = 1,
@@ -335,17 +348,6 @@ pub enum DeviceType {
 // //     NM_SETTINGS_CONNECTION_FLAG_UNSAVED = 1,
 // //     NM_SETTINGS_CONNECTION_FLAG_NM_GENERATED = 2,
 // //     NM_SETTINGS_CONNECTION_FLAG_VOLATILE = 4,
-// // }
-
-// // pub enum NMActivationStateFlags {
-// //     NM_ACTIVATION_STATE_FLAG_NONE = 0,
-// //     NM_ACTIVATION_STATE_FLAG_IS_MASTER = 1,
-// //     NM_ACTIVATION_STATE_FLAG_IS_SLAVE = 2,
-// //     NM_ACTIVATION_STATE_FLAG_LAYER2_READY = 4,
-// //     NM_ACTIVATION_STATE_FLAG_IP4_READY = 8,
-// //     NM_ACTIVATION_STATE_FLAG_IP6_READY = 16,
-// //     NM_ACTIVATION_STATE_FLAG_MASTER_HAS_SLAVES = 32,
-// //     NM_ACTIVATION_STATE_FLAG_LIFETIME_BOUND_TO_PROFILE_VISIBILITY = 64,
 // // }
 
 // // pub enum NMSettingsAddConnection2Flags {
