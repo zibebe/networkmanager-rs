@@ -1,8 +1,8 @@
-use super::dbus_api::DBusObject;
-use super::devices::Device;
-use super::errors::Error;
-use super::gen::OrgFreedesktopNetworkManager;
-use super::types::ReloadFlag;
+use crate::dbus_api::DBusAccessor;
+use crate::devices::Device;
+use crate::errors::Error;
+use crate::gen::OrgFreedesktopNetworkManager;
+use crate::types::ReloadFlag;
 use dbus::blocking::Connection;
 
 use num_traits::ToPrimitive;
@@ -11,13 +11,13 @@ const NETWORK_MANAGER_BUS: &str = "org.freedesktop.NetworkManager";
 const NETWORK_MANAGER_PATH: &str = "/org/freedesktop/NetworkManager";
 
 pub struct NetworkManager<'a> {
-    dbus_object: DBusObject<'a>,
+    dbus_accessor: DBusAccessor<'a>,
 }
 
 impl<'a> NetworkManager<'a> {
     pub fn new(dbus_connection: &'a Connection) -> Self {
         NetworkManager {
-            dbus_object: DBusObject::new(
+            dbus_accessor: DBusAccessor::new(
                 dbus_connection,
                 NETWORK_MANAGER_BUS,
                 NETWORK_MANAGER_PATH,
@@ -28,9 +28,9 @@ impl<'a> NetworkManager<'a> {
     fn paths_to_devices(&self, paths: Vec<dbus::Path<'_>>) -> Result<Vec<Device<'_>>, Error> {
         let mut res = Vec::new();
         for path in paths {
-            res.push(Device::new(DBusObject::new(
-                &self.dbus_object.connection,
-                &self.dbus_object.bus,
+            res.push(Device::new(DBusAccessor::new(
+                &self.dbus_accessor.connection,
+                &self.dbus_accessor.bus,
                 &path,
             ))?);
         }
@@ -38,9 +38,9 @@ impl<'a> NetworkManager<'a> {
     }
 
     fn path_to_device(&self, path: dbus::Path<'_>) -> Result<Device<'_>, Error> {
-        Ok(Device::new(DBusObject::new(
-            &self.dbus_object.connection,
-            &self.dbus_object.bus,
+        Ok(Device::new(DBusAccessor::new(
+            &self.dbus_accessor.connection,
+            &self.dbus_accessor.bus,
             &path,
         ))?)
     }
