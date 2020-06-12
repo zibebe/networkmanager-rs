@@ -1,3 +1,4 @@
+use networkmanager::configs::Ip4;
 use networkmanager::connection::ActiveConnection;
 use networkmanager::devices::{Any, Device, Wired, Wireless};
 use networkmanager::{Error, NetworkManager};
@@ -16,6 +17,8 @@ fn main() -> Result<(), Error> {
                 println!("Speed: {:?}", x.speed()?);
                 println!("S390 Subchannels: {:?}", x.s390_subchannels()?);
                 println!("Carrier: {:?}", x.carrier()?);
+                let conf = x.ip4_config()?;
+                println!("Gateway: {:?}", conf.gateway()?);
                 let con = x.active_connection()?;
                 println!("Connection id: {}", con.id()?);
             }

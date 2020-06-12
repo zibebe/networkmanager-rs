@@ -67,10 +67,10 @@ mod gen;
 #[macro_use]
 mod dbus_api;
 mod accesspoint;
-mod config;
 mod errors;
 mod networkmanager;
 
+pub mod configs;
 pub mod connection;
 pub mod devices;
 pub mod types;

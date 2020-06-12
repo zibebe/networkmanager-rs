@@ -24,9 +24,9 @@ pub trait Wireless {
 impl<'a> Wireless for WiFiDevice<'a> {
     fn request_scan(
         &self,
-        _options: std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
+        options: std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
     ) -> Result<(), Error> {
-        Ok(proxy!(self).request_scan(_options)?)
+        Ok(proxy!(self).request_scan(options)?)
     }
     fn get_access_points(&self) -> Result<Vec<AccessPoint>, Error> {
         Ok(proxy!(self)

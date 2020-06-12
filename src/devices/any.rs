@@ -1,5 +1,5 @@
 use super::{EthernetDevice, WiFiDevice};
-use crate::config::Config;
+use crate::configs::{Dhcp4Config, Dhcp6Config, Ip4Config, Ip6Config};
 use crate::connection::Connection;
 use crate::dbus_api::DBusAccessor;
 use crate::errors::Error;
@@ -46,10 +46,10 @@ pub trait Any {
     fn state(&self) -> Result<u32, Error>;
     fn state_reason(&self) -> Result<(u32, u32), Error>;
     fn active_connection(&self) -> Result<Connection, Error>;
-    fn ip4_config(&self) -> Result<Config, Error>;
-    fn dhcp4_config(&self) -> Result<Config, Error>;
-    fn ip6_config(&self) -> Result<Config, Error>;
-    fn dhcp6_config(&self) -> Result<Config, Error>;
+    fn ip4_config(&self) -> Result<Ip4Config, Error>;
+    fn dhcp4_config(&self) -> Result<Dhcp4Config, Error>;
+    fn ip6_config(&self) -> Result<Ip6Config, Error>;
+    fn dhcp6_config(&self) -> Result<Dhcp6Config, Error>;
     fn managed(&self) -> Result<bool, Error>;
     fn set_managed(&self, value: bool) -> Result<(), Error>;
     fn autoconnect(&self) -> Result<bool, Error>;
@@ -57,7 +57,7 @@ pub trait Any {
     fn firmware_missing(&self) -> Result<bool, Error>;
     fn nm_plugin_missing(&self) -> Result<bool, Error>;
     fn device_type(&self) -> Result<DeviceType, Error>;
-    fn available_connections(&self) -> Result<Vec<Config>, Error>;
+    fn available_connections(&self) -> Result<Vec<Connection>, Error>;
     fn physical_port_id(&self) -> Result<String, Error>;
     fn mtu(&self) -> Result<u32, Error>;
     fn metered(&self) -> Result<u32, Error>;
@@ -84,18 +84,18 @@ macro_rules! impl_any {
         impl<$lifetime> Any for $name {
             fn reapply(
                 &self,
-                _connection: std::collections::HashMap<
+                connection: std::collections::HashMap<
                     &str,
                     std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
                 >,
-                _version_id: u64,
-                _flags: u32,
+                version_id: u64,
+                flags: u32,
             ) -> Result<(), Error> {
-                todo!()
+                Ok(proxy!(self).reapply(connection, version_id, flags)?)
             }
             fn get_applied_connection(
                 &self,
-                _flags: u32,
+                flags: u32,
             ) -> Result<
                 (
                     std::collections::HashMap<
@@ -109,7 +109,7 @@ macro_rules! impl_any {
                 ),
                 Error,
             > {
-                todo!()
+                Ok(proxy!(self).get_applied_connection(flags)?)
             }
             fn disconnect(&self) -> Result<(), Error> {
                 Ok(proxy!(self).disconnect()?)
@@ -159,17 +159,37 @@ macro_rules! impl_any {
                     &path,
                 )))
             }
-            fn ip4_config(&self) -> Result<Config, Error> {
-                todo!()
+            fn ip4_config(&self) -> Result<Ip4Config, Error> {
+                let path = proxy!(self).ip4_config()?;
+                Ok(Ip4Config::new(DBusAccessor::new(
+                    self.dbus_accessor.connection,
+                    &self.dbus_accessor.bus,
+                    &path,
+                )))
             }
-            fn dhcp4_config(&self) -> Result<Config, Error> {
-                todo!()
+            fn dhcp4_config(&self) -> Result<Dhcp4Config, Error> {
+                let path = proxy!(self).dhcp4_config()?;
+                Ok(Dhcp4Config::new(DBusAccessor::new(
+                    self.dbus_accessor.connection,
+                    &self.dbus_accessor.bus,
+                    &path,
+                )))
             }
-            fn ip6_config(&self) -> Result<Config, Error> {
-                todo!()
+            fn ip6_config(&self) -> Result<Ip6Config, Error> {
+                let path = proxy!(self).ip6_config()?;
+                Ok(Ip6Config::new(DBusAccessor::new(
+                    self.dbus_accessor.connection,
+                    &self.dbus_accessor.bus,
+                    &path,
+                )))
             }
-            fn dhcp6_config(&self) -> Result<Config, Error> {
-                todo!()
+            fn dhcp6_config(&self) -> Result<Dhcp6Config, Error> {
+                let path = proxy!(self).dhcp6_config()?;
+                Ok(Dhcp6Config::new(DBusAccessor::new(
+                    self.dbus_accessor.connection,
+                    &self.dbus_accessor.bus,
+                    &path,
+                )))
             }
             fn managed(&self) -> Result<bool, Error> {
                 Ok(proxy!(self).managed()?)
@@ -196,7 +216,7 @@ macro_rules! impl_any {
                     None => Err(Error::UnsupportedType),
                 }
             }
-            fn available_connections(&self) -> Result<Vec<Config>, Error> {
+            fn available_connections(&self) -> Result<Vec<Connection>, Error> {
                 todo!()
             }
             fn physical_port_id(&self) -> Result<String, Error> {
@@ -216,7 +236,7 @@ macro_rules! impl_any {
                 >,
                 Error,
             > {
-                todo!()
+                Ok(proxy!(self).lldp_neighbors()?)
             }
             fn metered(&self) -> Result<u32, Error> {
                 Ok(proxy!(self).metered()?)

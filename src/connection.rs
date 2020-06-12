@@ -1,4 +1,4 @@
-use crate::config::Config;
+use crate::configs::{Dhcp4Config, Dhcp6Config, Ip4Config, Ip6Config};
 use crate::dbus_api::DBusAccessor;
 use crate::devices::Device;
 use crate::gen::OrgFreedesktopNetworkManagerConnectionActive;
@@ -20,11 +20,11 @@ pub trait ActiveConnection {
     fn state(&self) -> Result<ActiveConnectionState, Error>;
     fn state_flags(&self) -> Result<ActivationStateFlags, Error>;
     fn default(&self) -> Result<bool, Error>;
-    fn ip4_config(&self) -> Result<Config, Error>;
-    fn dhcp4_config(&self) -> Result<Config, Error>;
+    fn ip4_config(&self) -> Result<Ip4Config, Error>;
+    fn dhcp4_config(&self) -> Result<Dhcp4Config, Error>;
     fn default6(&self) -> Result<bool, Error>;
-    fn ip6_config(&self) -> Result<Config, Error>;
-    fn dhcp6_config(&self) -> Result<Config, Error>;
+    fn ip6_config(&self) -> Result<Ip6Config, Error>;
+    fn dhcp6_config(&self) -> Result<Dhcp6Config, Error>;
     fn vpn(&self) -> Result<bool, Error>;
     fn master(&self) -> Result<Device, Error>;
 }
@@ -80,20 +80,40 @@ impl<'a> ActiveConnection for Connection<'a> {
     fn default(&self) -> Result<bool, Error> {
         Ok(proxy!(self).default()?)
     }
-    fn ip4_config(&self) -> Result<Config, Error> {
-        todo!()
+    fn ip4_config(&self) -> Result<Ip4Config, Error> {
+        let path = proxy!(self).ip4_config()?;
+        Ok(Ip4Config::new(DBusAccessor::new(
+            self.dbus_accessor.connection,
+            &self.dbus_accessor.bus,
+            &path,
+        )))
     }
-    fn dhcp4_config(&self) -> Result<Config, Error> {
-        todo!()
+    fn dhcp4_config(&self) -> Result<Dhcp4Config, Error> {
+        let path = proxy!(self).dhcp4_config()?;
+        Ok(Dhcp4Config::new(DBusAccessor::new(
+            self.dbus_accessor.connection,
+            &self.dbus_accessor.bus,
+            &path,
+        )))
     }
     fn default6(&self) -> Result<bool, Error> {
         Ok(proxy!(self).default6()?)
     }
-    fn ip6_config(&self) -> Result<Config, Error> {
-        todo!()
+    fn ip6_config(&self) -> Result<Ip6Config, Error> {
+        let path = proxy!(self).ip6_config()?;
+        Ok(Ip6Config::new(DBusAccessor::new(
+            self.dbus_accessor.connection,
+            &self.dbus_accessor.bus,
+            &path,
+        )))
     }
-    fn dhcp6_config(&self) -> Result<Config, Error> {
-        todo!()
+    fn dhcp6_config(&self) -> Result<Dhcp6Config, Error> {
+        let path = proxy!(self).dhcp6_config()?;
+        Ok(Dhcp6Config::new(DBusAccessor::new(
+            self.dbus_accessor.connection,
+            &self.dbus_accessor.bus,
+            &path,
+        )))
     }
     fn vpn(&self) -> Result<bool, Error> {
         Ok(proxy!(self).vpn()?)
