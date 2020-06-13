@@ -33,19 +33,19 @@ fn main() -> Result<(), Error> {
         }
     }
 
-    // let eth0 = nm.get_device_by_ip_iface("eth0")?;
-    // match eth0 {
-    //     Device::Ethernet(x) => {
-    //         // NetworkManager >= 1.24
-    //         // println!("Hardware Address: {:?}", Any::hw_address(&x)?);
+    let eth0 = nm.get_device_by_ip_iface("eth0")?;
+    match eth0 {
+        Device::Ethernet(x) => {
+            // NetworkManager >= 1.24
+            // println!("Hardware Address: {:?}", Any::hw_address(&x)?);
 
-    //         // NetworkManager < 1.24
-    //         // println!("Hardware Address: {:?}", Wired::hw_address(&x)?);
+            // NetworkManager < 1.24
+            // println!("Hardware Address: {:?}", Wired::hw_address(&x)?);
 
-    //         println!("Speed: {:?}", x.speed()?);
-    //     }
-    //     _ => {}
-    // }
+            println!("Speed: {:?}", x.speed()?);
+        }
+        _ => {}
+    }
 
     Ok(())
 }
