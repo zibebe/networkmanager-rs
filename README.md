@@ -79,7 +79,7 @@ fn main() -> Result<(), Error> {
   * dbus-devel
   * pkg-config
 
-## Todo:
+## Todo
 
 - Implementations
   - Devices
