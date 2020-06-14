@@ -1,8 +1,10 @@
 mod any;
+mod generic;
 mod wired;
 mod wireless;
 
 pub use self::any::Any;
+pub use self::generic::Generic;
 pub use self::wired::Wired;
 pub use self::wireless::Wireless;
 use crate::dbus_api::DBusAccessor;

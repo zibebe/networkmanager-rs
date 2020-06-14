@@ -1,4 +1,4 @@
-use crate::devices::EthernetDevice;
+use super::EthernetDevice;
 use crate::gen::OrgFreedesktopNetworkManagerDeviceWired;
 use crate::Error;
 

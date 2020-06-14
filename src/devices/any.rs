@@ -1,4 +1,4 @@
-use super::{EthernetDevice, WiFiDevice};
+use super::{EthernetDevice, GenericDevice, WiFiDevice};
 use crate::configs::{Dhcp4Config, Dhcp6Config, Ip4Config, Ip6Config};
 use crate::connection::Connection;
 use crate::dbus_api::DBusAccessor;

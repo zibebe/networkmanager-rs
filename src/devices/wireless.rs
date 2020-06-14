@@ -1,6 +1,6 @@
+use super::WiFiDevice;
 use crate::accesspoint::AccessPoint;
 use crate::dbus_api::DBusAccessor;
-use crate::devices::WiFiDevice;
 use crate::errors::Error;
 use crate::gen::OrgFreedesktopNetworkManagerDeviceWireless;
 
