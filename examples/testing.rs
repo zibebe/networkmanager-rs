@@ -1,5 +1,3 @@
-use networkmanager::configs::Ip4;
-use networkmanager::connection::ActiveConnection;
 use networkmanager::devices::{Any, Device, Wired, Wireless};
 use networkmanager::{Error, NetworkManager};
 
