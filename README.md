@@ -79,6 +79,64 @@ fn main() -> Result<(), Error> {
   * dbus-devel
   * pkg-config
 
+## Todo:
+
+- Implementations
+  - Devices
+    - [x] Any
+    - [x] Generic
+    - [x] Wireless
+    - [x] Wired
+    - [ ] ADSL
+    - [ ] Bluetooth
+    - [ ] Bond
+    - [ ] Bridge
+    - [ ] Dummy
+    - [ ] Infiniband
+    - [ ] IpTunnel
+    - [ ] Lowpan
+    - [ ] Macsec
+    - [ ] MacVLAN
+    - [ ] Modem
+    - [ ] OLPCMesh
+    - [ ] OVSBridge
+    - [ ] OVSInterface
+    - [ ] OVSPort
+    - [ ] PPP
+    - [ ] Statistics
+    - [ ] Team
+    - [ ] TUN/TAP
+    - [ ] VETH
+    - [ ] VLAN
+    - [ ] VRF
+    - [ ] VXLAN
+    - [ ] WifiP2P
+    - [ ] WiMax
+    - [ ] Wireguard
+    - [ ] Wpan
+  - Configs
+    - [x] IP4
+    - [x] IP6
+    - [x] DHCP4
+    - [x] DHCP6
+  - [x] Accesspoint
+  - [x] ConnectionActive
+  - [ ] NetworkManager (partially implemented)
+  - [ ] AgentManager
+  - [ ] Checkpoint
+  - [ ] DNSManager
+  - [ ] PPP
+  - [ ] SecretAgent
+  - [ ] Settings
+  - [ ] Settings Connection
+  - [ ] VPN Connection
+  - [ ] VPN Plugin
+  - [ ] WifiP2P
+  - [ ] Wimax NSP
+- General
+  - [ ] Improve Error handling
+  - [ ] dbus::arg::Variants conversion
+
 ## License
 
 Licensed under either of
