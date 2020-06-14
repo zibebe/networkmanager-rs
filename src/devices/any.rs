@@ -274,3 +274,4 @@ macro_rules! impl_any {
 
 impl_any!(WiFiDevice<'a>, 'a);
 impl_any!(EthernetDevice<'a>, 'a);
+impl_any!(GenericDevice<'a>, 'a);
