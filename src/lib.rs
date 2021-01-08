@@ -69,6 +69,7 @@ mod dbus_api;
 mod accesspoint;
 mod errors;
 mod networkmanager;
+mod settings;
 
 pub mod configs;
 pub mod connection;
@@ -77,3 +78,4 @@ pub mod types;
 
 pub use crate::errors::Error;
 pub use crate::networkmanager::NetworkManager;
+pub use crate::settings::Settings;
