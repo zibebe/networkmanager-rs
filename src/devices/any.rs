@@ -1,4 +1,4 @@
-use super::{EthernetDevice, GenericDevice, WiFiDevice};
+use super::{EthernetDevice, GenericDevice, WiFiDevice, BridgeDevice, VethDevice};
 use crate::configs::{Dhcp4Config, Dhcp6Config, Ip4Config, Ip6Config};
 use crate::connection::Connection;
 use crate::dbus_api::DBusAccessor;
@@ -272,6 +272,8 @@ macro_rules! impl_any {
     };
 }
 
+impl_any!(VethDevice<'a>, 'a);
+impl_any!(BridgeDevice<'a>, 'a);
 impl_any!(WiFiDevice<'a>, 'a);
 impl_any!(EthernetDevice<'a>, 'a);
 impl_any!(GenericDevice<'a>, 'a);
