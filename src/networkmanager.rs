@@ -29,7 +29,7 @@ impl<'a> NetworkManager<'a> {
         let mut res = Vec::new();
         for path in paths {
             res.push(Device::new(DBusAccessor::new(
-                &self.dbus_accessor.connection,
+                self.dbus_accessor.connection,
                 &self.dbus_accessor.bus,
                 &path,
             ))?);
@@ -39,7 +39,7 @@ impl<'a> NetworkManager<'a> {
 
     fn path_to_device(&self, path: dbus::Path<'_>) -> Result<Device<'_>, Error> {
         Device::new(DBusAccessor::new(
-            &self.dbus_accessor.connection,
+            self.dbus_accessor.connection,
             &self.dbus_accessor.bus,
             &path,
         ))

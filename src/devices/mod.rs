@@ -1,16 +1,16 @@
 mod any;
+mod bridge;
 mod generic;
+mod veth;
 mod wired;
 mod wireless;
-mod bridge;
-mod veth;
 
 pub use self::any::Any;
+pub use self::bridge::Bridge;
 pub use self::generic::Generic;
+pub use self::veth::Veth;
 pub use self::wired::Wired;
 pub use self::wireless::Wireless;
-pub use self::bridge::Bridge;
-pub use self::veth::Veth;
 use crate::dbus_api::DBusAccessor;
 use crate::errors::Error;
 use crate::gen::OrgFreedesktopNetworkManagerDevice;
@@ -55,9 +55,7 @@ impl<'a> Device<'a> {
                 DeviceType::Generic => Ok(Device::Generic(GenericDevice { dbus_accessor })),
                 DeviceType::Bridge => Ok(Device::Bridge(BridgeDevice { dbus_accessor })),
                 DeviceType::Veth => Ok(Device::Veth(VethDevice { dbus_accessor })),
-                _ => {
-                    Err(Error::UnsupportedDevice)
-                },
+                _ => Err(Error::UnsupportedDevice),
             },
             None => Err(Error::UnsupportedType),
         }

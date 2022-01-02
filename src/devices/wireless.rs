@@ -34,9 +34,9 @@ impl<'a> Wireless for WiFiDevice<'a> {
             .iter()
             .map(|x| {
                 AccessPoint::new(DBusAccessor::new(
-                    &self.dbus_accessor.connection,
+                    self.dbus_accessor.connection,
                     &self.dbus_accessor.bus,
-                    &x,
+                    x,
                 ))
             })
             .collect())
@@ -47,9 +47,9 @@ impl<'a> Wireless for WiFiDevice<'a> {
             .iter()
             .map(|x| {
                 AccessPoint::new(DBusAccessor::new(
-                    &self.dbus_accessor.connection,
+                    self.dbus_accessor.connection,
                     &self.dbus_accessor.bus,
-                    &x,
+                    x,
                 ))
             })
             .collect())
@@ -72,9 +72,9 @@ impl<'a> Wireless for WiFiDevice<'a> {
             .iter()
             .map(|x| {
                 AccessPoint::new(DBusAccessor::new(
-                    &self.dbus_accessor.connection,
+                    self.dbus_accessor.connection,
                     &self.dbus_accessor.bus,
-                    &x,
+                    x,
                 ))
             })
             .collect())
@@ -82,7 +82,7 @@ impl<'a> Wireless for WiFiDevice<'a> {
     fn active_access_point(&self) -> Result<AccessPoint, Error> {
         let path = proxy!(self).active_access_point()?;
         Ok(AccessPoint::new(DBusAccessor::new(
-            &self.dbus_accessor.connection,
+            self.dbus_accessor.connection,
             &self.dbus_accessor.bus,
             &path,
         )))

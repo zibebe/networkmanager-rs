@@ -1,7 +1,7 @@
-use super::Device;
 use super::BridgeDevice;
-use crate::gen::OrgFreedesktopNetworkManagerDeviceBridge;
+use super::Device;
 use crate::dbus_api::DBusAccessor;
+use crate::gen::OrgFreedesktopNetworkManagerDeviceBridge;
 use crate::Error;
 
 pub trait Bridge {
@@ -29,6 +29,6 @@ impl<'a> Bridge for BridgeDevice<'a> {
                 &slave_path,
             ))?)
         }
-       Ok(vec)
+        Ok(vec)
     }
 }
