@@ -8,8 +8,9 @@
 
 ## Status
 
-This project is still under development. Currently implemented parts can be found in the docs.
+**NOTE**: At the moment i dont have any time to take care of this project. Contributors welcome!!
 
+This project is still under development. Currently implemented parts can be found in the docs.
 - NetworkManager D-Bus API >= v1.24.2
 
 ## Usage
