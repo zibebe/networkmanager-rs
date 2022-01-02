@@ -38,11 +38,11 @@ impl<'a> NetworkManager<'a> {
     }
 
     fn path_to_device(&self, path: dbus::Path<'_>) -> Result<Device<'_>, Error> {
-        Ok(Device::new(DBusAccessor::new(
+        Device::new(DBusAccessor::new(
             &self.dbus_accessor.connection,
             &self.dbus_accessor.bus,
             &path,
-        ))?)
+        ))
     }
 
     /// Reloads NetworkManager by the given scope
@@ -56,18 +56,18 @@ impl<'a> NetworkManager<'a> {
     /// Returns only realized network devices
     pub fn get_devices(&self) -> Result<Vec<Device<'_>>, Error> {
         let dev_paths = proxy!(self).get_devices()?;
-        Ok(self.paths_to_devices(dev_paths)?)
+        self.paths_to_devices(dev_paths)
     }
 
     /// Returns all the network devices
     pub fn get_all_devices(&self) -> Result<Vec<Device<'_>>, Error> {
         let dev_paths = proxy!(self).get_all_devices()?;
-        Ok(self.paths_to_devices(dev_paths)?)
+        self.paths_to_devices(dev_paths)
     }
 
     pub fn get_device_by_ip_iface(&self, iface: &str) -> Result<Device<'_>, Error> {
         let dev_path = proxy!(self).get_device_by_ip_iface(iface)?;
-        Ok(self.path_to_device(dev_path)?)
+        self.path_to_device(dev_path)
     }
 
     pub fn networking_enabled(&self) -> Result<bool, Error> {
