@@ -6,6 +6,9 @@ pub struct Ip4Config<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
 
+type HashMapDBusVariant =
+    std::collections::HashMap<String, dbus::arg::Variant<Box<dyn dbus::arg::RefArg + 'static>>>;
+
 impl<'a> Ip4Config<'a> {
     pub(crate) fn new(dbus_accessor: DBusAccessor<'a>) -> Self {
         Ip4Config { dbus_accessor }
@@ -14,17 +17,7 @@ impl<'a> Ip4Config<'a> {
     pub fn addresses(&self) -> Result<Vec<Vec<u32>>, Error> {
         Ok(proxy!(self).addresses()?)
     }
-    pub fn address_data(
-        &self,
-    ) -> Result<
-        Vec<
-            std::collections::HashMap<
-                String,
-                dbus::arg::Variant<Box<dyn dbus::arg::RefArg + 'static>>,
-            >,
-        >,
-        Error,
-    > {
+    pub fn address_data(&self) -> Result<Vec<HashMapDBusVariant>, Error> {
         Ok(proxy!(self).address_data()?)
     }
     pub fn gateway(&self) -> Result<String, Error> {
@@ -33,33 +26,13 @@ impl<'a> Ip4Config<'a> {
     pub fn routes(&self) -> Result<Vec<Vec<u32>>, Error> {
         Ok(proxy!(self).routes()?)
     }
-    pub fn route_data(
-        &self,
-    ) -> Result<
-        Vec<
-            std::collections::HashMap<
-                String,
-                dbus::arg::Variant<Box<dyn dbus::arg::RefArg + 'static>>,
-            >,
-        >,
-        Error,
-    > {
+    pub fn route_data(&self) -> Result<Vec<HashMapDBusVariant>, Error> {
         Ok(proxy!(self).route_data()?)
     }
     pub fn nameservers(&self) -> Result<Vec<u32>, Error> {
         Ok(proxy!(self).nameservers()?)
     }
-    pub fn nameserver_data(
-        &self,
-    ) -> Result<
-        Vec<
-            std::collections::HashMap<
-                String,
-                dbus::arg::Variant<Box<dyn dbus::arg::RefArg + 'static>>,
-            >,
-        >,
-        Error,
-    > {
+    pub fn nameserver_data(&self) -> Result<Vec<HashMapDBusVariant>, Error> {
         Ok(proxy!(self).nameserver_data()?)
     }
     pub fn domains(&self) -> Result<Vec<String>, Error> {

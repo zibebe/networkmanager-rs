@@ -98,10 +98,10 @@ impl<'a> Connection<'a> {
     }
     pub fn master(&self) -> Result<Device, Error> {
         let dev_path = proxy!(self).master()?;
-        Ok(Device::new(DBusAccessor::new(
+        Device::new(DBusAccessor::new(
             self.dbus_accessor.connection,
             &self.dbus_accessor.bus,
             &dev_path,
-        ))?)
+        ))
     }
 }
