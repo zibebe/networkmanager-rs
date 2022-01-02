@@ -2,11 +2,15 @@ mod any;
 mod generic;
 mod wired;
 mod wireless;
+mod bridge;
+mod veth;
 
 pub use self::any::Any;
 pub use self::generic::Generic;
 pub use self::wired::Wired;
 pub use self::wireless::Wireless;
+pub use self::bridge::Bridge;
+pub use self::veth::Veth;
 use crate::dbus_api::DBusAccessor;
 use crate::errors::Error;
 use crate::gen::OrgFreedesktopNetworkManagerDevice;
@@ -17,6 +21,8 @@ pub enum Device<'a> {
     WiFi(WiFiDevice<'a>),
     Ethernet(EthernetDevice<'a>),
     Generic(GenericDevice<'a>),
+    Bridge(BridgeDevice<'a>),
+    Veth(VethDevice<'a>),
 }
 
 pub struct GenericDevice<'a> {
@@ -31,6 +37,14 @@ pub struct EthernetDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
 
+pub struct BridgeDevice<'a> {
+    dbus_accessor: DBusAccessor<'a>,
+}
+
+pub struct VethDevice<'a> {
+    dbus_accessor: DBusAccessor<'a>,
+}
+
 impl<'a> Device<'a> {
     pub(crate) fn new(dbus_accessor: DBusAccessor<'a>) -> Result<Self, Error> {
         let dev_type = dbus_accessor.create_proxy().device_type()?;
@@ -39,7 +53,11 @@ impl<'a> Device<'a> {
                 DeviceType::Wifi => Ok(Device::WiFi(WiFiDevice { dbus_accessor })),
                 DeviceType::Ethernet => Ok(Device::Ethernet(EthernetDevice { dbus_accessor })),
                 DeviceType::Generic => Ok(Device::Generic(GenericDevice { dbus_accessor })),
-                _ => Err(Error::UnsupportedDevice),
+                DeviceType::Bridge => Ok(Device::Bridge(BridgeDevice { dbus_accessor })),
+                DeviceType::Veth => Ok(Device::Veth(VethDevice { dbus_accessor })),
+                _ => {
+                    Err(Error::UnsupportedDevice)
+                },
             },
             None => Err(Error::UnsupportedType),
         }
