@@ -1,7 +1,7 @@
 [package]
 name = "networkmanager"
-version = "0.3.2"
-authors = ["Tobias Tschinkowitz <tobias.tschinkowitz@icloud.com>"]
+version = "0.3.3"
+authors = ["Tobias Tschinkowitz <tobias.tschinkowitz@icloud.com>", "Walter Bonetti"]
 description = "Bindings for the Linux NetworkManager"
 repository = "https://github.com/he4d/networkmanager-rs"
 documentation = "https://docs.rs/networkmanager"
@@ -12,6 +12,6 @@ edition = "2018"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-dbus = "0.8"
+dbus = "0.9"
 num-traits = "0.2"
 num-derive = "0.3"
