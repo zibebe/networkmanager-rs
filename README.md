@@ -91,7 +91,7 @@ fn main() -> Result<(), Error> {
     - [ ] ADSL
     - [ ] Bluetooth
     - [ ] Bond
-    - [ ] Bridge
+    - [x] Bridge
     - [ ] Dummy
     - [ ] Infiniband
     - [ ] IpTunnel
@@ -107,7 +107,7 @@ fn main() -> Result<(), Error> {
     - [ ] Statistics
     - [ ] Team
     - [ ] TUN/TAP
-    - [ ] VETH
+    - [x] VETH
     - [ ] VLAN
     - [ ] VRF
     - [ ] VXLAN
