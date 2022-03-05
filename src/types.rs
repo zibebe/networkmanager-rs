@@ -1,3 +1,6 @@
+use std::collections::HashMap;
+
+use dbus::arg::Variant;
 use num_derive::{FromPrimitive, ToPrimitive};
 
 #[derive(Debug, FromPrimitive)]
@@ -88,6 +91,12 @@ pub enum ActiveConnectionState {
     Deactivating = 3,
     Deactivated = 4,
 }
+
+pub type HashMapVariant<T, Inner> = HashMap<T, Variant<Inner>>;
+pub type HashMapVariantBox<T, Inner> = HashMapVariant<T, Box<Inner>>;
+pub type HashMapInception<T, V> = HashMap<T, HashMap<T, V>>;
+pub type HashMapInceptionVariant<T, Inner> = HashMap<T, HashMapVariant<T, Inner>>;
+pub type HashMapInceptionVariantBox<T, Inner> = HashMapInceptionVariant<T, Box<Inner>>;
 
 // pub enum NMState {
 //     NmStateUnknown = 0,

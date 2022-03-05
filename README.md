@@ -128,8 +128,8 @@ fn main() -> Result<(), Error> {
   - [ ] DNSManager
   - [ ] PPP
   - [ ] SecretAgent
-  - [ ] Settings
-  - [ ] Settings Connection
+  - [x] Settings
+  - [x] Settings Connection
   - [ ] VPN Connection
   - [ ] VPN Plugin
   - [ ] WifiP2P

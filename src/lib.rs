@@ -13,7 +13,7 @@
 //! dbus = "0.8"
 //! ```
 //!
-//! ## Example
+//! ## NetworkManager
 //!
 //! ```rust,no_run
 //! use networkmanager::devices::{Any, Device, Wired, Wireless};
@@ -62,6 +62,28 @@
 //!     Ok(())
 //! }
 //! ```
+//!
+//! ## Settings
+//!
+//! ```rust,no_run
+//! use dbus::blocking::Connection;
+//! use networkmanager::{Error, Settings};
+//! fn main() -> Result<(), Error> {
+//!     let dbus_connection = Connection::new_system()?;
+//!     let settings = Settings::new(&dbus_connection);
+//!
+//!     println!("hostname: {:?}", settings.get_hostname()?);
+//!
+//!     for con in settings.get_all_connections()? {
+//!         println!("filename: {:?}", con.filename()?);
+//!         println!("flags: {:?}", con.flags()?);
+//!         println!("settings: {:?}", con.get_settings()?);
+//!     }
+//!
+//!     Ok(())
+//! }
+//! ```
+//!
 
 mod gen;
 #[macro_use]
@@ -69,6 +91,8 @@ mod dbus_api;
 mod accesspoint;
 mod errors;
 mod networkmanager;
+mod settings;
+mod settings_connection;
 
 pub mod configs;
 pub mod connection;
@@ -77,3 +101,4 @@ pub mod types;
 
 pub use crate::errors::Error;
 pub use crate::networkmanager::NetworkManager;
+pub use crate::settings::Settings;

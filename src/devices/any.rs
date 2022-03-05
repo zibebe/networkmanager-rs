@@ -4,28 +4,30 @@ use crate::connection::Connection;
 use crate::dbus_api::DBusAccessor;
 use crate::errors::Error;
 use crate::gen::OrgFreedesktopNetworkManagerDevice;
-use crate::types::{Capability, ConnectivityState, DeviceInterfaceFlag, DeviceType};
+use crate::types::{
+    Capability, ConnectivityState, DeviceInterfaceFlag, DeviceType, HashMapInceptionVariantBox,
+    HashMapVariantBox,
+};
+use dbus::arg::RefArg;
 use num_traits::FromPrimitive;
-
-type HashMapDBusVariant =
-    std::collections::HashMap<String, dbus::arg::Variant<Box<dyn dbus::arg::RefArg + 'static>>>;
-
-type HashMapDBusVariantStr<'a> = std::collections::HashMap<
-    &'a str,
-    std::collections::HashMap<&'a str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
->;
 
 pub trait Any {
     fn reapply(
         &self,
-        connection: HashMapDBusVariantStr,
+        connection: HashMapInceptionVariantBox<&str, dyn RefArg>,
         version_id: u64,
         flags: u32,
     ) -> Result<(), Error>;
     fn get_applied_connection(
         &self,
         flags: u32,
-    ) -> Result<(::std::collections::HashMap<String, HashMapDBusVariant>, u64), Error>;
+    ) -> Result<
+        (
+            HashMapInceptionVariantBox<String, dyn RefArg + 'static>,
+            u64,
+        ),
+        Error,
+    >;
     fn disconnect(&self) -> Result<(), Error>;
     fn delete(&self) -> Result<(), Error>;
     fn udi(&self) -> Result<String, Error>;
@@ -54,7 +56,8 @@ pub trait Any {
     fn physical_port_id(&self) -> Result<String, Error>;
     fn mtu(&self) -> Result<u32, Error>;
     fn metered(&self) -> Result<u32, Error>;
-    fn lldp_neighbors(&self) -> Result<Vec<HashMapDBusVariant>, Error>;
+    fn lldp_neighbors(&self)
+        -> Result<Vec<HashMapVariantBox<String, dyn RefArg + 'static>>, Error>;
     fn real(&self) -> Result<bool, Error>;
     fn ip4_connectivity(&self) -> Result<ConnectivityState, Error>;
     fn ip6_connectivity(&self) -> Result<ConnectivityState, Error>;
@@ -67,10 +70,7 @@ macro_rules! impl_any {
         impl<$lifetime> Any for $name {
             fn reapply(
                 &self,
-                connection: std::collections::HashMap<
-                    &str,
-                    std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
-                >,
+                connection: HashMapInceptionVariantBox<&str, dyn RefArg>,
                 version_id: u64,
                 flags: u32,
             ) -> Result<(), Error> {
@@ -79,7 +79,16 @@ macro_rules! impl_any {
             fn get_applied_connection(
                 &self,
                 flags: u32,
-            ) -> Result<(std::collections::HashMap<String, HashMapDBusVariant>, u64), Error> {
+            ) -> Result<
+                (
+                    std::collections::HashMap<
+                        String,
+                        HashMapVariantBox<String, dyn RefArg + 'static>,
+                    >,
+                    u64,
+                ),
+                Error,
+            > {
                 Ok(proxy!(self).get_applied_connection(flags)?)
             }
             fn disconnect(&self) -> Result<(), Error> {
@@ -196,7 +205,9 @@ macro_rules! impl_any {
             fn mtu(&self) -> Result<u32, Error> {
                 Ok(proxy!(self).mtu()?)
             }
-            fn lldp_neighbors(&self) -> Result<Vec<HashMapDBusVariant>, Error> {
+            fn lldp_neighbors(
+                &self,
+            ) -> Result<Vec<HashMapVariantBox<String, dyn RefArg + 'static>>, Error> {
                 Ok(proxy!(self).lldp_neighbors()?)
             }
             fn metered(&self) -> Result<u32, Error> {
