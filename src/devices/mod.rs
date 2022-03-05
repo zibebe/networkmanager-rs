@@ -23,7 +23,7 @@ pub enum Device<'a> {
     Generic(GenericDevice<'a>),
     Bridge(BridgeDevice<'a>),
     Veth(VethDevice<'a>),
-    UnsupportedDevice
+    UnsupportedDevice,
 }
 
 pub struct GenericDevice<'a> {
