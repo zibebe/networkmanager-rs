@@ -23,6 +23,7 @@ pub enum Device<'a> {
     Generic(GenericDevice<'a>),
     Bridge(BridgeDevice<'a>),
     Veth(VethDevice<'a>),
+    UnsupportedDevice,
 }
 
 pub struct GenericDevice<'a> {
@@ -55,7 +56,7 @@ impl<'a> Device<'a> {
                 DeviceType::Generic => Ok(Device::Generic(GenericDevice { dbus_accessor })),
                 DeviceType::Bridge => Ok(Device::Bridge(BridgeDevice { dbus_accessor })),
                 DeviceType::Veth => Ok(Device::Veth(VethDevice { dbus_accessor })),
-                _ => Err(Error::UnsupportedDevice),
+                _ => Ok(Device::UnsupportedDevice),
             },
             None => Err(Error::UnsupportedType),
         }
