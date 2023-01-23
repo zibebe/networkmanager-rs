@@ -21,7 +21,7 @@ Add networkmanager and dbus to your `Cargo.toml` with:
 
 ```toml
 [dependencies]
-networkmanager = "0.3"
+networkmanager = "0.4"
 dbus = "0.9"
 ```
 
