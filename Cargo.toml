@@ -1,6 +1,6 @@
 [package]
 name = "networkmanager"
-version = "0.3.4"
+version = "0.3.5"
 authors = [
     "Tobias Tschinkowitz <tobias.tschinkowitz@icloud.com>",
     "Walter Bonetti",
