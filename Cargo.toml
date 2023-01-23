@@ -6,7 +6,7 @@ authors = [
     "Walter Bonetti",
 ]
 description = "Bindings for the Linux NetworkManager"
-repository = "https://github.com/he4d/networkmanager-rs"
+repository = "https://github.com/truehumandesign/networkmanager-rs"
 documentation = "https://docs.rs/networkmanager"
 readme = "README.md"
 categories = ["api-bindings", "network-programming", "os::unix-apis"]
