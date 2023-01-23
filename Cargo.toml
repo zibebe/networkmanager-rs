@@ -1,7 +1,10 @@
 [package]
 name = "networkmanager"
-version = "0.3.3"
-authors = ["Tobias Tschinkowitz <tobias.tschinkowitz@icloud.com>", "Walter Bonetti"]
+version = "0.3.4"
+authors = [
+    "Tobias Tschinkowitz <tobias.tschinkowitz@icloud.com>",
+    "Walter Bonetti",
+]
 description = "Bindings for the Linux NetworkManager"
 repository = "https://github.com/he4d/networkmanager-rs"
 documentation = "https://docs.rs/networkmanager"
