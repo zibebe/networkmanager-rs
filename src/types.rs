@@ -20,7 +20,9 @@ pub enum DeviceInterfaceFlag {
     None = 0,
     Up = 1,
     LowerUp = 2,
-    Carrier = 65536,
+    Promisc = 4,
+    Carrier = 0x10000,
+    LldpClientEnabled = 0x20000,
 }
 
 #[derive(Debug, FromPrimitive)]
@@ -34,8 +36,8 @@ pub enum ConnectivityState {
 
 #[derive(Debug, FromPrimitive)]
 pub enum DeviceType {
-    Ethernet = 1,
     Unknown = 0,
+    Ethernet = 1,
     Wifi = 2,
     Unused1 = 3,
     Unused2 = 4,
@@ -66,6 +68,7 @@ pub enum DeviceType {
     Wireguard = 29,
     WifiP2p = 30,
     Vrf = 31,
+    Loopback = 32,
 }
 
 #[derive(Debug, FromPrimitive)]
@@ -78,6 +81,7 @@ pub enum ActivationStateFlags {
     Ip6Ready = 16,
     MasterHasSlaves = 32,
     LifetimeBoundToProfileVisibility = 64,
+    External = 128,
 }
 
 #[derive(Debug, FromPrimitive)]
