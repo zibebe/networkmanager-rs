@@ -1,10 +1,10 @@
 mod any;
+mod bluetooth;
 mod bridge;
 mod generic;
 mod veth;
 mod wired;
 mod wireless;
-mod bluetooth;
 
 pub use self::any::Any;
 pub use self::bridge::Bridge;
