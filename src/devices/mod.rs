@@ -4,6 +4,7 @@ mod generic;
 mod veth;
 mod wired;
 mod wireless;
+mod bluetooth;
 
 pub use self::any::Any;
 pub use self::bridge::Bridge;
@@ -11,6 +12,7 @@ pub use self::generic::Generic;
 pub use self::veth::Veth;
 pub use self::wired::Wired;
 pub use self::wireless::Wireless;
+//pub use self::bluetooth;
 use crate::dbus_api::DBusAccessor;
 use crate::errors::Error;
 use crate::gen::OrgFreedesktopNetworkManagerDevice;
@@ -23,7 +25,7 @@ pub enum Device<'a> {
     Generic(GenericDevice<'a>),
     Bridge(BridgeDevice<'a>),
     Veth(VethDevice<'a>),
-    BluetoothDevice,
+    BluetoothDevice(BluetoothDevice<'a>),
     UnsupportedDevice,
 }
 
@@ -32,6 +34,10 @@ pub struct GenericDevice<'a> {
 }
 
 pub struct WiFiDevice<'a> {
+    dbus_accessor: DBusAccessor<'a>,
+}
+
+pub struct BluetoothDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
 
