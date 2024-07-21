@@ -22,7 +22,7 @@ pub struct BluetoothCapability {
 pub trait Bluetooth {
     fn capabilities(&self) -> Result<BluetoothCapability, Error>;
     fn hw_address(&self) -> Result<String, Error>;
-    fn test(&self) -> String;
+    fn name(&self) -> Result<String, Error>;
 }
 
 impl<'a> Bluetooth for BluetoothDevice<'a> {
@@ -37,10 +37,10 @@ impl<'a> Bluetooth for BluetoothDevice<'a> {
             none: raw == BluetoothCapabilities::None as u32,
         })
     }
+    fn name(&self) -> Result<String, Error> {
+        Ok(proxy!(self).name()?)
+    }
     fn hw_address(&self) -> Result<String, Error> {
         Ok(proxy!(self).hw_address()?)
-    }
-    fn test(&self) -> String {
-        return "a".into();
     }
 }
