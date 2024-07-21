@@ -23,6 +23,7 @@ pub enum Device<'a> {
     Generic(GenericDevice<'a>),
     Bridge(BridgeDevice<'a>),
     Veth(VethDevice<'a>),
+    BluetoothDevice,
     UnsupportedDevice,
 }
 
