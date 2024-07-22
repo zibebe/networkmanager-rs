@@ -21,6 +21,9 @@ pub struct BluetoothCapability {
 
 pub trait Bluetooth {
     fn capabilities(&self) -> Result<BluetoothCapability, Error>;
+    fn connect(&self, mac_address: &str) -> Result<(), Error>;
+    fn scan(&self) -> Result<Vec<()>, Error>;
+    fn disconnect(&self, mac_address: &str) -> Result<(), Error>;
     fn hw_address(&self) -> Result<String, Error>;
     fn name(&self) -> Result<String, Error>;
 }
@@ -36,6 +39,17 @@ impl<'a> Bluetooth for BluetoothDevice<'a> {
             network_access_point,
             none: raw == BluetoothCapabilities::None as u32,
         })
+    }
+    fn connect(&self, mac_address: &str) -> Result<(), Error> {
+        mac_address.get(0..0);
+        todo!("Connecting to bluetooth devices isn't implemented yet.")
+    }
+    fn disconnect(&self, mac_address: &str) -> Result<(), Error> {
+        mac_address.get(0..0);
+        todo!("Disconnecting from bluetooth devices isn't implemented yet.")
+    }
+    fn scan(&self) -> Result<Vec<()>, Error> {
+        todo!("Scanning for bluetooth devices isn't implemented yet.")
     }
     fn name(&self) -> Result<String, Error> {
         Ok(proxy!(self).name()?)
