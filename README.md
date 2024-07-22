@@ -94,7 +94,7 @@ fn main() -> Result<(), Error> {
     - [x] Wireless
     - [x] Wired
     - [ ] ADSL
-    - [X] Bluetooth
+    - [x] Bluetooth
     - [ ] Bond
     - [x] Bridge
     - [ ] Dummy
