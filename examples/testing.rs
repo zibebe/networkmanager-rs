@@ -21,6 +21,12 @@ fn main() -> Result<(), Error> {
                 println!("Connection id: {}", con.id()?);
             }
             Device::WiFi(x) => {
+                println!("Applied connection: {:#?}", x.active_connection()?.id()?);
+                println!(
+                    "Secrets: {:#?}",
+                    x.active_connection()?
+                        .get_secrets("802-11-wireless-security")?
+                );
                 println!("Bitrate: {:?}", x.bitrate()?);
                 x.request_scan(std::collections::HashMap::new())?;
                 for ap in x.get_all_access_points()? {
