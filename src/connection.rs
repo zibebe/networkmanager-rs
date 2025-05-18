@@ -2,6 +2,7 @@ use crate::configs::{Dhcp4Config, Dhcp6Config, Ip4Config, Ip6Config};
 use crate::dbus_api::DBusAccessor;
 use crate::devices::Device;
 use crate::gen::OrgFreedesktopNetworkManagerConnectionActive;
+use crate::gen::OrgFreedesktopNetworkManagerSettingsConnection;
 use crate::types::{ActivationStateFlags, ActiveConnectionState};
 use crate::Error;
 use num_traits::FromPrimitive;
@@ -103,5 +104,31 @@ impl<'a> Connection<'a> {
             &self.dbus_accessor.bus,
             &dev_path,
         ))
+    }
+    pub fn get_secrets(
+        &self,
+        setting_name: &str,
+    ) -> Result<std::collections::HashMap<String, Box<dyn dbus::arg::RefArg>>, Error> {
+        let conn = proxy!(self).connection()?;
+        // Our dbus_accessor represents an ActiveConnection, but we need to go to the underlying
+        // Connection.
+        let conn_accessor = DBusAccessor::new(
+            self.dbus_accessor.connection,
+            &self.dbus_accessor.bus,
+            &conn,
+        );
+        let secrets = conn_accessor.create_proxy().get_secrets(setting_name)?;
+
+        let requested = secrets
+            .get(setting_name)
+            // FIXME: Is that the right error? Does seem so, because a type was requested that
+            // NetworkManager does not know.
+            .ok_or(Error::UnsupportedType)?;
+
+        use dbus::arg::RefArg;
+        Ok(requested
+            .iter()
+            .map(|(k, v)| (k.clone(), v.box_clone()))
+            .collect())
     }
 }
