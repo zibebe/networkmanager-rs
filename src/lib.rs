@@ -9,8 +9,8 @@
 //!
 //! ```toml
 //! [dependencies]
-//! networkmanager = "0.3"
-//! dbus = "0.8"
+//! networkmanager = "0.5"
+//! dbus = "0.9"
 //! ```
 //!
 //! ## Example

@@ -21,7 +21,7 @@ Add networkmanager and dbus to your `Cargo.toml` with:
 
 ```toml
 [dependencies]
-networkmanager = "0.4"
+networkmanager = "0.5"
 dbus = "0.9"
 ```
 
@@ -102,10 +102,12 @@ fn main() -> Result<(), Error> {
     - [ ] Bond
     - [x] Bridge
     - [ ] Dummy
-    - [ ] Hsr
+    - [ ] HSR
     - [ ] Infiniband
     - [ ] IpTunnel
+    - [ ] IPVLAN
     - [ ] Lowpan
+    - [ ] Loopback
     - [ ] Macsec
     - [ ] MacVLAN
     - [ ] Modem
@@ -145,7 +147,7 @@ fn main() -> Result<(), Error> {
   - [ ] WifiP2P
   - [ ] Wimax NSP
 - General
-  - [ ] Improve Error handling
+  - [x] Improve Error handling
   - [ ] dbus::arg::Variants conversion
 
 ## License
