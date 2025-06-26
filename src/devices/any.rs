@@ -12,7 +12,7 @@ type HashMapDBusVariant =
 
 type HashMapDBusVariantStr<'a> = std::collections::HashMap<
     &'a str,
-    std::collections::HashMap<&'a str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
+    std::collections::HashMap<String, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
 >;
 
 pub trait Any {
@@ -69,7 +69,10 @@ macro_rules! impl_any {
                 &self,
                 connection: std::collections::HashMap<
                     &str,
-                    std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
+                    std::collections::HashMap<
+                        String,
+                        dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>,
+                    >,
                 >,
                 version_id: u64,
                 flags: u32,
