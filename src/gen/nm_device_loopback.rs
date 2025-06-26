@@ -4,9 +4,9 @@ use dbus;
 use dbus::arg;
 use dbus::blocking;
 
-pub trait OrgFreedesktopNetworkManagerDeviceOvsInterface {}
+pub trait OrgFreedesktopNetworkManagerDeviceLoopback {}
 
 impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>>
-    OrgFreedesktopNetworkManagerDeviceOvsInterface for blocking::Proxy<'a, C>
+    OrgFreedesktopNetworkManagerDeviceLoopback for blocking::Proxy<'a, C>
 {
 }

@@ -4,45 +4,45 @@ use dbus;
 use dbus::arg;
 use dbus::blocking;
 
-pub trait OrgFreedesktopNetworkManagerDeviceMacvlan {
+pub trait OrgFreedesktopNetworkManagerDeviceIpvlan {
     fn parent(&self) -> Result<dbus::Path<'static>, dbus::Error>;
+    fn vepa(&self) -> Result<bool, dbus::Error>;
     fn mode(&self) -> Result<String, dbus::Error>;
-    fn no_promisc(&self) -> Result<bool, dbus::Error>;
-    fn tap(&self) -> Result<bool, dbus::Error>;
+    fn private(&self) -> Result<bool, dbus::Error>;
 }
 
 impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>>
-    OrgFreedesktopNetworkManagerDeviceMacvlan for blocking::Proxy<'a, C>
+    OrgFreedesktopNetworkManagerDeviceIpvlan for blocking::Proxy<'a, C>
 {
     fn parent(&self) -> Result<dbus::Path<'static>, dbus::Error> {
         <Self as blocking::stdintf::org_freedesktop_dbus::Properties>::get(
             self,
-            "org.freedesktop.NetworkManager.Device.Macvlan",
+            "org.freedesktop.NetworkManager.Device.Ipvlan",
             "Parent",
+        )
+    }
+
+    fn vepa(&self) -> Result<bool, dbus::Error> {
+        <Self as blocking::stdintf::org_freedesktop_dbus::Properties>::get(
+            self,
+            "org.freedesktop.NetworkManager.Device.Ipvlan",
+            "Vepa",
         )
     }
 
     fn mode(&self) -> Result<String, dbus::Error> {
         <Self as blocking::stdintf::org_freedesktop_dbus::Properties>::get(
             self,
-            "org.freedesktop.NetworkManager.Device.Macvlan",
+            "org.freedesktop.NetworkManager.Device.Ipvlan",
             "Mode",
         )
     }
 
-    fn no_promisc(&self) -> Result<bool, dbus::Error> {
+    fn private(&self) -> Result<bool, dbus::Error> {
         <Self as blocking::stdintf::org_freedesktop_dbus::Properties>::get(
             self,
-            "org.freedesktop.NetworkManager.Device.Macvlan",
-            "NoPromisc",
-        )
-    }
-
-    fn tap(&self) -> Result<bool, dbus::Error> {
-        <Self as blocking::stdintf::org_freedesktop_dbus::Properties>::get(
-            self,
-            "org.freedesktop.NetworkManager.Device.Macvlan",
-            "Tap",
+            "org.freedesktop.NetworkManager.Device.Ipvlan",
+            "Private",
         )
     }
 }

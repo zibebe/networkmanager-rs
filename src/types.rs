@@ -161,11 +161,11 @@ pub enum ActiveConnectionState {
 //     Nm802_11ModeMesh = 4,
 // }
 
-// pub enum NMBluetoothCapabilities {
-//     NmBtCapabilityNone = 0,
-//     NmBtCapabilityDun = 1,
-//     NmBtCapabilityNap = 2,
-// }
+pub enum NMBluetoothCapabilities {
+    NmBtCapabilityNone = 0,
+    NmBtCapabilityDun = 1,
+    NmBtCapabilityNap = 2,
+}
 
 // pub enum NMDeviceModemCapabilities {
 //     NmDeviceModemCapabilityNone = 0,

@@ -1,4 +1,4 @@
-use super::{BridgeDevice, EthernetDevice, GenericDevice, VethDevice, WiFiDevice};
+use super::{BluetoothDevice, BridgeDevice, EthernetDevice, GenericDevice, VethDevice, WiFiDevice};
 use crate::configs::{Dhcp4Config, Dhcp6Config, Ip4Config, Ip6Config};
 use crate::connection::Connection;
 use crate::dbus_api::DBusAccessor;
@@ -12,7 +12,7 @@ type HashMapDBusVariant =
 
 type HashMapDBusVariantStr<'a> = std::collections::HashMap<
     &'a str,
-    std::collections::HashMap<&'a str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
+    std::collections::HashMap<String, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
 >;
 
 pub trait Any {
@@ -69,7 +69,10 @@ macro_rules! impl_any {
                 &self,
                 connection: std::collections::HashMap<
                     &str,
-                    std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
+                    std::collections::HashMap<
+                        String,
+                        dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>,
+                    >,
                 >,
                 version_id: u64,
                 flags: u32,
@@ -236,5 +239,6 @@ macro_rules! impl_any {
 impl_any!(VethDevice<'a>, 'a);
 impl_any!(BridgeDevice<'a>, 'a);
 impl_any!(WiFiDevice<'a>, 'a);
+impl_any!(BluetoothDevice<'a>, 'a);
 impl_any!(EthernetDevice<'a>, 'a);
 impl_any!(GenericDevice<'a>, 'a);

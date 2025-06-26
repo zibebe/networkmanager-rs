@@ -9,7 +9,10 @@ pub trait Wireless {
     fn get_all_access_points(&self) -> Result<Vec<AccessPoint>, Error>;
     fn request_scan(
         &self,
-        options: ::std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
+        options: ::std::collections::HashMap<
+            String,
+            dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>,
+        >,
     ) -> Result<(), Error>;
     fn hw_address(&self) -> Result<String, Error>;
     fn perm_hw_address(&self) -> Result<String, Error>;
@@ -24,7 +27,7 @@ pub trait Wireless {
 impl<'a> Wireless for WiFiDevice<'a> {
     fn request_scan(
         &self,
-        options: std::collections::HashMap<&str, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
+        options: std::collections::HashMap<String, dbus::arg::Variant<Box<dyn dbus::arg::RefArg>>>,
     ) -> Result<(), Error> {
         Ok(proxy!(self).request_scan(options)?)
     }
