@@ -14,30 +14,6 @@ pub trait OrgFreedesktopNetworkManagerDeviceTun {
     fn hw_address(&self) -> Result<String, dbus::Error>;
 }
 
-#[derive(Debug)]
-pub struct OrgFreedesktopNetworkManagerDeviceTunPropertiesChanged {
-    pub properties: arg::PropMap,
-}
-
-impl arg::AppendAll for OrgFreedesktopNetworkManagerDeviceTunPropertiesChanged {
-    fn append(&self, i: &mut arg::IterAppend) {
-        arg::RefArg::append(&self.properties, i);
-    }
-}
-
-impl arg::ReadAll for OrgFreedesktopNetworkManagerDeviceTunPropertiesChanged {
-    fn read(i: &mut arg::Iter) -> Result<Self, arg::TypeMismatchError> {
-        Ok(OrgFreedesktopNetworkManagerDeviceTunPropertiesChanged {
-            properties: i.read()?,
-        })
-    }
-}
-
-impl dbus::message::SignalArgs for OrgFreedesktopNetworkManagerDeviceTunPropertiesChanged {
-    const NAME: &'static str = "PropertiesChanged";
-    const INTERFACE: &'static str = "org.freedesktop.NetworkManager.Device.Tun";
-}
-
 impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>>
     OrgFreedesktopNetworkManagerDeviceTun for blocking::Proxy<'a, C>
 {

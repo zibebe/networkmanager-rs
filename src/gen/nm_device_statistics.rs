@@ -11,32 +11,6 @@ pub trait OrgFreedesktopNetworkManagerDeviceStatistics {
     fn rx_bytes(&self) -> Result<u64, dbus::Error>;
 }
 
-#[derive(Debug)]
-pub struct OrgFreedesktopNetworkManagerDeviceStatisticsPropertiesChanged {
-    pub properties: arg::PropMap,
-}
-
-impl arg::AppendAll for OrgFreedesktopNetworkManagerDeviceStatisticsPropertiesChanged {
-    fn append(&self, i: &mut arg::IterAppend) {
-        arg::RefArg::append(&self.properties, i);
-    }
-}
-
-impl arg::ReadAll for OrgFreedesktopNetworkManagerDeviceStatisticsPropertiesChanged {
-    fn read(i: &mut arg::Iter) -> Result<Self, arg::TypeMismatchError> {
-        Ok(
-            OrgFreedesktopNetworkManagerDeviceStatisticsPropertiesChanged {
-                properties: i.read()?,
-            },
-        )
-    }
-}
-
-impl dbus::message::SignalArgs for OrgFreedesktopNetworkManagerDeviceStatisticsPropertiesChanged {
-    const NAME: &'static str = "PropertiesChanged";
-    const INTERFACE: &'static str = "org.freedesktop.NetworkManager.Device.Statistics";
-}
-
 impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>>
     OrgFreedesktopNetworkManagerDeviceStatistics for blocking::Proxy<'a, C>
 {

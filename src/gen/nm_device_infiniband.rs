@@ -9,32 +9,6 @@ pub trait OrgFreedesktopNetworkManagerDeviceInfiniband {
     fn carrier(&self) -> Result<bool, dbus::Error>;
 }
 
-#[derive(Debug)]
-pub struct OrgFreedesktopNetworkManagerDeviceInfinibandPropertiesChanged {
-    pub properties: arg::PropMap,
-}
-
-impl arg::AppendAll for OrgFreedesktopNetworkManagerDeviceInfinibandPropertiesChanged {
-    fn append(&self, i: &mut arg::IterAppend) {
-        arg::RefArg::append(&self.properties, i);
-    }
-}
-
-impl arg::ReadAll for OrgFreedesktopNetworkManagerDeviceInfinibandPropertiesChanged {
-    fn read(i: &mut arg::Iter) -> Result<Self, arg::TypeMismatchError> {
-        Ok(
-            OrgFreedesktopNetworkManagerDeviceInfinibandPropertiesChanged {
-                properties: i.read()?,
-            },
-        )
-    }
-}
-
-impl dbus::message::SignalArgs for OrgFreedesktopNetworkManagerDeviceInfinibandPropertiesChanged {
-    const NAME: &'static str = "PropertiesChanged";
-    const INTERFACE: &'static str = "org.freedesktop.NetworkManager.Device.Infiniband";
-}
-
 impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>>
     OrgFreedesktopNetworkManagerDeviceInfiniband for blocking::Proxy<'a, C>
 {

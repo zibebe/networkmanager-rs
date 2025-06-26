@@ -20,30 +20,6 @@ pub trait OrgFreedesktopNetworkManagerDeviceMacsec {
     fn replay_protect(&self) -> Result<bool, dbus::Error>;
 }
 
-#[derive(Debug)]
-pub struct OrgFreedesktopNetworkManagerDeviceMacsecPropertiesChanged {
-    pub properties: arg::PropMap,
-}
-
-impl arg::AppendAll for OrgFreedesktopNetworkManagerDeviceMacsecPropertiesChanged {
-    fn append(&self, i: &mut arg::IterAppend) {
-        arg::RefArg::append(&self.properties, i);
-    }
-}
-
-impl arg::ReadAll for OrgFreedesktopNetworkManagerDeviceMacsecPropertiesChanged {
-    fn read(i: &mut arg::Iter) -> Result<Self, arg::TypeMismatchError> {
-        Ok(OrgFreedesktopNetworkManagerDeviceMacsecPropertiesChanged {
-            properties: i.read()?,
-        })
-    }
-}
-
-impl dbus::message::SignalArgs for OrgFreedesktopNetworkManagerDeviceMacsecPropertiesChanged {
-    const NAME: &'static str = "PropertiesChanged";
-    const INTERFACE: &'static str = "org.freedesktop.NetworkManager.Device.Macsec";
-}
-
 impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>>
     OrgFreedesktopNetworkManagerDeviceMacsec for blocking::Proxy<'a, C>
 {

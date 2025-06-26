@@ -10,32 +10,6 @@ pub trait OrgFreedesktopNetworkManagerDeviceOlpcMesh {
     fn active_channel(&self) -> Result<u32, dbus::Error>;
 }
 
-#[derive(Debug)]
-pub struct OrgFreedesktopNetworkManagerDeviceOlpcMeshPropertiesChanged {
-    pub properties: arg::PropMap,
-}
-
-impl arg::AppendAll for OrgFreedesktopNetworkManagerDeviceOlpcMeshPropertiesChanged {
-    fn append(&self, i: &mut arg::IterAppend) {
-        arg::RefArg::append(&self.properties, i);
-    }
-}
-
-impl arg::ReadAll for OrgFreedesktopNetworkManagerDeviceOlpcMeshPropertiesChanged {
-    fn read(i: &mut arg::Iter) -> Result<Self, arg::TypeMismatchError> {
-        Ok(
-            OrgFreedesktopNetworkManagerDeviceOlpcMeshPropertiesChanged {
-                properties: i.read()?,
-            },
-        )
-    }
-}
-
-impl dbus::message::SignalArgs for OrgFreedesktopNetworkManagerDeviceOlpcMeshPropertiesChanged {
-    const NAME: &'static str = "PropertiesChanged";
-    const INTERFACE: &'static str = "org.freedesktop.NetworkManager.Device.OlpcMesh";
-}
-
 impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>>
     OrgFreedesktopNetworkManagerDeviceOlpcMesh for blocking::Proxy<'a, C>
 {

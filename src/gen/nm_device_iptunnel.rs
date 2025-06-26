@@ -16,33 +16,8 @@ pub trait OrgFreedesktopNetworkManagerDeviceIPTunnel {
     fn output_key(&self) -> Result<String, dbus::Error>;
     fn encapsulation_limit(&self) -> Result<u8, dbus::Error>;
     fn flow_label(&self) -> Result<u32, dbus::Error>;
+    fn fw_mark(&self) -> Result<u32, dbus::Error>;
     fn flags(&self) -> Result<u32, dbus::Error>;
-}
-
-#[derive(Debug)]
-pub struct OrgFreedesktopNetworkManagerDeviceIPTunnelPropertiesChanged {
-    pub properties: arg::PropMap,
-}
-
-impl arg::AppendAll for OrgFreedesktopNetworkManagerDeviceIPTunnelPropertiesChanged {
-    fn append(&self, i: &mut arg::IterAppend) {
-        arg::RefArg::append(&self.properties, i);
-    }
-}
-
-impl arg::ReadAll for OrgFreedesktopNetworkManagerDeviceIPTunnelPropertiesChanged {
-    fn read(i: &mut arg::Iter) -> Result<Self, arg::TypeMismatchError> {
-        Ok(
-            OrgFreedesktopNetworkManagerDeviceIPTunnelPropertiesChanged {
-                properties: i.read()?,
-            },
-        )
-    }
-}
-
-impl dbus::message::SignalArgs for OrgFreedesktopNetworkManagerDeviceIPTunnelPropertiesChanged {
-    const NAME: &'static str = "PropertiesChanged";
-    const INTERFACE: &'static str = "org.freedesktop.NetworkManager.Device.IPTunnel";
 }
 
 impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>>
@@ -133,6 +108,14 @@ impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>>
             self,
             "org.freedesktop.NetworkManager.Device.IPTunnel",
             "FlowLabel",
+        )
+    }
+
+    fn fw_mark(&self) -> Result<u32, dbus::Error> {
+        <Self as blocking::stdintf::org_freedesktop_dbus::Properties>::get(
+            self,
+            "org.freedesktop.NetworkManager.Device.IPTunnel",
+            "FwMark",
         )
     }
 

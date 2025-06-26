@@ -20,6 +20,7 @@ pub trait OrgFreedesktopNetworkManagerConnectionActive {
     fn ip6_config(&self) -> Result<dbus::Path<'static>, dbus::Error>;
     fn dhcp6_config(&self) -> Result<dbus::Path<'static>, dbus::Error>;
     fn vpn(&self) -> Result<bool, dbus::Error>;
+    fn controller(&self) -> Result<dbus::Path<'static>, dbus::Error>;
     fn master(&self) -> Result<dbus::Path<'static>, dbus::Error>;
 }
 
@@ -47,32 +48,6 @@ impl arg::ReadAll for OrgFreedesktopNetworkManagerConnectionActiveStateChanged {
 
 impl dbus::message::SignalArgs for OrgFreedesktopNetworkManagerConnectionActiveStateChanged {
     const NAME: &'static str = "StateChanged";
-    const INTERFACE: &'static str = "org.freedesktop.NetworkManager.Connection.Active";
-}
-
-#[derive(Debug)]
-pub struct OrgFreedesktopNetworkManagerConnectionActivePropertiesChanged {
-    pub properties: arg::PropMap,
-}
-
-impl arg::AppendAll for OrgFreedesktopNetworkManagerConnectionActivePropertiesChanged {
-    fn append(&self, i: &mut arg::IterAppend) {
-        arg::RefArg::append(&self.properties, i);
-    }
-}
-
-impl arg::ReadAll for OrgFreedesktopNetworkManagerConnectionActivePropertiesChanged {
-    fn read(i: &mut arg::Iter) -> Result<Self, arg::TypeMismatchError> {
-        Ok(
-            OrgFreedesktopNetworkManagerConnectionActivePropertiesChanged {
-                properties: i.read()?,
-            },
-        )
-    }
-}
-
-impl dbus::message::SignalArgs for OrgFreedesktopNetworkManagerConnectionActivePropertiesChanged {
-    const NAME: &'static str = "PropertiesChanged";
     const INTERFACE: &'static str = "org.freedesktop.NetworkManager.Connection.Active";
 }
 
@@ -196,6 +171,14 @@ impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>>
             self,
             "org.freedesktop.NetworkManager.Connection.Active",
             "Vpn",
+        )
+    }
+
+    fn controller(&self) -> Result<dbus::Path<'static>, dbus::Error> {
+        <Self as blocking::stdintf::org_freedesktop_dbus::Properties>::get(
+            self,
+            "org.freedesktop.NetworkManager.Connection.Active",
+            "Controller",
         )
     }
 

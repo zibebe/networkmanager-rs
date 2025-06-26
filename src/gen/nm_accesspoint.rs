@@ -13,32 +13,9 @@ pub trait OrgFreedesktopNetworkManagerAccessPoint {
     fn hw_address(&self) -> Result<String, dbus::Error>;
     fn mode(&self) -> Result<u32, dbus::Error>;
     fn max_bitrate(&self) -> Result<u32, dbus::Error>;
+    fn bandwidth(&self) -> Result<u32, dbus::Error>;
     fn strength(&self) -> Result<u8, dbus::Error>;
     fn last_seen(&self) -> Result<i32, dbus::Error>;
-}
-
-#[derive(Debug)]
-pub struct OrgFreedesktopNetworkManagerAccessPointPropertiesChanged {
-    pub properties: arg::PropMap,
-}
-
-impl arg::AppendAll for OrgFreedesktopNetworkManagerAccessPointPropertiesChanged {
-    fn append(&self, i: &mut arg::IterAppend) {
-        arg::RefArg::append(&self.properties, i);
-    }
-}
-
-impl arg::ReadAll for OrgFreedesktopNetworkManagerAccessPointPropertiesChanged {
-    fn read(i: &mut arg::Iter) -> Result<Self, arg::TypeMismatchError> {
-        Ok(OrgFreedesktopNetworkManagerAccessPointPropertiesChanged {
-            properties: i.read()?,
-        })
-    }
-}
-
-impl dbus::message::SignalArgs for OrgFreedesktopNetworkManagerAccessPointPropertiesChanged {
-    const NAME: &'static str = "PropertiesChanged";
-    const INTERFACE: &'static str = "org.freedesktop.NetworkManager.AccessPoint";
 }
 
 impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>>
@@ -105,6 +82,14 @@ impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>>
             self,
             "org.freedesktop.NetworkManager.AccessPoint",
             "MaxBitrate",
+        )
+    }
+
+    fn bandwidth(&self) -> Result<u32, dbus::Error> {
+        <Self as blocking::stdintf::org_freedesktop_dbus::Properties>::get(
+            self,
+            "org.freedesktop.NetworkManager.AccessPoint",
+            "Bandwidth",
         )
     }
 

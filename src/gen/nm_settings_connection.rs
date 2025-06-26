@@ -70,32 +70,6 @@ impl dbus::message::SignalArgs for OrgFreedesktopNetworkManagerSettingsConnectio
     const INTERFACE: &'static str = "org.freedesktop.NetworkManager.Settings.Connection";
 }
 
-#[derive(Debug)]
-pub struct OrgFreedesktopNetworkManagerSettingsConnectionPropertiesChanged {
-    pub properties: arg::PropMap,
-}
-
-impl arg::AppendAll for OrgFreedesktopNetworkManagerSettingsConnectionPropertiesChanged {
-    fn append(&self, i: &mut arg::IterAppend) {
-        arg::RefArg::append(&self.properties, i);
-    }
-}
-
-impl arg::ReadAll for OrgFreedesktopNetworkManagerSettingsConnectionPropertiesChanged {
-    fn read(i: &mut arg::Iter) -> Result<Self, arg::TypeMismatchError> {
-        Ok(
-            OrgFreedesktopNetworkManagerSettingsConnectionPropertiesChanged {
-                properties: i.read()?,
-            },
-        )
-    }
-}
-
-impl dbus::message::SignalArgs for OrgFreedesktopNetworkManagerSettingsConnectionPropertiesChanged {
-    const NAME: &'static str = "PropertiesChanged";
-    const INTERFACE: &'static str = "org.freedesktop.NetworkManager.Settings.Connection";
-}
-
 impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>>
     OrgFreedesktopNetworkManagerSettingsConnection for blocking::Proxy<'a, C>
 {

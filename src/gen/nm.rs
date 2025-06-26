@@ -65,6 +65,7 @@ pub trait OrgFreedesktopNetworkManager {
     fn wimax_enabled(&self) -> Result<bool, dbus::Error>;
     fn set_wimax_enabled(&self, value: bool) -> Result<(), dbus::Error>;
     fn wimax_hardware_enabled(&self) -> Result<bool, dbus::Error>;
+    fn radio_flags(&self) -> Result<u32, dbus::Error>;
     fn active_connections(&self) -> Result<Vec<dbus::Path<'static>>, dbus::Error>;
     fn primary_connection(&self) -> Result<dbus::Path<'static>, dbus::Error>;
     fn primary_connection_type(&self) -> Result<String, dbus::Error>;
@@ -72,6 +73,7 @@ pub trait OrgFreedesktopNetworkManager {
     fn activating_connection(&self) -> Result<dbus::Path<'static>, dbus::Error>;
     fn startup(&self) -> Result<bool, dbus::Error>;
     fn version(&self) -> Result<String, dbus::Error>;
+    fn version_info(&self) -> Result<Vec<u32>, dbus::Error>;
     fn capabilities(&self) -> Result<Vec<u32>, dbus::Error>;
     fn state_(&self) -> Result<u32, dbus::Error>;
     fn connectivity(&self) -> Result<u32, dbus::Error>;
@@ -120,30 +122,6 @@ impl arg::ReadAll for OrgFreedesktopNetworkManagerStateChanged {
 
 impl dbus::message::SignalArgs for OrgFreedesktopNetworkManagerStateChanged {
     const NAME: &'static str = "StateChanged";
-    const INTERFACE: &'static str = "org.freedesktop.NetworkManager";
-}
-
-#[derive(Debug)]
-pub struct OrgFreedesktopNetworkManagerPropertiesChanged {
-    pub properties: arg::PropMap,
-}
-
-impl arg::AppendAll for OrgFreedesktopNetworkManagerPropertiesChanged {
-    fn append(&self, i: &mut arg::IterAppend) {
-        arg::RefArg::append(&self.properties, i);
-    }
-}
-
-impl arg::ReadAll for OrgFreedesktopNetworkManagerPropertiesChanged {
-    fn read(i: &mut arg::Iter) -> Result<Self, arg::TypeMismatchError> {
-        Ok(OrgFreedesktopNetworkManagerPropertiesChanged {
-            properties: i.read()?,
-        })
-    }
-}
-
-impl dbus::message::SignalArgs for OrgFreedesktopNetworkManagerPropertiesChanged {
-    const NAME: &'static str = "PropertiesChanged";
     const INTERFACE: &'static str = "org.freedesktop.NetworkManager";
 }
 
@@ -431,6 +409,14 @@ impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>> OrgFreed
         )
     }
 
+    fn radio_flags(&self) -> Result<u32, dbus::Error> {
+        <Self as blocking::stdintf::org_freedesktop_dbus::Properties>::get(
+            self,
+            "org.freedesktop.NetworkManager",
+            "RadioFlags",
+        )
+    }
+
     fn active_connections(&self) -> Result<Vec<dbus::Path<'static>>, dbus::Error> {
         <Self as blocking::stdintf::org_freedesktop_dbus::Properties>::get(
             self,
@@ -484,6 +470,14 @@ impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>> OrgFreed
             self,
             "org.freedesktop.NetworkManager",
             "Version",
+        )
+    }
+
+    fn version_info(&self) -> Result<Vec<u32>, dbus::Error> {
+        <Self as blocking::stdintf::org_freedesktop_dbus::Properties>::get(
+            self,
+            "org.freedesktop.NetworkManager",
+            "VersionInfo",
         )
     }
 

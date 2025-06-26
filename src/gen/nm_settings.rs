@@ -27,30 +27,7 @@ pub trait OrgFreedesktopNetworkManagerSettings {
     fn connections(&self) -> Result<Vec<dbus::Path<'static>>, dbus::Error>;
     fn hostname(&self) -> Result<String, dbus::Error>;
     fn can_modify(&self) -> Result<bool, dbus::Error>;
-}
-
-#[derive(Debug)]
-pub struct OrgFreedesktopNetworkManagerSettingsPropertiesChanged {
-    pub properties: arg::PropMap,
-}
-
-impl arg::AppendAll for OrgFreedesktopNetworkManagerSettingsPropertiesChanged {
-    fn append(&self, i: &mut arg::IterAppend) {
-        arg::RefArg::append(&self.properties, i);
-    }
-}
-
-impl arg::ReadAll for OrgFreedesktopNetworkManagerSettingsPropertiesChanged {
-    fn read(i: &mut arg::Iter) -> Result<Self, arg::TypeMismatchError> {
-        Ok(OrgFreedesktopNetworkManagerSettingsPropertiesChanged {
-            properties: i.read()?,
-        })
-    }
-}
-
-impl dbus::message::SignalArgs for OrgFreedesktopNetworkManagerSettingsPropertiesChanged {
-    const NAME: &'static str = "PropertiesChanged";
-    const INTERFACE: &'static str = "org.freedesktop.NetworkManager.Settings";
+    fn version_id(&self) -> Result<u64, dbus::Error>;
 }
 
 #[derive(Debug)]
@@ -205,6 +182,14 @@ impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>>
             self,
             "org.freedesktop.NetworkManager.Settings",
             "CanModify",
+        )
+    }
+
+    fn version_id(&self) -> Result<u64, dbus::Error> {
+        <Self as blocking::stdintf::org_freedesktop_dbus::Properties>::get(
+            self,
+            "org.freedesktop.NetworkManager.Settings",
+            "VersionId",
         )
     }
 }
