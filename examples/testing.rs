@@ -1,4 +1,4 @@
-use networkmanager::devices::{Any, Device, Wired, Wireless};
+use networkmanager::devices::{Any, Bluetooth, Device, Wired, Wireless};
 use networkmanager::{Error, NetworkManager};
 
 use dbus::blocking::Connection;
@@ -26,6 +26,10 @@ fn main() -> Result<(), Error> {
                 for ap in x.get_all_access_points()? {
                     println!("SSID: {:?}", ap.ssid()?);
                 }
+            }
+            Device::Bluetooth(x) => {
+                println!("Name: {:?}", x.name()?);
+                println!("Capabiloties: {}", Bluetooth::hw_address(&x)?);
             }
             _ => {}
         }
