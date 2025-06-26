@@ -102,6 +102,7 @@ fn main() -> Result<(), Error> {
     - [ ] Bond
     - [x] Bridge
     - [ ] Dummy
+    - [ ] Hsr
     - [ ] Infiniband
     - [ ] IpTunnel
     - [ ] Lowpan
