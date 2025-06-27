@@ -29,7 +29,8 @@ fn main() -> Result<(), Error> {
             }
             Device::Bluetooth(x) => {
                 println!("Name: {:?}", x.name()?);
-                println!("Capabilities: {}", Bluetooth::hw_address(&x)?);
+                println!("Capabilities: {:?}", &x.bt_capabilities()?);
+                println!("Address: {}", Bluetooth::hw_address(&x)?);
             }
             _ => {}
         }

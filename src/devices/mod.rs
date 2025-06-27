@@ -1,3 +1,4 @@
+mod adsl;
 mod any;
 mod bridge;
 mod bt;
@@ -6,6 +7,7 @@ mod veth;
 mod wired;
 mod wireless;
 
+pub use self::adsl::Adsl;
 pub use self::any::Any;
 pub use self::bridge::Bridge;
 pub use self::bt::Bluetooth;
@@ -21,6 +23,7 @@ use num_traits::FromPrimitive;
 
 pub enum Device<'a> {
     WiFi(WiFiDevice<'a>),
+    Adsl(AdslDevice<'a>),
     Bluetooth(BluetoothDevice<'a>),
     Ethernet(EthernetDevice<'a>),
     Generic(GenericDevice<'a>),
@@ -34,6 +37,10 @@ pub struct GenericDevice<'a> {
 }
 
 pub struct WiFiDevice<'a> {
+    dbus_accessor: DBusAccessor<'a>,
+}
+
+pub struct AdslDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
 
@@ -59,6 +66,7 @@ impl<'a> Device<'a> {
         match FromPrimitive::from_u32(dev_type) {
             Some(x) => match x {
                 DeviceType::Wifi => Ok(Device::WiFi(WiFiDevice { dbus_accessor })),
+                DeviceType::Adsl => Ok(Device::Adsl(AdslDevice { dbus_accessor })),
                 DeviceType::Bt => Ok(Device::Bluetooth(BluetoothDevice { dbus_accessor })),
                 DeviceType::Ethernet => Ok(Device::Ethernet(EthernetDevice { dbus_accessor })),
                 DeviceType::Generic => Ok(Device::Generic(GenericDevice { dbus_accessor })),

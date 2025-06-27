@@ -2,6 +2,7 @@ use super::BluetoothDevice;
 use crate::errors::Error;
 use crate::gen::OrgFreedesktopNetworkManagerDeviceBluetooth;
 use crate::types::NMBluetoothCapabilities;
+use num_traits::FromPrimitive;
 
 pub trait Bluetooth {
     fn hw_address(&self) -> Result<String, Error>;
@@ -15,11 +16,11 @@ impl<'a> Bluetooth for BluetoothDevice<'a> {
     }
 
     fn bt_capabilities(&self) -> Result<NMBluetoothCapabilities, Error> {
-        Ok(match proxy!(self).bt_capabilities()? {
-            0 => NMBluetoothCapabilities::NmBtCapabilityNone,
-            1 => NMBluetoothCapabilities::NmBtCapabilityDun,
-            _ => NMBluetoothCapabilities::NmBtCapabilityNap,
-        })
+        let bt_cap = proxy!(self).bt_capabilities()?;
+        match FromPrimitive::from_u32(bt_cap) {
+            Some(x) => Ok(x),
+            None => Err(Error::UnsupportedType),
+        }
     }
 
     fn name(&self) -> Result<String, Error> {
