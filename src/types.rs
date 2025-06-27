@@ -161,6 +161,7 @@ pub enum ActiveConnectionState {
 //     Nm802_11ModeMesh = 4,
 // }
 
+#[derive(Debug, FromPrimitive)]
 pub enum NMBluetoothCapabilities {
     NmBtCapabilityNone = 0,
     NmBtCapabilityDun = 1,
