@@ -101,7 +101,7 @@ fn main() -> Result<(), Error> {
     - [x] Bluetooth
     - [x] Bond
     - [x] Bridge
-    - [ ] Dummy
+    - [x] Dummy
     - [ ] HSR
     - [ ] Infiniband
     - [ ] IpTunnel
