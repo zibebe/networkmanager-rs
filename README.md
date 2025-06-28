@@ -99,7 +99,7 @@ fn main() -> Result<(), Error> {
     - [x] Wired
     - [x] ADSL
     - [x] Bluetooth
-    - [ ] Bond
+    - [x] Bond
     - [x] Bridge
     - [ ] Dummy
     - [ ] HSR
