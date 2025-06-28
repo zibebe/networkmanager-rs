@@ -1,6 +1,6 @@
 use super::{
-    AdslDevice, BluetoothDevice, BridgeDevice, EthernetDevice, GenericDevice, VethDevice,
-    WiFiDevice,
+    AdslDevice, BluetoothDevice, BondDevice, BridgeDevice, EthernetDevice, GenericDevice,
+    VethDevice, WiFiDevice,
 };
 use crate::configs::{Dhcp4Config, Dhcp6Config, Ip4Config, Ip6Config};
 use crate::connection::Connection;
@@ -244,5 +244,6 @@ impl_any!(BridgeDevice<'a>, 'a);
 impl_any!(WiFiDevice<'a>, 'a);
 impl_any!(AdslDevice<'a>, 'a);
 impl_any!(BluetoothDevice<'a>, 'a);
+impl_any!(BondDevice<'a>, 'a);
 impl_any!(EthernetDevice<'a>, 'a);
 impl_any!(GenericDevice<'a>, 'a);
