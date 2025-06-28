@@ -3,6 +3,7 @@ mod any;
 mod bond;
 mod bridge;
 mod bt;
+mod dummy;
 mod generic;
 mod veth;
 mod wired;
@@ -13,6 +14,7 @@ pub use self::any::Any;
 pub use self::bond::Bond;
 pub use self::bridge::Bridge;
 pub use self::bt::Bluetooth;
+pub use self::dummy::Dummy;
 pub use self::generic::Generic;
 pub use self::veth::Veth;
 pub use self::wired::Wired;
@@ -28,6 +30,7 @@ pub enum Device<'a> {
     Adsl(AdslDevice<'a>),
     Bluetooth(BluetoothDevice<'a>),
     Bond(BondDevice<'a>),
+    Dummy(DummyDevice<'a>),
     Ethernet(EthernetDevice<'a>),
     Generic(GenericDevice<'a>),
     Bridge(BridgeDevice<'a>),
@@ -63,6 +66,10 @@ pub struct BridgeDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
 
+pub struct DummyDevice<'a> {
+    dbus_accessor: DBusAccessor<'a>,
+}
+
 pub struct VethDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
@@ -75,6 +82,7 @@ impl<'a> Device<'a> {
                 DeviceType::Wifi => Ok(Device::WiFi(WiFiDevice { dbus_accessor })),
                 DeviceType::Adsl => Ok(Device::Adsl(AdslDevice { dbus_accessor })),
                 DeviceType::Bt => Ok(Device::Bluetooth(BluetoothDevice { dbus_accessor })),
+                DeviceType::Dummy => Ok(Device::Dummy(DummyDevice { dbus_accessor })),
                 DeviceType::Bond => Ok(Device::Bond(BondDevice { dbus_accessor })),
                 DeviceType::Ethernet => Ok(Device::Ethernet(EthernetDevice { dbus_accessor })),
                 DeviceType::Generic => Ok(Device::Generic(GenericDevice { dbus_accessor })),
