@@ -69,6 +69,7 @@ pub enum DeviceType {
     WifiP2p = 30,
     Vrf = 31,
     Loopback = 32,
+    Hsr = 33,
 }
 
 #[derive(Debug, FromPrimitive)]

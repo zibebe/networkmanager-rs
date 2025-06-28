@@ -5,6 +5,8 @@ mod bridge;
 mod bt;
 mod dummy;
 mod generic;
+#[cfg(feature = "v1_46")]
+mod hsr;
 mod veth;
 mod wired;
 mod wireless;
@@ -16,6 +18,8 @@ pub use self::bridge::Bridge;
 pub use self::bt::Bluetooth;
 pub use self::dummy::Dummy;
 pub use self::generic::Generic;
+#[cfg(feature = "v1_46")]
+pub use self::hsr::Hsr;
 pub use self::veth::Veth;
 pub use self::wired::Wired;
 pub use self::wireless::Wireless;
@@ -31,6 +35,8 @@ pub enum Device<'a> {
     Bluetooth(BluetoothDevice<'a>),
     Bond(BondDevice<'a>),
     Dummy(DummyDevice<'a>),
+    #[cfg(feature = "v1_46")]
+    Hsr(HsrDevice<'a>),
     Ethernet(EthernetDevice<'a>),
     Generic(GenericDevice<'a>),
     Bridge(BridgeDevice<'a>),
@@ -70,6 +76,11 @@ pub struct DummyDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
 
+#[cfg(feature = "v1_46")]
+pub struct HsrDevice<'a> {
+    dbus_accessor: DBusAccessor<'a>,
+}
+
 pub struct VethDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
@@ -87,6 +98,8 @@ impl<'a> Device<'a> {
                 DeviceType::Ethernet => Ok(Device::Ethernet(EthernetDevice { dbus_accessor })),
                 DeviceType::Generic => Ok(Device::Generic(GenericDevice { dbus_accessor })),
                 DeviceType::Bridge => Ok(Device::Bridge(BridgeDevice { dbus_accessor })),
+                #[cfg(feature = "v1_46")]
+                DeviceType::Hsr => Ok(Device::Hsr(HsrDevice { dbus_accessor })),
                 DeviceType::Veth => Ok(Device::Veth(VethDevice { dbus_accessor })),
                 _ => Ok(Device::UnsupportedDevice),
             },
