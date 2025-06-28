@@ -102,7 +102,7 @@ fn main() -> Result<(), Error> {
     - [x] Bond
     - [x] Bridge
     - [x] Dummy
-    - [ ] HSR
+    - [x] HSR (feature = `v1_46`)
     - [ ] Infiniband
     - [ ] IpTunnel
     - [ ] IPVLAN
