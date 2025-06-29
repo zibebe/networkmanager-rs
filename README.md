@@ -103,8 +103,8 @@ fn main() -> Result<(), Error> {
     - [x] Bridge
     - [x] Dummy
     - [x] HSR (feature = `v1_46`)
-    - [ ] Infiniband
-    - [ ] IpTunnel
+    - [x] Infiniband
+    - [x] IpTunnel
     - [ ] IPVLAN
     - [ ] Lowpan
     - [ ] Loopback
