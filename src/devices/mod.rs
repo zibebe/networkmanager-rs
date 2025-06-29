@@ -7,6 +7,8 @@ mod dummy;
 mod generic;
 #[cfg(feature = "v1_46")]
 mod hsr;
+mod infiniband;
+mod ip_tunnel;
 mod veth;
 mod wired;
 mod wireless;
@@ -20,6 +22,8 @@ pub use self::dummy::Dummy;
 pub use self::generic::Generic;
 #[cfg(feature = "v1_46")]
 pub use self::hsr::Hsr;
+pub use self::infiniband::Infiniband;
+pub use self::ip_tunnel::IpTunnel;
 pub use self::veth::Veth;
 pub use self::wired::Wired;
 pub use self::wireless::Wireless;
@@ -37,6 +41,8 @@ pub enum Device<'a> {
     Dummy(DummyDevice<'a>),
     #[cfg(feature = "v1_46")]
     Hsr(HsrDevice<'a>),
+    Infiniband(InfinibandDevice<'a>),
+    IpTunnel(IpTunnelDevice<'a>),
     Ethernet(EthernetDevice<'a>),
     Generic(GenericDevice<'a>),
     Bridge(BridgeDevice<'a>),
@@ -81,6 +87,14 @@ pub struct HsrDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
 
+pub struct InfinibandDevice<'a> {
+    dbus_accessor: DBusAccessor<'a>,
+}
+
+pub struct IpTunnelDevice<'a> {
+    dbus_accessor: DBusAccessor<'a>,
+}
+
 pub struct VethDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
@@ -100,6 +114,10 @@ impl<'a> Device<'a> {
                 DeviceType::Bridge => Ok(Device::Bridge(BridgeDevice { dbus_accessor })),
                 #[cfg(feature = "v1_46")]
                 DeviceType::Hsr => Ok(Device::Hsr(HsrDevice { dbus_accessor })),
+                DeviceType::Infiniband => {
+                    Ok(Device::Infiniband(InfinibandDevice { dbus_accessor }))
+                }
+                DeviceType::IpTunnel => Ok(Device::IpTunnel(IpTunnelDevice { dbus_accessor })),
                 DeviceType::Veth => Ok(Device::Veth(VethDevice { dbus_accessor })),
                 _ => Ok(Device::UnsupportedDevice),
             },
