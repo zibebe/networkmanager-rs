@@ -106,7 +106,7 @@ fn main() -> Result<(), Error> {
     - [x] Infiniband
     - [x] IpTunnel
     - [x] IPVLAN (feature = `v1_52`)
-    - [ ] Lowpan
+    - [x] Lowpan
     - [ ] Loopback
     - [ ] Macsec
     - [ ] MacVLAN

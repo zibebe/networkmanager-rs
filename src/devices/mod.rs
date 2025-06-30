@@ -30,6 +30,7 @@ pub use self::infiniband::Infiniband;
 pub use self::ip_tunnel::IpTunnel;
 #[cfg(feature = "v1_52")]
 pub use self::ipvlan::IpVlan;
+pub use self::lowpan::Lowpan;
 pub use self::veth::Veth;
 pub use self::wired::Wired;
 pub use self::wireless::Wireless;
@@ -51,6 +52,7 @@ pub enum Device<'a> {
     IpTunnel(IpTunnelDevice<'a>),
     #[cfg(feature = "v1_52")]
     IpVlan(IpVlanDevice<'a>),
+    Lowpan(LowpanDevice<'a>),
     Ethernet(EthernetDevice<'a>),
     Generic(GenericDevice<'a>),
     Bridge(BridgeDevice<'a>),
@@ -108,6 +110,10 @@ pub struct IpVlanDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
 
+pub struct LowpanDevice<'a> {
+    dbus_accessor: DBusAccessor<'a>,
+}
+
 pub struct VethDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
@@ -133,6 +139,7 @@ impl<'a> Device<'a> {
                 DeviceType::IpTunnel => Ok(Device::IpTunnel(IpTunnelDevice { dbus_accessor })),
                 #[cfg(feature = "v1_52")]
                 DeviceType::IpVlan => Ok(Device::IpVlan(IpVlanDevice { dbus_accessor })),
+                DeviceType::SixLowpan => Ok(Device::Lowpan(LowpanDevice { dbus_accessor })),
                 DeviceType::Veth => Ok(Device::Veth(VethDevice { dbus_accessor })),
                 _ => Ok(Device::UnsupportedDevice),
             },
