@@ -1,5 +1,7 @@
 #[cfg(feature = "v1_46")]
 use super::HsrDevice;
+#[cfg(feature = "v1_52")]
+use super::IpVlanDevice;
 use super::{
     AdslDevice, BluetoothDevice, BondDevice, BridgeDevice, DummyDevice, EthernetDevice,
     GenericDevice, InfinibandDevice, IpTunnelDevice, VethDevice, WiFiDevice,
@@ -254,3 +256,5 @@ impl_any!(EthernetDevice<'a>, 'a);
 impl_any!(GenericDevice<'a>, 'a);
 #[cfg(feature = "v1_46")]
 impl_any!(HsrDevice<'a>, 'a);
+#[cfg(feature = "v1_52")]
+impl_any!(IpVlanDevice<'a>, 'a);

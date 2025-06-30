@@ -9,6 +9,10 @@ mod generic;
 mod hsr;
 mod infiniband;
 mod ip_tunnel;
+#[cfg(feature = "v1_52")]
+mod ipvlan;
+mod loopback;
+mod lowpan;
 mod veth;
 mod wired;
 mod wireless;
@@ -24,6 +28,8 @@ pub use self::generic::Generic;
 pub use self::hsr::Hsr;
 pub use self::infiniband::Infiniband;
 pub use self::ip_tunnel::IpTunnel;
+#[cfg(feature = "v1_52")]
+pub use self::ipvlan::IpVlan;
 pub use self::veth::Veth;
 pub use self::wired::Wired;
 pub use self::wireless::Wireless;
@@ -43,6 +49,8 @@ pub enum Device<'a> {
     Hsr(HsrDevice<'a>),
     Infiniband(InfinibandDevice<'a>),
     IpTunnel(IpTunnelDevice<'a>),
+    #[cfg(feature = "v1_52")]
+    IpVlan(IpVlanDevice<'a>),
     Ethernet(EthernetDevice<'a>),
     Generic(GenericDevice<'a>),
     Bridge(BridgeDevice<'a>),
@@ -95,6 +103,11 @@ pub struct IpTunnelDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
 
+#[cfg(feature = "v1_52")]
+pub struct IpVlanDevice<'a> {
+    dbus_accessor: DBusAccessor<'a>,
+}
+
 pub struct VethDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
@@ -118,6 +131,8 @@ impl<'a> Device<'a> {
                     Ok(Device::Infiniband(InfinibandDevice { dbus_accessor }))
                 }
                 DeviceType::IpTunnel => Ok(Device::IpTunnel(IpTunnelDevice { dbus_accessor })),
+                #[cfg(feature = "v1_52")]
+                DeviceType::IpVlan => Ok(Device::IpVlan(IpVlanDevice { dbus_accessor })),
                 DeviceType::Veth => Ok(Device::Veth(VethDevice { dbus_accessor })),
                 _ => Ok(Device::UnsupportedDevice),
             },

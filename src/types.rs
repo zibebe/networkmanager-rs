@@ -70,6 +70,7 @@ pub enum DeviceType {
     Vrf = 31,
     Loopback = 32,
     Hsr = 33,
+    IpVlan = 34,
 }
 
 #[derive(Debug, FromPrimitive)]
