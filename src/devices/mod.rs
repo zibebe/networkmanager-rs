@@ -11,7 +11,6 @@ mod infiniband;
 mod ip_tunnel;
 #[cfg(feature = "v1_52")]
 mod ipvlan;
-mod loopback;
 mod lowpan;
 mod veth;
 mod wired;
@@ -53,6 +52,7 @@ pub enum Device<'a> {
     #[cfg(feature = "v1_52")]
     IpVlan(IpVlanDevice<'a>),
     Lowpan(LowpanDevice<'a>),
+    Loopback(LoopbackDevice<'a>),
     Ethernet(EthernetDevice<'a>),
     Generic(GenericDevice<'a>),
     Bridge(BridgeDevice<'a>),
@@ -114,6 +114,10 @@ pub struct LowpanDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
 
+pub struct LoopbackDevice<'a> {
+    dbus_accessor: DBusAccessor<'a>,
+}
+
 pub struct VethDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
@@ -140,6 +144,7 @@ impl<'a> Device<'a> {
                 #[cfg(feature = "v1_52")]
                 DeviceType::IpVlan => Ok(Device::IpVlan(IpVlanDevice { dbus_accessor })),
                 DeviceType::SixLowpan => Ok(Device::Lowpan(LowpanDevice { dbus_accessor })),
+                DeviceType::Loopback => Ok(Device::Loopback(LoopbackDevice { dbus_accessor })),
                 DeviceType::Veth => Ok(Device::Veth(VethDevice { dbus_accessor })),
                 _ => Ok(Device::UnsupportedDevice),
             },

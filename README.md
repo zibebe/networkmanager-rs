@@ -107,7 +107,7 @@ fn main() -> Result<(), Error> {
     - [x] IpTunnel
     - [x] IPVLAN (feature = `v1_52`)
     - [x] Lowpan
-    - [ ] Loopback
+    - [x] Loopback
     - [ ] Macsec
     - [ ] MacVLAN
     - [ ] Modem
