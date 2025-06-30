@@ -105,9 +105,9 @@ fn main() -> Result<(), Error> {
     - [x] HSR (feature = `v1_46`)
     - [x] Infiniband
     - [x] IpTunnel
-    - [ ] IPVLAN
-    - [ ] Lowpan
-    - [ ] Loopback
+    - [x] IPVLAN (feature = `v1_52`)
+    - [x] Lowpan
+    - [x] Loopback
     - [ ] Macsec
     - [ ] MacVLAN
     - [ ] Modem

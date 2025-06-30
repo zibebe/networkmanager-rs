@@ -1,8 +1,11 @@
 #[cfg(feature = "v1_46")]
 use super::HsrDevice;
+#[cfg(feature = "v1_52")]
+use super::IpVlanDevice;
 use super::{
     AdslDevice, BluetoothDevice, BondDevice, BridgeDevice, DummyDevice, EthernetDevice,
-    GenericDevice, InfinibandDevice, IpTunnelDevice, VethDevice, WiFiDevice,
+    GenericDevice, InfinibandDevice, IpTunnelDevice, LoopbackDevice, LowpanDevice, VethDevice,
+    WiFiDevice,
 };
 use crate::configs::{Dhcp4Config, Dhcp6Config, Ip4Config, Ip6Config};
 use crate::connection::Connection;
@@ -249,8 +252,12 @@ impl_any!(BluetoothDevice<'a>, 'a);
 impl_any!(BondDevice<'a>, 'a);
 impl_any!(InfinibandDevice<'a>, 'a);
 impl_any!(IpTunnelDevice<'a>, 'a);
+impl_any!(LowpanDevice<'a>, 'a);
+impl_any!(LoopbackDevice<'a>, 'a);
 impl_any!(DummyDevice<'a>, 'a);
 impl_any!(EthernetDevice<'a>, 'a);
 impl_any!(GenericDevice<'a>, 'a);
 #[cfg(feature = "v1_46")]
 impl_any!(HsrDevice<'a>, 'a);
+#[cfg(feature = "v1_52")]
+impl_any!(IpVlanDevice<'a>, 'a);
