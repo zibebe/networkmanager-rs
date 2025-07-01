@@ -12,6 +12,7 @@ mod ip_tunnel;
 #[cfg(feature = "v1_52")]
 mod ipvlan;
 mod lowpan;
+mod macsec;
 mod veth;
 mod wired;
 mod wireless;
@@ -30,6 +31,7 @@ pub use self::ip_tunnel::IpTunnel;
 #[cfg(feature = "v1_52")]
 pub use self::ipvlan::IpVlan;
 pub use self::lowpan::Lowpan;
+pub use self::macsec::Macsec;
 pub use self::veth::Veth;
 pub use self::wired::Wired;
 pub use self::wireless::Wireless;
@@ -53,6 +55,7 @@ pub enum Device<'a> {
     IpVlan(IpVlanDevice<'a>),
     Lowpan(LowpanDevice<'a>),
     Loopback(LoopbackDevice<'a>),
+    Macsec(MacsecDevice<'a>),
     Ethernet(EthernetDevice<'a>),
     Generic(GenericDevice<'a>),
     Bridge(BridgeDevice<'a>),
@@ -118,6 +121,10 @@ pub struct LoopbackDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
 
+pub struct MacsecDevice<'a> {
+    dbus_accessor: DBusAccessor<'a>,
+}
+
 pub struct VethDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
@@ -145,6 +152,7 @@ impl<'a> Device<'a> {
                 DeviceType::IpVlan => Ok(Device::IpVlan(IpVlanDevice { dbus_accessor })),
                 DeviceType::SixLowpan => Ok(Device::Lowpan(LowpanDevice { dbus_accessor })),
                 DeviceType::Loopback => Ok(Device::Loopback(LoopbackDevice { dbus_accessor })),
+                DeviceType::Macsec => Ok(Device::Macsec(MacsecDevice { dbus_accessor })),
                 DeviceType::Veth => Ok(Device::Veth(VethDevice { dbus_accessor })),
                 _ => Ok(Device::UnsupportedDevice),
             },
