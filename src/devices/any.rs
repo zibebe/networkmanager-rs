@@ -4,8 +4,8 @@ use super::HsrDevice;
 use super::IpVlanDevice;
 use super::{
     AdslDevice, BluetoothDevice, BondDevice, BridgeDevice, DummyDevice, EthernetDevice,
-    GenericDevice, InfinibandDevice, IpTunnelDevice, LoopbackDevice, LowpanDevice, VethDevice,
-    WiFiDevice,
+    GenericDevice, InfinibandDevice, IpTunnelDevice, LoopbackDevice, LowpanDevice, MacsecDevice,
+    VethDevice, WiFiDevice,
 };
 use crate::configs::{Dhcp4Config, Dhcp6Config, Ip4Config, Ip6Config};
 use crate::connection::Connection;
@@ -254,6 +254,7 @@ impl_any!(InfinibandDevice<'a>, 'a);
 impl_any!(IpTunnelDevice<'a>, 'a);
 impl_any!(LowpanDevice<'a>, 'a);
 impl_any!(LoopbackDevice<'a>, 'a);
+impl_any!(MacsecDevice<'a>, 'a);
 impl_any!(DummyDevice<'a>, 'a);
 impl_any!(EthernetDevice<'a>, 'a);
 impl_any!(GenericDevice<'a>, 'a);
