@@ -170,13 +170,15 @@ pub enum NMBluetoothCapabilities {
     NmBtCapabilityNap = 2,
 }
 
-// pub enum NMDeviceModemCapabilities {
-//     NmDeviceModemCapabilityNone = 0,
-//     NmDeviceModemCapabilityPots = 1,
-//     NmDeviceModemCapabilityCdmaEvdo = 2,
-//     NmDeviceModemCapabilityGsmUmts = 4,
-//     NmDeviceModemCapabilityLte = 8,
-// }
+#[derive(Debug, FromPrimitive)]
+pub enum NMDeviceModemCapabilities {
+    NmDeviceModemCapabilityNone = 0,
+    NmDeviceModemCapabilityPots = 0x1,
+    NmDeviceModemCapabilityCdmaEvdo = 0x2,
+    NmDeviceModemCapabilityGsmUmts = 0x4,
+    NmDeviceModemCapabilityLte = 0x8,
+    NmDeviceModemCapability5GNR = 0x40,
+}
 
 // pub enum NMWimaxNspNetworkType {
 //     NmWimaxNspNetworkTypeUnknown = 0,

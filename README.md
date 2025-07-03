@@ -110,7 +110,7 @@ fn main() -> Result<(), Error> {
     - [x] Loopback
     - [x] Macsec
     - [x] MacVLAN
-    - [ ] Modem
+    - [x] Modem
     - [ ] OLPCMesh
     - [ ] OVSBridge
     - [ ] OVSInterface
