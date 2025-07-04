@@ -111,7 +111,7 @@ fn main() -> Result<(), Error> {
     - [x] Macsec
     - [x] MacVLAN
     - [x] Modem
-    - [ ] OLPCMesh
+    - [x] OLPCMesh
     - [ ] OVSBridge
     - [ ] OVSInterface
     - [ ] OVSPort
