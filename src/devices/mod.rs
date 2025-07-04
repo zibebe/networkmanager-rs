@@ -15,6 +15,7 @@ mod lowpan;
 mod macsec;
 mod macvlan;
 mod modem;
+mod olpc_mesh;
 mod veth;
 mod wired;
 mod wireless;
@@ -36,6 +37,7 @@ pub use self::lowpan::Lowpan;
 pub use self::macsec::Macsec;
 pub use self::macvlan::Macvlan;
 pub use self::modem::Modem;
+pub use self::olpc_mesh::OlpcMesh;
 pub use self::veth::Veth;
 pub use self::wired::Wired;
 pub use self::wireless::Wireless;
@@ -62,6 +64,7 @@ pub enum Device<'a> {
     Macsec(MacsecDevice<'a>),
     Macvlan(MacvlanDevice<'a>),
     Modem(ModemDevice<'a>),
+    OlpcMesh(OlpcMeshDevice<'a>),
     Ethernet(EthernetDevice<'a>),
     Generic(GenericDevice<'a>),
     Bridge(BridgeDevice<'a>),
@@ -139,6 +142,10 @@ pub struct ModemDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
 
+pub struct OlpcMeshDevice<'a> {
+    dbus_accessor: DBusAccessor<'a>,
+}
+
 pub struct VethDevice<'a> {
     dbus_accessor: DBusAccessor<'a>,
 }
@@ -169,6 +176,7 @@ impl<'a> Device<'a> {
                 DeviceType::Macsec => Ok(Device::Macsec(MacsecDevice { dbus_accessor })),
                 DeviceType::Macvlan => Ok(Device::Macvlan(MacvlanDevice { dbus_accessor })),
                 DeviceType::Modem => Ok(Device::Modem(ModemDevice { dbus_accessor })),
+                DeviceType::OlpcMesh => Ok(Device::OlpcMesh(OlpcMeshDevice { dbus_accessor })),
                 DeviceType::Veth => Ok(Device::Veth(VethDevice { dbus_accessor })),
                 _ => Ok(Device::UnsupportedDevice),
             },
